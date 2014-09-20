@@ -181,9 +181,11 @@
 				<button type="button" class="btn btn-warning edit-widget" data-toggle="modal" data-target="#main-image-slider">Edit</button>
 				<div class="widget image-slider">
 					<div id="carousel-main-image" class="carousel slide" data-ride="carousel">
+					 <?php
+					if ( isset($main_images) && $main_images ):
+					?>
 				        <div class="carousel-inner">
 				        <?php
-					if ( isset($main_images) ):
 						$i = 0;
 						foreach($main_images->result() as $image):
 						$active = '';
@@ -199,10 +201,16 @@
 				          </div>
 					<?php
 						endforeach;
-					endif;
 					?>
 				        </div>
 				        <a class="left carousel-control" href="#carousel-main-image" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"></span> </a> <a class="right carousel-control" href="#carousel-main-image" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"></span> </a> 
+				        <?php
+				        else:
+				        ?>
+				        <div class="blank-image"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#main-image-slider">Add Image Slider</button></div>
+				        <?php
+				        endif;
+				        ?>
 				        </div>
 				</div>
 				
@@ -217,28 +225,43 @@
 				
 				<div class="clearfix"></div>
 				
-				<button type="button" class="btn btn-warning edit-widget">Edit</button>
+				<button type="button" class="btn btn-warning edit-widget" data-toggle="modal" data-target="#videos-modal">Edit</button>
 				<div class="widget videos">
-					<div class="embed-responsive embed-responsive-16by9">
-						<div onclick="play($(this));" id="youtube-main" data-youtubeurl="http://www.youtube.com/embed/RC1Qf3qKnW0"><img src="<?php echo base_url(); ?>img/main-youtube-thumb.jpg"/></div>
-						<script type="text/javascript">function play(video){document.getElementById('youtube-main').innerHTML = '<iframe width="560" height="315" src="'+video.attr("data-youtubeurl")+'?autoplay=1" frameborder="0"></iframe>';}</script>
-					</div>
-					<div class="video-nav">
-						<div id="carousel-video" class="carousel slide" data-ride="carousel">
-							<div class="carousel-inner video">
-								<div class="item active">
-									<div class="widget-video-thumb"><img src="<?php echo base_url(); ?>img/youtube-thumb-1.jpg" alt=""  data-youtubeurl="https://www.youtube.com/embed/3WEzW528IGo" onclick="play($(this));"/></div>
-									<div class="widget-video-thumb"><img src="<?php echo base_url(); ?>img/youtube-thumb-2.jpg" alt=""  data-youtubeurl="http://www.youtube.com/embed/FTB0LmlMdtY" onclick="play($(this));"/></div>
-									<div class="widget-video-thumb"><img src="<?php echo base_url(); ?>img/youtube-thumb-3.jpg" alt=""  data-youtubeurl="https://www.youtube.com/embed/TNkmUyAUHfo" onclick="play($(this));"/></div>
-								</div>
-								<div class="item">
-									<div class="widget-video-thumb"><img src="<?php echo base_url(); ?>img/youtube-thumb-4.jpg" alt=""  data-youtubeurl="https://www.youtube.com/embed/rDA1gyK7UOk" onclick="play($(this));"/></div>
-								</div>
-							</div>
-							<a class="left carousel-control" href="#carousel-video" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"></span> </a> <a class="right carousel-control" href="#carousel-video" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"></span> </a> 
-						</div>
-					</div>
-				</div>
+					<?php
+					if ( isset($videos) && $videos ):
+						$i = 0;
+						foreach($videos->result() as $video):
+							if ( $i == 0 ):
+								echo '<div class="embed-responsive embed-responsive-16by9">';
+								echo '<div onclick="play($(this));" id="youtube-main" data-youtubeurl="'.$video->url.'"><img src="'.base_url() . str_replace('./', '',  create_thumb($video->thumb, 746, 439) ).'"/></div>';
+								echo '</div>';
+								echo '<div class="video-nav">';
+								echo '<div id="carousel-video" class="carousel video" data-ride="carousel">';
+								echo '<div class="carousel-inner video">';
+								echo '<div class="item active">';
+							endif;
+							
+							if ( $i % 3 == 0 && $i != 0 ):
+								echo '</div>';
+								echo '<div class="item">';
+							endif;
+							
+							echo '<div class="widget-video-thumb"><img src="'.base_url() . str_replace('./', '',  create_thumb($video->thumb, 211, 126) ).'" alt=""  data-youtubeurl="'.$video->url.'" onclick="play($(this));"/></div>';
+							
+							$i++;
+						endforeach;
+						
+						echo '</div>'; //<div class="item">
+						echo '</div>'; //<div class="carousel-inner video">
+						echo '<a class="left carousel-control" href="#carousel-video" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"></span> </a> <a class="right carousel-control" href="#carousel-video" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"></span> </a>';
+						echo '</div>'; //<div id="carousel-video" class="carousel video" data-ride="carousel">
+						echo '</div>'; //<div class="video-nav">
+						
+					else:
+						echo '<div class="blank-video"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#videos-modal">Add Video</button></div>';
+					endif;
+					?>
+				</div><!-- end .widget.videos -->
 				<div class="row">
 					<!-- main content left -->
 					<div class="col-md-6 widget-container" id="main-content-left">
@@ -360,10 +383,10 @@
       </div>
       <div class="modal-body" id="main_images_upload">
 		<a id="upload_main_image" href="#" class="btn btn-primary btn-sm active" role="button">Upload Image</a>
-		<p>Note: Max image file size 10MB, width 1024px and height 768px. Only jpg/jpeg/png allowed.</p>
+		<p>Note: Max image file size 10MB, width 1024px and height 768px. Only jpg/jpeg/png allowed. Best Dimension 770x366px.</p>
 		<div id="main_image_sort">
 			<?php
-			if ( isset($main_images) ): 
+			if ( isset($main_images) && $main_images): 
 				foreach($main_images->result() as $image):
 			?>
 			<div id="slider-image-<?=$image->id;?>" class="slider-image-form form-inline" data-img-url="<?=base_url() . str_replace('./', '',  create_thumb($image->path, 770, 366) );?>"  role="form">
@@ -378,6 +401,46 @@
 				</div>
 				<div class="image-desc form-group"><textarea name="image-desc[<?=$image->id;?>]" class="form-control" placeholder="Short Description"><?=$image->description;?></textarea></div>
 				
+			</div>
+			<?php
+				endforeach;
+			endif;	
+			?>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <span class="spinner"></span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="modal fade" id="videos-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Video</h4>
+      </div>
+      <div class="modal-body" id="videos-sort-container">
+		<a id="upload_video_thumb" href="#" class="btn btn-primary btn-sm active" role="button">Upload Video Thumb</a>
+		<p>Note: Max image file size 10MB, width 1024px and height 768px. Only jpg/jpeg/png allowed. Best Dimension 746x439px.</p>
+		<div id="videos-sort">
+			<?php
+			if ( isset($videos) && $videos ):
+				foreach($videos->result() as $video):
+			?>
+			<div id="video-thumb-<?=$video->id;?>" class="video-form form-inline" data-img-url="<?=base_url() . str_replace('./', '',  create_thumb($video->thumb, 746, 439) );?>"  role="form">
+				<div class="image-wrapper form-group"><img src="<?=base_url() . str_replace('./', '',  create_thumb($video->thumb, 211, 126) );?>" width="211" height="126" alt="<?=$image->title;?>"/></div>
+				<div class="image-title form-group">
+					<input type="text" name="video-url[<?=$video->id;?>]" value="<?=$video->url;?>" class="form-control" placeholder="Youtube URL"/>
+					<span class="image-control">
+						<button type="button" class="btn btn-primary btn-sm save-video">Save</button>
+						<button type="button" class="btn btn-danger btn-sm delete-video">Delete</button>
+						<span class="spinner"></span>
+					</span>
+				</div>
 			</div>
 			<?php
 				endforeach;
