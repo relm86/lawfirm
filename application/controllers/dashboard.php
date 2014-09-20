@@ -170,6 +170,14 @@ class Dashboard extends CI_Controller {
 		$query = $this->db->get('templates', 1);
 		if ( $query->num_rows() > 0 ):
 			$data['template'] =  $query->row();
+			$this->db->where('template_id', $template_id);
+			$this->db->order_by('order', 'ASC');
+			$query = $this->db->get('template_images');
+			if ( $query->num_rows() > 0 ):
+				$data['main_images'] = $query;
+			else:
+				$data['main_images'] = FALSE;
+			endif;
 		else:
 			$this->new_template(array('error_msg' => 'Template not found. You may try to create new template or hit back to go to previous page!'));
 			return;
@@ -200,14 +208,15 @@ class Dashboard extends CI_Controller {
 			$this->_save_layout();
 		elseif ( $action == 'upload_main_image')
 			$this->_upload_main_image();
+		elseif ( $action == 'save_image_order')
+			$this->_save_image_order();
+		elseif ( $action == 'save_image_title')
+			$this->_save_image_title();
+		elseif ( $action == 'delete_image')
+			$this->_delete_image();
 	}
 
 	function _save_widget(){
-		$user = get_user_detail( $this->input->post('user_id'));
-		if ( ! $user || $user->level != 3 )
-			die('You have no role for this action');
-			
-		//var_dump($this->session->all_userdata());
 		
 		$response = array(
 	            'success' => FALSE
@@ -241,11 +250,6 @@ class Dashboard extends CI_Controller {
 	}
 	
 	function _save_layout(){
-		$user = get_user_detail( $this->input->post('user_id'));
-		if ( ! $user || $user->level != 3 )
-			die('You have no role for this action');
-			
-		//var_dump($this->session->all_userdata());
 		
 		$response = array(
 	            'success' => TRUE
@@ -278,11 +282,6 @@ class Dashboard extends CI_Controller {
 	}
 	
 	function _upload_main_image(){
-		$user = get_user_detail( $this->input->post('user_id'));
-		if ( ! $user || $user->level != 3 )
-			die('You have no role for this action');
-			
-		//var_dump($this->session->all_userdata());
 		
 		$response = array(
 	            'success' => FALSE
@@ -292,12 +291,12 @@ class Dashboard extends CI_Controller {
 			$this->form_validation->set_rules('user_id', 'User ID', 'trim|required');
 			$this->form_validation->set_rules('template_id', 'Template ID', 'trim|required');
 			if ($this->form_validation->run() == TRUE):
-				$config['upload_path'] = './img/slider/' . $this->input->post('template_id') . '/';
+				$config['upload_path'] = './img/slider/';
 				$config['allowed_types'] = 'jpeg|jpg|png';
 				$config['max_size']	= '10240';
-				$config['max_width']  = '500';
-				$config['max_height']  = '500';
-				$config['overwrite']  = TRUE;
+				$config['max_width']  = '1024';
+				$config['max_height']  = '768';
+				$config['overwrite']  = FALSE;
 
 				$this->load->library('upload', $config);
 
@@ -306,17 +305,129 @@ class Dashboard extends CI_Controller {
 					//var_dump($error);
 					$result = FALSE;
 					$img_url = '';
+					$img_thumb_url = '';
+					$image_id = '';
 				else:
 					$data = $this->upload->data();
 					
-					//update data
-					$update['picture'] = './img/slider/' . $this->input->post('template_id') . '/' . $data['raw_name'] . $data['file_ext'];
-					$this->db->where('id', $this->input->post('id'));
-		           		$this->db->update('users', $update);
+					//insert data
+					$insert['template_id'] = $this->input->post('template_id');
+					$insert['path'] = './img/slider/' . $data['raw_name'] . $data['file_ext'];
+					$this->db->insert('template_images', $insert); 
+					$image_id = $this->db->insert_id();
 					
 					$result = TRUE;
-					$img_url = base_url() . str_replace('./', '',  create_thumb($update['picture'], 100, 100) );
+					$img_url = base_url() . str_replace('./', '',  create_thumb($insert['path'],  770, 366) );
+					$img_thumb_url = base_url() . str_replace('./', '',  create_thumb($insert['path'], 100, 100) );
 					$error = '';
+					
+				endif;
+				
+				$response = array(
+			            'success' => $result,
+			            'image_id' => $image_id,
+			            'img_url' => $img_url,
+			            'img_thumb_url' => $img_thumb_url,
+				    'error'   => strip_tags($error)
+			        );
+			endif;
+		endif;
+		
+		echo json_encode($response);
+		exit;
+	}
+	
+	function _save_image_order(){
+		
+		$response = array(
+	            'success' => FALSE
+	        );
+			
+		if ($this->input->post()) :
+			$this->form_validation->set_rules('user_id', 'User ID', 'trim|required');
+			$this->form_validation->set_rules('template_id', 'Template ID', 'trim|required');
+			$this->form_validation->set_rules('image_order', 'Image Order', 'trim|required');
+			if ($this->form_validation->run() == TRUE):
+				$image_order = explode(',', $this->input->post('image_order'));
+				if ( is_array($image_order) && count($image_order) > 0 ){
+					$order = 0;
+					$image_order_updated = 0;
+					foreach ( $image_order as $image ):
+						$image_id = preg_replace("/[^0-9]/","", $image);
+						$update['order'] = $order;
+						$this->db->where('id', $image_id);
+						$this->db->update('template_images', $update);
+						$order++;
+						if ( $this->db->affected_rows() > 0 ) $image_order_updated++;
+					endforeach;
+					if ( $image_order_updated > 0 ){
+						$response = array(
+					            'success' => TRUE
+					        );
+					}
+				}
+			endif;
+		endif;
+		
+		echo json_encode($response);
+		exit;
+	}
+	
+	function _save_image_title(){
+		
+		$response = array(
+	            'success' => FALSE
+	        );
+			
+		if ($this->input->post()) :
+			$this->form_validation->set_rules('user_id', 'User ID', 'trim|required');
+			$this->form_validation->set_rules('template_id', 'Template ID', 'trim|required');
+			$this->form_validation->set_rules('id', 'Image ID', 'trim|required');
+			if ($this->form_validation->run() == TRUE):
+				$image_id = preg_replace("/[^0-9]/","",$this->input->post('id'));
+				$update['title'] = strip_tags($this->input->post('title'));
+				$update['description'] = strip_tags($this->input->post('desc'), '<p><a><b><i><strong><em><u>');
+				$this->db->where('id', $image_id);
+				$this->db->where('template_id', (int) $this->input->post('template_id'));
+				$this->db->update('template_images', $update);
+				if ( $this->db->affected_rows() > 0 ) {
+					$response = array(
+				            'success' => TRUE
+				        );
+				}
+			endif;
+		endif;
+		
+		echo json_encode($response);
+		exit;
+	}
+	
+	function _delete_image(){
+		
+		$response = array(
+	            'success' => FALSE
+	        );
+			
+		if ($this->input->post()) :
+			$this->form_validation->set_rules('user_id', 'User ID', 'trim|required');
+			$this->form_validation->set_rules('template_id', 'Template ID', 'trim|required');
+			$this->form_validation->set_rules('id', 'Image ID', 'trim|required');
+			if ($this->form_validation->run() == TRUE):
+				$image_id = preg_replace("/[^0-9]/","",$this->input->post('id'));
+				$this->db->where('id', $image_id);
+				$this->db->where('template_id', (int) $this->input->post('template_id'));
+				$query = $this->db->get('template_images');
+				if ( $query->num_rows() > 0 ):
+					$row = $query->row();
+					$this->db->where('id', $image_id);
+					$this->db->where('template_id', (int) $this->input->post('template_id'));
+					$this->db->delete('template_images');
+					$response = array(
+				            'success' => TRUE
+				        );
+				        unlink(create_thumb($row->path, 100, 100));
+				        unlink(create_thumb($row->path,  770, 366));
+				        unlink($row->path);
 				endif;
 			endif;
 		endif;

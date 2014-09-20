@@ -68,4 +68,42 @@
 #widgets li.ui-draggable{
 	cursor: move;
 }
+
+.spinner {
+	background: url(../img/spin_light.gif) no-repeat;
+	background-size: 16px 16px;
+	display: none;
+	float: right;
+	opacity: .7;
+	filter: alpha(opacity=70);
+	min-width: 16px;
+	width: auto;
+	height: 16px;
+	margin: 5px 5px 0;
+	padding-left: 17px;
+}
+
+span.image-control{
+	display: block;
+	margin-top: 10px;
+}
+
+.slider-image-form .form-group{
+	vertical-align: top;
+}
+
+.slider-image-form {
+	margin-top: 10px;
+}
+
+.slider-image-form textarea {
+	width: 260px !important;
+	height: 100px;
+}
+.image-wrapper.form-group, .image-title.form-group {
+	margin-right: 2px;
+}
+.save-image {
+	margin-right: 2px;
+}
 /* page preview */

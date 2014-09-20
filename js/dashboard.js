@@ -165,14 +165,97 @@ $(document).ready(function() {
 	uploader.bind('FileUploaded', function (up, file, response) {
 	    var result = $.parseJSON(response.response);
 	    if (result.success) {
-			$('#'+file.id).html('<img src="'+result.img_url + "?timestamp="  + new Date().getTime() +'" class="img-rounded" />');
+			$('#'+file.id).remove().delay(800);
+			var new_image = $('<div id="slider-image-'+result.image_id+'" class="slider-image-form form-inline" data-img-url="'+result.img_url+'"><div class="image-wrapper form-group"><img src="'+result.img_thumb_url+'" width="100" height="100" alt=""/></div>&nbsp;<div class="image-title form-group"><input type="text" name="image-title['+result.image_id+']" value="" class="form-control" placeholder="Title"/><span class="image-control"><button type="button" class="btn btn-primary btn-sm save-image">Save</button>&nbsp;<button type="button" class="btn btn-danger btn-sm delete-image">Delete</button><span class="spinner"></span></span></div>&nbsp;<div class="image-desc form-group"><textarea name="image-desc['+result.image_id+']" class="form-control" placeholder="Short Description"></textarea></div></div>');
+			new_image.appendTo('#main_image_sort');
 	    } else {
 			//error
 			alert(result.error);
-			//$('#user_picture').html('');
+			$('#'+file.id).remove().delay(800);
 		}
 	});
 	/* main image upload */
+	
+	/* main image sort*/
+	$('#main_image_sort').sortable({
+		connectWith: '#main_image_sort',
+		placeholder: 'placeholder',
+		stop: function( event, ui ) {
+			//save order
+			$('#main_images_upload .spinner').html('Save image order ...');
+			$('#main_images_upload .spinner').show();
+			$.ajax({
+				type: "POST",
+					url: ajax_url+'/save_image_order/',
+					data: {user_id: $('#user_id').val(), template_id: $('#template_id').val(), image_order: getItems('#main_image_sort'),csrf_b2b: $( "input[name='csrf_b2b']" ).val() },
+					dataType : "json",
+				})
+				.done(function( msg ) {
+					if ( msg.success == true )
+						console.log('Image order saved!');
+			});
+			$('#main_images_upload .spinner').hide().delay(800);
+		}
+	});
+	/* main image sort*/
+	
+	/*update image title & description*/
+	$('#main_image_sort').on('click', '.save-image', function(event){
+		var image_id = $(this).closest('.slider-image-form').attr('id');
+		$('#'+image_id+' .spinner').html('Saving ...');
+		$('#'+image_id+' .spinner').show();
+		$.ajax({
+			type: "POST",
+				url: ajax_url+'/save_image_title/',
+				data: {user_id: $('#user_id').val(), template_id: $('#template_id').val(), id: image_id, title: $('#' + image_id + ' input[type=text]').val(), desc: $('#' + image_id + ' textarea').val(), csrf_b2b: $( "input[name='csrf_b2b']" ).val() },
+				dataType : "json",
+			})
+			.done(function( msg ) {
+				if ( msg.success == true )
+					console.log('Image title saved!');
+		});
+		$('#'+image_id+' .spinner').hide().delay(1000);
+	});
+	/*update image title & description*/
+	
+	/*delete image*/
+	$('#main_image_sort').on('click', '.delete-image', function(event){
+		var image_id = $(this).closest('.slider-image-form').attr('id');
+		$('#'+image_id+' .spinner').html('Deleting...');
+		$('#'+image_id+' .spinner').show();
+		$.ajax({
+			type: "POST",
+				url: ajax_url+'/delete_image/',
+				data: {user_id: $('#user_id').val(), template_id: $('#template_id').val(), id: image_id, csrf_b2b: $( "input[name='csrf_b2b']" ).val() },
+				dataType : "json",
+			})
+			.done(function( msg ) {
+				if ( msg.success == true )
+					console.log('Image deleted!');
+		});
+		jQuery('#'+image_id).fadeOut("slow").remove();
+	});
+	/*delete image*/
+	
+	/*update the slider*/
+	$('#main-image-slider').on('hide.bs.modal', function (e) {
+		var slider = $('<div class="carousel-inner">');
+		var i = 0;
+		$('#main_image_sort .slider-image-form').each(function(){
+			slideid = $(this).attr('id');
+			img_url = $('#'+slideid).attr('data-img-url');
+			title = $('#'+slideid+' input[type=text]').val();
+			desc = $('#'+slideid+' textarea').val();
+			active = '';
+			if ( i == 0 ) active = ' active';
+			i++;
+			slider.append('<div class="item'+active+'"><img src="'+img_url+'" width="770" height="366" alt=""/><div class="carousel-caption"><h3>'+title+'</h3><p>'+desc+'</p></div></div>');
+		});
+		$('#carousel-main-image .carousel-inner').remove();
+		slider.prependTo('#carousel-main-image');
+		//$('#carousel-main-image').carousel();
+	});
+	/*update the slider*/
 	
 	/* preview page */
   });

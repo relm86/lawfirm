@@ -180,36 +180,29 @@
 				<!-- main content -->
 				<button type="button" class="btn btn-warning edit-widget" data-toggle="modal" data-target="#main-image-slider">Edit</button>
 				<div class="widget image-slider">
-					<div id="carousel-example-generic" class="carousel slide" data-ride="carousel">
-				        <ol class="carousel-indicators">
-				          <li data-target="#carousel-example-generic" data-slide-to="0" class="active"></li>
-				          <li data-target="#carousel-example-generic" data-slide-to="1"></li>
-				          <li data-target="#carousel-example-generic" data-slide-to="2"></li>
-				        </ol>
+					<div id="carousel-main-image" class="carousel slide" data-ride="carousel">
 				        <div class="carousel-inner">
-				          <div class="item active">
-				          	<img src="<?php echo base_url(); ?>img/about-fair.jpg" width="770" height="366" alt=""/>
+				        <?php
+					if ( isset($main_images) ):
+						$i = 0;
+						foreach($main_images->result() as $image):
+						$active = '';
+						if ( $i== 0 ) $active = ' active';
+						$i++;
+					?>
+					<div class="item<?=$active;?>">
+				          	<img src="<?=base_url() . str_replace('./', '',  create_thumb($image->path, 770, 366) );?>" width="770" height="366" alt=""/>
 				          	<div class="carousel-caption">
-							<h3>It's All About Being Fair</h3>
-							<p>Please do not feel uncomfortable talking to us about your auto accident. You are simply standing up for your rights. You are not looking to do anything wrong, or get money you don’t deserve.</p>
+							<h3><?=$image->title;?></h3>
+							<p><?=$image->description;?></p>
 						</div>
 				          </div>
-				          <div class="item">
-				          	<img src="<?php echo base_url(); ?>img/image-2.jpg" width="770" height="366" alt=""/>
-				          	<div class="carousel-caption">
-							<h3>Promises Made Need To Be Promises Kept</h3>
-							<p>You should hold your insurance company accountable for the promises it has made to you and your family.  </p>
-						</div>
-				          </div>
-				          <div class="item">
-				          	<img src="<?php echo base_url(); ?>img/image-3.jpg" width="770" height="366" alt=""/>
-				          	<div class="carousel-caption">
-							<h3>Let Us Help</h3>
-							<p>We would welcome the opportunity to talk with you. To get to know you as a person, to learn the facts surrounding your accident, and to give you a straightforard answer about what we can do to help.</p>
-						</div>
-				          </div>
+					<?php
+						endforeach;
+					endif;
+					?>
 				        </div>
-				        <a class="left carousel-control" href="#carousel-example-generic" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"></span> </a> <a class="right carousel-control" href="#carousel-example-generic" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"></span> </a> 
+				        <a class="left carousel-control" href="#carousel-main-image" role="button" data-slide="prev"> <span class="glyphicon glyphicon-chevron-left"></span> </a> <a class="right carousel-control" href="#carousel-main-image" role="button" data-slide="next"> <span class="glyphicon glyphicon-chevron-right"></span> </a> 
 				        </div>
 				</div>
 				
@@ -367,11 +360,34 @@
       </div>
       <div class="modal-body" id="main_images_upload">
 		<a id="upload_main_image" href="#" class="btn btn-primary btn-sm active" role="button">Upload Image</a>
-		<div id="main_image_sort"></div>
+		<p>Note: Max image file size 10MB, width 1024px and height 768px. Only jpg/jpeg/png allowed.</p>
+		<div id="main_image_sort">
+			<?php
+			if ( isset($main_images) ): 
+				foreach($main_images->result() as $image):
+			?>
+			<div id="slider-image-<?=$image->id;?>" class="slider-image-form form-inline" data-img-url="<?=base_url() . str_replace('./', '',  create_thumb($image->path, 770, 366) );?>"  role="form">
+				<div class="image-wrapper form-group"><img src="<?=base_url() . str_replace('./', '',  create_thumb($image->path, 100, 100) );?>" width="100" height="100" alt="<?=$image->title;?>"/></div>
+				<div class="image-title form-group">
+					<input type="text" name="image-title[<?=$image->id;?>]" value="<?=$image->title;?>" class="form-control" placeholder="Title"/>
+					<span class="image-control">
+						<button type="button" class="btn btn-primary btn-sm save-image">Save</button>
+						<button type="button" class="btn btn-danger btn-sm delete-image">Delete</button>
+						<span class="spinner"></span>
+					</span>
+				</div>
+				<div class="image-desc form-group"><textarea name="image-desc[<?=$image->id;?>]" class="form-control" placeholder="Short Description"><?=$image->description;?></textarea></div>
+				
+			</div>
+			<?php
+				endforeach;
+			endif;	
+			?>
+		</div>
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary">Save changes</button>
+        <span class="spinner"></span>
       </div>
     </div>
   </div>

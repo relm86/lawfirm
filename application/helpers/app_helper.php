@@ -29,10 +29,12 @@ if ( ! function_exists('create_thumb'))
 
 		$CI->load->library('image_lib', $config); 
 
-		if ( ! $CI->image_lib->resize())
+		if ( ! $CI->image_lib->resize()):
+			echo $this->image_lib->display_errors();
 			return FALSE;
-		else
+		else:
 			return $config['new_image'];
+		endif;
 	}
 }
 
