@@ -1,0 +1,29 @@
+body {
+	background:#000 url('../img/bg-audi-1.png') fixed no-repeat;
+	color:#383431;
+	border-color:#2c2a2b;
+}
+
+.widget-header{background:url('../img/bg-header-audi-1.png') repeat-x; min-height:144px;}
+	.header-nav{text-align:right;}
+	
+	.widget-contact{margin-bottom:15px; padding:14px 0; color:#fff; margin-left:32px;}
+	.widget-contact .media-heading{margin-top:12px;}
+
+.widget-product{background:url('../img/bg-audi-products.png') repeat; color:#fff;}
+.ulBorderTop{border-color:#55514e;}
+
+.ulBorderTop-faq{border-color:#a8a39d;}
+
+.widget-testimonials-text a{color:#55514e;}
+.widget-faq{color:#fff;}
+.widget-faq a{color:#fff;}
+
+.website-link{color:#fff;border-top:1px solid #fff;}
+.website-link a{color:#fff;}
+
+.footer{border-color:#fff;}
+.footer a{color:#fff;}
+.footer h5{color:#fff;}
+
+.widget-copyright, .widget-copyright a{color:#fff;}

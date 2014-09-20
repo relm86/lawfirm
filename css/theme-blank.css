@@ -1,0 +1,154 @@
+body {
+  padding-top: 24px;
+  padding-bottom: 0;
+}
+
+.theme-dropdown .dropdown-menu {
+  position: static;
+  display: block;
+  margin-bottom: 20px;
+}
+
+.theme-showcase > p > .btn {
+  margin: 5px 0;
+}
+
+.theme-showcase .navbar .container {
+  width: auto;
+}
+
+/* Globals */
+.ulBorderTop{border-top:3px solid;}
+li:first-child{margin-top:15px;}
+
+.white{color:#fff;}
+.bg-white{background:#fff;}
+
+h3.title{margin-top:0px;}
+h4.title{margin-top:0px;}
+
+.pL-fix{padding-left:0;}
+.pR-fix{padding-right:0;}
+
+.pB14{padding-bottom:14px;}
+.mB14{margin-bottom:14px;}
+
+.mT14{margin-top:14px;}
+.mT24{margin-top:24px;}
+.mL14{margin-left:14px;}
+
+/* bootstrap hack */ 	.media-body{padding:0 8px;}
+
+/* Widget - Header */
+.widget-header{margin-bottom:15px; background:#000; float:left; width:100%;}
+.widget-header-logo{padding:14px; float:left;}
+	.header-nav{margin:14px 14px 14px 0; font-size:12px; color:#fff;}
+	.header-nav a{color:#fff;}
+	.header-chat{}
+
+/* Widget - Contact Info */
+.widget-contact{margin-bottom:15px; padding:14px 0;}
+.widget-contact-url{padding:14px;}
+.widget-contact-map{padding:0 14px;}
+
+/* Widget - Product Listing */
+.widget-product{padding:8px 0;}
+
+/* Widget - Text Box */
+.widget-textbox{margin-bottom:15px; padding:14px 0;}
+.widget-textbox-url{padding:14px;}
+
+/* Widget - Carousel Full Size */
+.carousel{margin-bottom:15px;}
+
+/* Widget - Image 2/3 Size */
+.widget-image-twothirds{}
+
+/* Widget - Video */
+.widget-video{min-height:380px;}
+.widget-video-thumb{width:128px; height:72px; float:left; margin:0 1px; margin-top:8px;}
+	.widget-video-thumb-left{background:url('../img/icon-left-chevron.png') no-repeat; width:24px; height:36px; float:left; margin:24px 8px 0 0;}
+	.widget-video-thumb-right{background:url('../img/icon-right-chevron.png') no-repeat; width:24px; height:36px; float:right; margin:24px 0 0 8px;}
+	.chevron-hover a{width:24px; height:36px; display:block;}
+
+.video{width:100%; height:auto; min-height:423px; margin-top:14px;}
+
+/* Widget - Testimonials - Text Only*/
+.widget-testimonials-text{margin-bottom:15px; min-height:270px; width:100%; padding:12px;}
+
+/* Widget - Testimonials - Full*/
+.widget-testimonials-full{margin-bottom:15px; min-height:270px; width:100%;}
+.panel-review{margin:16px 0 0 0;}
+
+/* Widget - FAQ */
+.widget-faq{margin-bottom:15px; min-height:270px; width:100%; padding:12px;}
+
+/* Widget - Social - Share this page */
+.widget-social{ margin:14px 0 0 0;}
+	.icon-share{background:url('../img/icon-share.png') no-repeat; width:144px; height:32px; float:left; margin-right:4px;}
+		.icon-facebook{background:url('../img/icon-facebook.png') no-repeat; width:32px; height:32px; float:left; margin-right:4px;}
+		.icon-twitter{background:url('../img/icon-twitter.png') no-repeat; width:32px; height:32px; float:left; margin-right:4px;}
+		.icon-email{background:url('../img/icon-email.png') no-repeat; width:32px; height:32px; float:left; margin-right:4px;}
+		.icon-linkedin{background:url('../img/icon-linkedin.png') no-repeat; width:32px; height:32px; float:left; margin-right:4px;}
+		.icon-plus{background:url('../img/icon-plus.png') no-repeat; width:32px; height:32px; float:left; margin-right:4px;}
+		
+		.icon-block a{width:32px; height:32px; display:block;}
+
+/* Widget - Coupons */
+.widget-coupons{margin-bottom:15px; width:100%;}
+	.widget-coupons img{margin-right:2px;}
+	
+/* Widget - Links List */
+.widget-links{margin-bottom:15px; min-height:270px; width:100%; padding:12px;}
+
+/* Widget - Twitter */
+.widget-twitter-feed{background-color:#8fc1da; min-height:270px; width:100%; margin-bottom:15px; padding:12px;}
+	.widget-twitter-feed a{color:#fff; font-size:14px; font-weight:bold;}
+	.widget-twitter-feed a:hover{color:#fff;}
+	
+	.hashtag-title{margin:0; padding:0;}
+	
+/* Widget - External URL Row */
+.website-link{border-top:1px solid #000; padding:14px 0; font-size:18px; margin-top:24px;}
+
+/* Widget - Footer */
+.footer{border-top:1px solid #000; border-bottom:2px solid #000; padding:14px 0;}
+.footer ul{list-style:none; padding-left:0; margin-top:-12px;}
+.footer li{}
+
+/* Widget - Copyright */
+.widget-copyright{padding:14px 0;}
+
+/* Widget - Box */
+.widget-box{padding:14px;}
+.widget-box-text{color:#fff; margin:24px 0 12px 0; text-align:center;}
+.widget-box-btn{margin-left:30px;}
+
+/* Widget - Misc - For anything really... */
+.widget-misc{margin-bottom:15px; padding:14px 0;}
+
+
+/* Images */
+
+.img-left{margin:0 8px 0 14px;}
+.img-right{margin:0 0 0 8px;}
+
+.img128{width:128px; height:128px;}
+.img100{width:100px; height:100px;}
+.img64{width:64px; height:64px;}
+
+
+/* Media Queries */
+@media (min-width: 1200px) {
+}
+@media (min-width: 992px) {
+}
+@media (min-width: 768px) {
+}
+@media screen and (max-width: 767px) {
+	.video{width:100%; height:auto; min-height:256px;}
+}
+
+/* Page Specific */
+
+.ulBorderTop{border-color:#000000;}

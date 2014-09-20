@@ -1,0 +1,71 @@
+/* Color scheme & Layout*/
+#color_scheme_select input[type=radio], #layout_select input[type=radio]{
+	display: none;
+}
+#color_scheme_select label, #layout_select label{
+	padding: 0;
+}
+#color_scheme_select .radio, #layout_select .radio{
+	border: 1px solid transparent;
+	margin: 0px;
+	padding: 5px 10px;
+	background-color: transparent;
+}
+#color_scheme_select .radio.checked, #layout_select .radio.checked{
+	border-color: black;
+	background-color: #edeede;
+}
+#color_scheme_select img, #layout_select img{
+	display: block;
+}
+/* Color scheme & Layout */
+
+/* page preview */
+.container.page_preview{
+	width: 1404px;
+}
+
+#widgets {
+	background: #ffffff;
+	width: 100%;
+	padding: 10px;
+}
+
+.widget-title h4 {
+	margin: 0 0 20px;
+	font-size: 18px;
+}
+
+#widgets .widget{
+	border: 1px solid #000000;
+	background: #ffffff;
+	min-height: 100px;
+	margin-bottom: 10px;
+	min-width: 184px;
+	z-index: 2;
+	padding: 10px;
+}
+#widgets-container .widget-control-actions, #widgets-container .widget-inside, #widgets-container .widget-form, .widget-container .widget-top, .widget-container .widget-description{
+	display: none;
+}
+
+.widget-container. widget-inside{
+	display: block;
+}
+
+.ui-droppable {
+	min-height: 200px;
+	z-index: 1;
+}
+
+.placeholder {
+	background-color: #BFB;
+	border: 1px dashed #666;
+	min-height: 58px;
+	margin-top: 25px;
+}
+
+#widgets li.ui-draggable{
+	cursor: move;
+}
+/* page preview */
