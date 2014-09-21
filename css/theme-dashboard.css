@@ -128,4 +128,37 @@ span.image-control{
 .image-wrapper.form-group, .image-title.form-group, .save-image, .save-video {
 	margin-right: 2px;
 }
+
+/* Edit user form styles */
+#edituser_form label {
+    margin-top: 10px;
+}
+
+#edituser_button_top {
+    width: 100%;
+}
+
+#edituser_form .btn-success {
+    margin-top: 10px;
+    float: right;
+}
+
+#edituser_error {
+    display: none;
+}
+
+/* Add user form styles */
+#adduser_form label {
+    margin-top: 10px;
+}
+
+#edituser_button_top {
+    width: 100%;
+}
+
+#adduser_form .btn-success {
+    margin-top: 10px;
+    float: right;
+}
+
 /* page preview */
