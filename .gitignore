@@ -1,0 +1,4 @@
+system/*
+application/logs/*
+application/config/database.php
+image/users/*

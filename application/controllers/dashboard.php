@@ -118,6 +118,48 @@ class Dashboard extends CI_Controller {
 		$this->load->view( 'dashboard/footer' );
 	}
 	
+	public function new_user( $data = array() ){
+				
+		if ($this->input->post()):
+			$this->form_validation->set_rules('first_name', 'First Name', "trim|required");
+			$this->form_validation->set_rules('last_name', 'Last Name', "trim|required");
+			$this->form_validation->set_rules('g_email', 'Email', "trim|required|valid_email");
+			if ($this->form_validation->run() == TRUE):
+				$insert['email_address'] = $this->input->post('g_email');
+				$insert['first_name'] = $this->input->post('first_name');
+				$insert['last_name'] = $this->input->post('last_name');
+				$insert['email_address'] = $this->input->post('g_email');
+				$insert['phone_number'] = $this->input->post('phone_number');
+				$insert['zip_code'] = $this->input->post('zip_code');
+				$insert['gender'] = $this->input->post('gender');
+
+				$this->db->insert('users', $insert); 
+				$template_id = $this->db->insert_id();
+				
+				if ( $template_id ){
+					$this->index($template_id);
+					return;
+				} else {
+					$data = array_merge($data, $insert);
+				}
+			else:
+				$add['email_address'] = $this->input->post('g_email');
+				$add['first_name'] = $this->input->post('first_name');
+				$add['last_name'] = $this->input->post('last_name');
+				$add['g_email'] = $this->input->post('g_email');
+				$add['phone_number'] = $this->input->post('phone_number');
+				$add['zip_code'] = $this->input->post('zip_code');
+				$add['gender'] = $this->input->post('gender');
+				$data = array_merge($data, $add);
+			endif;
+		endif;
+		
+		$this->load->view( 'dashboard/header' );
+		$this->load->view( 'dashboard/top-nav' );
+		$this->load->view( 'dashboard/user/new', $data);
+		$this->load->view( 'dashboard/footer' );
+	} 
+
 	public function new_template( $data = array() ){
 				
 		if ($this->input->post()):
@@ -170,7 +212,6 @@ class Dashboard extends CI_Controller {
 		$query = $this->db->get('templates', 1);
 		if ( $query->num_rows() > 0 ):
 			$data['template'] =  $query->row();
-			
 			$this->db->where('template_id', $template_id);
 			$this->db->order_by('order', 'ASC');
 			$query = $this->db->get('template_images');

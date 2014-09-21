@@ -424,8 +424,9 @@
         <h4 class="modal-title" id="myModalLabel">Video</h4>
       </div>
       <div class="modal-body" id="videos-sort-container">
-		<a id="upload_video_thumb" href="#" class="btn btn-primary btn-sm active" role="button">Upload Video Thumb</a>
-		<p>Note: Max image file size 10MB, width 1024px and height 768px. Only jpg/jpeg/png allowed. Best Dimension 746x439px.</p>
+		<a id="upload_video_thumb" href="#" class="btn btn-primary btn-sm active" role="button">Add Video</a>
+		<p>Press Add Video button to select your video thumbnail and then place Youtube URL.</p>
+		<p>Note: Maximum video thumbnail size is 10MB, width 1024px and height 768px. Only jpg/jpeg/png allowed. Best Dimension 746x439px.</p>
 		<div id="videos-sort">
 			<?php
 			if ( isset($videos) && $videos ):

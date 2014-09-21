@@ -6,7 +6,7 @@
 				<h3 class="panel-title">Users</h3>
 			</div>
 			<div class="panel-body">
-				<p><a href="#" class="btn btn-primary active pull-right" role="button">Add User</a></p>
+				<p><a href="<?=base_url('dashboard/new_user');?>" class="btn btn-primary active pull-right" role="button">Add User</a></p>				
 				<div class="table-responsive">
 					<table class="table  table-striped">
 						<thead>
