@@ -474,13 +474,79 @@ $(document).ready(function() {
 
     /* validate edit user form */
     $(document).on('submit', '#edituser_form', function(e) {
+        console.log('here');
+        var errors = new Array();
         if ($('#password').val() != $('#retype_password').val())
         {
             if ($('#edituser_error p').length > 0)
             {
                 $('#edituser_error p').remove();
             }
-            $('#edituser_error').append("<p>Passwords doesn't match</p>");
+            errors[errors.length] = 'Passwords does not match';
+        }
+
+        var required = $(':input[required]');
+        $.each(required, function(key, input) {
+            if ($(input).val() == '')
+            {
+                errors[errors.length] = 'Field ' + $(input).attr('placeholder') + ' is required';
+            }
+        });
+
+        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!re.test($('#email_address').val()))
+        {
+            errors[errors.length] = 'Email address is not valid';
+        }
+
+        if (errors.length > 0)
+        {
+            for (var i = 0; i < errors.length; i++)
+            {
+                $('#edituser_error').append("<p>" + errors[i] + "</p>");
+            }
+
+            $('#edituser_error').css('display', 'block');
+            e.preventDefault();
+            $('html, body').animate({
+                scrollTop: $("#edituser_error").offset().top
+            }, 500);
+        }
+    });
+
+    /* validate add user form */
+    $(document).on('submit', '#adduser_form', function(e) {
+        var errors = new Array();
+        if ($('#password').val() != $('#retype_password').val())
+        {
+            if ($('#edituser_error p').length > 0)
+            {
+                $('#edituser_error p').remove();
+            }
+            errors[errors.length] = 'Passwords does not match';
+        }
+
+        var required = $(':input[required]');
+        $.each(required, function(key, input) {
+            if ($(input).val() == '')
+            {
+                errors[errors.length] = 'Field ' + $(input).attr('placeholder') + ' is required';
+            }
+        });
+
+        var re = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+        if (!re.test($('#email_address').val()))
+        {
+            errors[errors.length] = 'Email address is not valid';
+        }
+
+        if (errors.length > 0)
+        {
+            for (var i = 0; i < errors.length; i++)
+            {
+                $('#edituser_error').append("<p>" + errors[i] + "</p>");
+            }
+
             $('#edituser_error').css('display', 'block');
             e.preventDefault();
             $('html, body').animate({

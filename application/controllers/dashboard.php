@@ -609,40 +609,103 @@ class Dashboard extends CI_Controller {
 		exit;
 	}
 
-    function edituser($id)
+    function adduser()
     {
-        $this->db->where('id', $id);
-
         if (!$this->input->post())
         {
-            $query = $this->db->get('users', 1);
-            $data['row'] = $query->row();
-            $data['selects'] = array('level', 'gender');
-            $data['select_values'] = array(
-                'level'  => array(1 => '1', 2 => 2, 3 => '3', 4 => '4'),
-                'gender' => array('m' => 'male', 'f' => 'female')
-            );
             $this->load->view( 'dashboard/header' );
             $this->load->view( 'dashboard/top-nav' );
-            $this->load->view( 'dashboard/user/edit', $data );
+            $this->load->view( 'dashboard/user/add' );
             $this->load->view( 'dashboard/footer' );
         }
         else
         {
-            $data = $this->input->post();
+            $this->form_validation->set_rules('first_name', 'Name', "trim|required");
+            $this->form_validation->set_rules('last_name', 'Name', "trim|required");
+            $this->form_validation->set_rules('password', 'Password', "trim|required|callback__check_password");
+            $this->form_validation->set_rules('email_address', 'Email', "trim|required|valid_email");
+            $this->form_validation->set_rules('phone_number', 'Phone Number', "trim|required|callback__isValidPhone");
+            $this->form_validation->set_rules('zip_code', 'Zip Code', "trim|required|callback__isValidZipCode");
 
-            if (!$data['password'] || $data['password'] == '')
+            if ($this->form_validation->run() == TRUE)
             {
-                unset($data['password']);
-            }
-            else
-            {
-                $data['password'] = md5($data['password']);
-            }
+                $data['login_from'] = 'form';
+                $data['login_ip'] = $this->session->userdata('ip_address');
+                $data['user_agent'] = $this->session->userdata('user_agent');
+                $data['last_login'] = $this->session->userdata('last_login');
 
-            $this->db->update('users', $data);
-            redirect('dashboard');
+                $this->db->where('email_address', $this->input->post('email_address'));
+                $query = $this->db->get('users', 1);
+                if ( $query->num_rows() < 1 ):
+                    $data['level'] = 1;
+                    $data['last_name'] = $this->input->post('last_name');
+                    $data['first_name'] =  $this->input->post('first_name');
+                    $data['phone_number'] =  $this->input->post('phone_number');
+                    $data['zip_code'] =  $this->input->post('zip_code');
+                    $data['email_address'] =  $this->input->post('email_address');
+                    $data['password'] =  md5($this->input->post('password'));
+
+                    $this->db->insert('users', $data);
+                    $data['id'] = $this->db->insert_id();
+                else:
+                    //update login info
+                    $row = $query->row();
+                    unset($row->password);
+                    $data['last_name'] = $this->input->post('last_name');
+                    $data['first_name'] =  $this->input->post('first_name');
+                    $data['password'] = md5($this->input->post('password'));
+                    $data['phone_number'] =  $this->input->post('phone_number');
+                    $data['zip_code'] =  $this->input->post('zip_code');
+                    $this->db->where('id', $row->id);
+                    $this->db->update('users', $data);
+                    $data = array_merge($data, (array) $row);
+                endif;
+                redirect('dashboard');
+            }
         }
+    }
+
+    function edituser($id)
+    {
+        $this->db->where('id', $id);
+        $query = $this->db->get('users', 1);
+        $data['row'] = $query->row();
+        $data['selects'] = array('level', 'gender');
+        $data['select_values'] = array(
+            'level'  => array(1 => '1', 2 => 2, 3 => '3', 4 => '4'),
+            'gender' => array('m' => 'male', 'f' => 'female')
+        );
+        $data['required'] = array('first_name', 'last_name', 'email_address', 'phone_number', 'zip_code');
+
+        if ($this->input->post())
+        {
+            $this->form_validation->set_rules('first_name', 'Name', "trim|required");
+            $this->form_validation->set_rules('last_name', 'Name', "trim|required");
+            //$this->form_validation->set_rules('password', 'Password', "trim|required|callback__check_password");
+            $this->form_validation->set_rules('email_address', 'Email', "trim|required|valid_email");
+            $this->form_validation->set_rules('phone_number', 'Phone Number', "trim|required|callback__isValidPhone");
+            $this->form_validation->set_rules('zip_code', 'Zip Code', "trim|required|callback__isValidZipCode");
+
+            if ($this->form_validation->run() == TRUE)
+            {
+                $data = $this->input->post();
+
+                if (!$data['password'] || $data['password'] == '') {
+                    unset($data['password']);
+                } else {
+                    $data['password'] = md5($data['password']);
+                }
+                $this->db->where('id', $id);
+                $this->db->update('users', $data);
+                redirect('dashboard');
+            }
+            //var_dump(validation_errors()); die;
+        }
+
+        $this->load->view( 'dashboard/header' );
+        $this->load->view( 'dashboard/top-nav' );
+        $this->load->view( 'dashboard/user/edit', $data );
+        $this->load->view( 'dashboard/footer' );
     }
 
     function loginas($id)

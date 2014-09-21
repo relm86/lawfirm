@@ -18,7 +18,7 @@
                                 <?php continue; ?>
                             <?php endif; ?>
                             <?php if ($key != 'id'): ?>
-                                <label for="<?php echo $key; ?>"><?php echo str_replace(array("T ", 'G ', 'L ', 'F '), array('Twitter ', 'Google+ ', 'Linkedin ', 'Facebook '), ucwords(str_replace('_', ' ', $key))); ?></label>
+                                <label for="<?php echo $key; ?>"><?php echo str_replace(array("T ", 'G ', 'L ', 'F '), array('Twitter ', 'Google+ ', 'Linkedin ', 'Facebook '), ucwords(str_replace('_', ' ', $key))); ?><?php echo in_array($key, $required) ? '*' : '' ?></label>
                             <?php endif; ?>
                             <?php if (in_array($key, $selects)): ?>
                                 <select class="form-control" name="<?php echo $key; ?>" id="<?php echo $key; ?>">
@@ -28,11 +28,11 @@
                                 </select>
                             <?php else: ?>
                                 <?php if ($key == 'password'): ?>
-                                    <input id="password" type="password" class="form-control" name="password" />
+                                    <input id="password" type="password" class="form-control" name="password" placeholder="Password" />
                                     <label for="retype_password">Re-type Password</label>
-                                    <input id="retype_password" type="password" class="form-control" name="password" />
+                                    <input id="retype_password" type="password" class="form-control" name="password" placeholder="Re-type Password" />
                                 <?php else: ?>
-                                    <input id="<?php echo $key; ?>" type="<?php echo $key == 'id' ? 'hidden' : 'text' ?>" class="form-control" name="<?php echo $key; ?>" value="<?php echo $value; ?>" />
+                                    <input id="<?php echo $key; ?>" type="<?php echo $key == 'id' ? 'hidden' : 'text' ?>" <?php echo in_array($key, $required) ? 'required=""' : '' ?> class="form-control" name="<?php echo $key; ?>" value="<?php echo $value; ?>" placeholder="<?php echo str_replace(array("T ", 'G ', 'L ', 'F '), array('Twitter ', 'Google+ ', 'Linkedin ', 'Facebook '), ucwords(str_replace('_', ' ', $key))); ?>" />
                                 <?php endif; ?>
                             <?php endif; ?>
                             <?php if ($key == 'theme'): ?>
