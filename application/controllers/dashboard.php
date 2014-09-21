@@ -739,7 +739,9 @@ class Dashboard extends CI_Controller {
 
     function deleteuser($id)
     {
-        var_dump($id);
+        $this->db->where('id', $id);
+        $query = $this->db->delete('users');
+        redirect(base_url('dashboard'));
     }
 }
 
