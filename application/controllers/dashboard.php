@@ -67,6 +67,7 @@ class Dashboard extends CI_Controller {
 				
 				$this->db->where('email_address', $this->input->post('email'));
 				$this->db->where('password', md5($this->input->post('password')) );
+                $this->db->where('suspend', 0 );
 				$query = $this->db->get('users', 1);
 				if ( $query->num_rows() < 1 ):
 					$data['error_msg'] = 'Wrong email address or password, please try again!';
@@ -81,6 +82,7 @@ class Dashboard extends CI_Controller {
 					$data['logged_in'] = TRUE;
 					$data['password_verified'] = TRUE;
 					$this->session->set_userdata($data);
+                    sleep(2);
 					redirect(base_url('/dashboard/'));
 				endif;
 				
@@ -773,9 +775,12 @@ class Dashboard extends CI_Controller {
         redirect(base_url());
     }
 
-    function suspend($id)
+    function suspend($id, $suspend)
     {
-        var_dump($id);
+        $data['suspend'] = $suspend == 0 ? 1 : 0;
+        $this->db->where('id', $id);
+        $query = $this->db->update('users', $data);
+        redirect(base_url('dashboard'));
     }
 
     function deleteuser($id)

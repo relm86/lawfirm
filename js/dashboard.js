@@ -554,4 +554,23 @@ $(document).ready(function() {
             }, 500);
         }
     });
+
+    $(document).on('click', '.btn-danger-user', function(e) {
+        var msg = '';
+
+        if ($(this).text() == 'Delete')
+        {
+            msg = 'Are you sure you want to delete this user?';
+        }
+        else if ($(this).text() == 'Suspend')
+        {
+            msg = 'Are you sure you want to suspend this user?';
+        }
+        else
+        {
+            msg = 'Are you sure you want to allow access to this user?';
+        }
+
+        return confirm(msg);
+    });
   });
