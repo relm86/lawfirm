@@ -1,0 +1,8 @@
+system/*
+application/logs/*
+application/config/config.php
+application/config/database.php
+img/users/*
+img/slider/*
+img/video_thumb/*
+.htaccess
