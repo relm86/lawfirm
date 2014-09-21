@@ -660,7 +660,7 @@ class Dashboard extends CI_Controller {
                     $this->db->update('users', $data);
                     $data = array_merge($data, (array) $row);
                 endif;
-                redirect('dashboard');
+                redirect(base_url('dashboard'));
             }
         }
     }
@@ -697,7 +697,7 @@ class Dashboard extends CI_Controller {
                 }
                 $this->db->where('id', $id);
                 $this->db->update('users', $data);
-                redirect('dashboard');
+                redirect(base_url('dashboard'));
             }
             //var_dump(validation_errors()); die;
         }
@@ -710,7 +710,26 @@ class Dashboard extends CI_Controller {
 
     function loginas($id)
     {
-        var_dump($id);
+        $this->db->where('id', $id);
+        $query = $this->db->get('users', 1);
+
+        $data['login_from'] = 'form';
+        $data['login_ip'] = $this->session->userdata('ip_address');
+        $data['user_agent'] = $this->session->userdata('user_agent');
+        $data['last_login'] = $this->session->userdata('last_login');
+
+        //update login info
+        $row = $query->row();
+        unset($row->password);
+
+        $this->db->where('id', $row->id);
+        $this->db->update('users', $data);
+        $data = array_merge($data, (array) $row);
+        $data['logged_in'] = TRUE;
+        $data['password_verified'] = TRUE;
+        $this->session->set_userdata($data);
+        sleep(2);
+        redirect(base_url());
     }
 
     function suspend($id)
