@@ -175,4 +175,21 @@ $(document).ready(function() {
 	/* main image upload */
 	
 	/* preview page */
+
+    /* validate edit user form */
+    $(document).on('submit', '#edituser_form', function(e) {
+        if ($('#password').val() != $('#retype_password').val())
+        {
+            if ($('#edituser_error p').length > 0)
+            {
+                $('#edituser_error p').remove();
+            }
+            $('#edituser_error').append("<p>Passwords doesn't match</p>");
+            $('#edituser_error').css('display', 'block');
+            e.preventDefault();
+            $('html, body').animate({
+                scrollTop: $("#edituser_error").offset().top
+            }, 500);
+        }
+    });
   });

@@ -29,10 +29,10 @@
 								<td><?=$user->phone_number;?></td>
 								<td><?=$user->zip_code;?></td>
 								<td>
-									<span><a href="#" class="btn btn-primary btn-sm active" role="button">Edit</a></span>
-									<span><a href="#" class="btn btn-primary btn-sm active" role="button">Login as</a></span>
-									<span><a href="#" class="btn btn-danger btn-sm active" role="button">Suspend</a></span>
-									<span><a href="#" class="btn btn-danger btn-sm active" role="button">Delete</a></span>
+									<span><a href="dashboard/edituser/<?php echo $user->id; ?>" class="btn btn-primary btn-sm active" role="button">Edit</a></span>
+									<span><a href="dashboard/loginas/<?php echo $user->id; ?>" class="btn btn-primary btn-sm active" role="button">Login as</a></span>
+									<span><a href="dashboard/suspend/<?php echo $user->id; ?>" class="btn btn-danger btn-sm active" role="button">Suspend</a></span>
+									<span><a href="dashboard/deleteuser/<?php echo $user->id; ?>" class="btn btn-danger btn-sm active" role="button">Delete</a></span>
 								</td>
 							</tr>
 							<?php endforeach; ?>

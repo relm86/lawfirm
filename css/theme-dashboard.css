@@ -68,4 +68,22 @@
 #widgets li.ui-draggable{
 	cursor: move;
 }
+
+/* Edit user form styles */
+#edituser_form label {
+    margin-top: 10px;
+}
+
+#edituser_button_top {
+    width: 100%;
+}
+
+#edituser_form .btn-success {
+    margin-top: 10px;
+    float: right;
+}
+
+#edituser_error {
+    display: none;
+}
 /* page preview */

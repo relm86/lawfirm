@@ -4,8 +4,8 @@ class Dashboard extends CI_Controller {
 
 	public function __construct() {
 	        parent::__construct();
-	        
-	        
+
+
 	        if (! $this->session->userdata('logged_in') && $this->uri->segment(2) != 'login' ) :
 			$this->session->set_userdata('url', uri_string());
 			redirect(base_url('dashboard/login') );
@@ -30,7 +30,7 @@ class Dashboard extends CI_Controller {
 			$this->verify_password();
 			return;
 		endif;
-		
+
 		$this->load->view( 'dashboard/header' );
 		$this->load->view( 'dashboard/top-nav' );
 		
@@ -206,9 +206,9 @@ class Dashboard extends CI_Controller {
 		$user = get_user_detail( $this->input->post('user_id'));
 		if ( ! $user || $user->level != 3 )
 			die('You have no role for this action');
-			
+
 		//var_dump($this->session->all_userdata());
-		
+
 		$response = array(
 	            'success' => FALSE
 	        );
@@ -244,9 +244,9 @@ class Dashboard extends CI_Controller {
 		$user = get_user_detail( $this->input->post('user_id'));
 		if ( ! $user || $user->level != 3 )
 			die('You have no role for this action');
-			
+
 		//var_dump($this->session->all_userdata());
-		
+
 		$response = array(
 	            'success' => TRUE
 	        );
@@ -281,9 +281,9 @@ class Dashboard extends CI_Controller {
 		$user = get_user_detail( $this->input->post('user_id'));
 		if ( ! $user || $user->level != 3 )
 			die('You have no role for this action');
-			
+
 		//var_dump($this->session->all_userdata());
-		
+
 		$response = array(
 	            'success' => FALSE
 	        );
@@ -324,6 +324,57 @@ class Dashboard extends CI_Controller {
 		echo json_encode($response);
 		exit;
 	}
+
+    function edituser($id)
+    {
+        $this->db->where('id', $id);
+
+        if (!$this->input->post())
+        {
+            $query = $this->db->get('users', 1);
+            $data['row'] = $query->row();
+            $data['selects'] = array('level', 'gender');
+            $data['select_values'] = array(
+                'level'  => array(1 => '1', 2 => 2, 3 => '3', 4 => '4'),
+                'gender' => array('m' => 'male', 'f' => 'female')
+            );
+            $this->load->view( 'dashboard/header' );
+            $this->load->view( 'dashboard/top-nav' );
+            $this->load->view( 'dashboard/user/edit', $data );
+            $this->load->view( 'dashboard/footer' );
+        }
+        else
+        {
+            $data = $this->input->post();
+
+            if (!$data['password'] || $data['password'] == '')
+            {
+                unset($data['password']);
+            }
+            else
+            {
+                $data['password'] = md5($data['password']);
+            }
+
+            $this->db->update('users', $data);
+            redirect('dashboard');
+        }
+    }
+
+    function loginas($id)
+    {
+        var_dump($id);
+    }
+
+    function suspend($id)
+    {
+        var_dump($id);
+    }
+
+    function deleteuser($id)
+    {
+        var_dump($id);
+    }
 }
 
 /* End of file welcome.php */
