@@ -18,44 +18,50 @@ class Login extends CI_Controller {
 			$this->form_validation->set_rules('zipcode', 'Zip Code', "trim|required|callback__isValidZipCode");
 			
 			if ($this->form_validation->run() == TRUE):
-				$data['login_from'] = 'form';
+                $data['login_from'] = 'form';
 				$data['login_ip'] = $this->session->userdata('ip_address');
 				$data['user_agent'] = $this->session->userdata('user_agent');
 				$data['last_login'] = $this->session->userdata('last_login');
 				
 				$this->db->where('email_address', $this->input->post('email'));
 				$query = $this->db->get('users', 1);
-				if ( $query->num_rows() < 1 ):
-					$data['level'] = 1;
-					$parts = explode(" ", $this->input->post('name'));
-					$data['last_name'] = array_pop($parts);
-					$data['first_name'] =  implode(" ", $parts);
-					$data['phone_number'] =  $this->input->post('phone');
-					$data['zip_code'] =  $this->input->post('zipcode');
-					$data['email_address'] =  $this->input->post('email');
-					$data['password'] =  md5($this->input->post('password'));
-					
-					$this->db->insert('users', $data); 
-					$data['id'] = $this->db->insert_id();
-				else:
-					//update login info
-					$row = $query->row(); 
-					unset($row->password);
-					$parts = explode(" ", $this->input->post('name'));
-					$data['last_name'] = array_pop($parts);
-					$data['first_name'] =  implode(" ", $parts);
-					$data['password'] = md5($this->input->post('password'));
-					$data['phone_number'] =  $this->input->post('phone');
-					$data['zip_code'] =  $this->input->post('zipcode');
-					$this->db->where('id', $row->id);
-					$this->db->update('users', $data); 
-					$data = array_merge($data, (array) $row);
-				endif;
-				
-				$data['logged_in'] = TRUE;
-				$this->session->set_userdata($data);
-				if ( ! $this->session->userdata('url') ) redirect(base_url('/welcome/'));
-				else redirect($this->session->userdata('url'));
+                $user = $query->row();
+                $suspend = ($query->num_rows() == 1 && $user->suspend == 1) ? true : false;
+                if ( $query->num_rows() < 1 ):
+                    $data['level'] = 1;
+                    $parts = explode(" ", $this->input->post('name'));
+                    $data['last_name'] = array_pop($parts);
+                    $data['first_name'] =  implode(" ", $parts);
+                    $data['phone_number'] =  $this->input->post('phone');
+                    $data['zip_code'] =  $this->input->post('zipcode');
+                    $data['email_address'] =  $this->input->post('email');
+                    $data['password'] =  md5($this->input->post('password'));
+
+                    $this->db->insert('users', $data);
+                    $data['id'] = $this->db->insert_id();
+                else:
+                    //update login info
+                    if ($suspend === false):
+                        $row = $query->row();
+                        unset($row->password);
+                        $parts = explode(" ", $this->input->post('name'));
+                        $data['last_name'] = array_pop($parts);
+                        $data['first_name'] =  implode(" ", $parts);
+                        $data['password'] = md5($this->input->post('password'));
+                        $data['phone_number'] =  $this->input->post('phone');
+                        $data['zip_code'] =  $this->input->post('zipcode');
+                        $this->db->where('id', $row->id);
+                        $this->db->update('users', $data);
+                        $data = array_merge($data, (array) $row);
+                    endif;
+                endif;
+
+                if ($suspend === false):
+                    $data['logged_in'] = TRUE;
+                    $this->session->set_userdata($data);
+                    if ( ! $this->session->userdata('url') ) redirect(base_url('/welcome/'));
+                    else redirect($this->session->userdata('url'));
+                endif;
 			endif;
 		endif;
 		
