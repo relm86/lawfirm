@@ -69,6 +69,66 @@
 	cursor: move;
 }
 
+.spinner {
+	background: url(../img/spin_light.gif) no-repeat;
+	background-size: 16px 16px;
+	display: none;
+	float: right;
+	opacity: .7;
+	filter: alpha(opacity=70);
+	min-width: 16px;
+	width: auto;
+	height: 16px;
+	margin: 5px 5px 0;
+	padding-left: 17px;
+	font-size: 12px;
+}
+
+span.image-control{
+	display: block;
+	margin-top: 10px;
+}
+
+.blank-image {
+	min-height: 366px;
+	background-color: #BFB;
+	border: 1px dashed #666;
+}
+
+.blank-image .btn {
+	margin-top: 180px;
+}
+
+.blank-video{
+	min-height: 573px;
+	background-color: #BFB;
+	border: 1px dashed #666;
+}
+
+.blank-video .btn {
+	margin-top: 235px;
+}
+
+.slider-image-form .form-group, .video-form .form-group{
+	vertical-align: top;
+}
+
+.slider-image-form, .video-form {
+	margin-top: 10px;
+}
+
+.video-form input[type=text]{
+	width: 340px;
+}
+
+.slider-image-form.form-inline textarea {
+	width: 260px;
+	height: 100px;
+}
+.image-wrapper.form-group, .image-title.form-group, .save-image, .save-video {
+	margin-right: 2px;
+}
+
 /* Edit user form styles */
 #edituser_form label {
     margin-top: 10px;
