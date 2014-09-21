@@ -51,3 +51,7 @@ Other areas of the site:
 - Main image. It's something they can edit, but it should remain fixed in it's spot based on the design they've selected.
 - Logo. It's something they can edit, but it should remain fixed in it's spot based on the design they've selected.
 - Footer. Fixed position, but editable. I'm not sure how to manage those links, maybe a textarea with a wysiwyg editor.
+
+
+ANY SUGGESTION can be stated in issue page at github.com
+
