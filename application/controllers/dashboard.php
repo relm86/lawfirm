@@ -67,7 +67,7 @@ class Dashboard extends CI_Controller {
 				
 				$this->db->where('email_address', $this->input->post('email'));
 				$this->db->where('password', md5($this->input->post('password')) );
-                $this->db->where('suspend', 0 );
+               			$this->db->where('suspend', 0 );
 				$query = $this->db->get('users', 1);
 				if ( $query->num_rows() < 1 ):
 					$data['error_msg'] = 'Wrong email address or password, please try again!';
@@ -82,7 +82,7 @@ class Dashboard extends CI_Controller {
 					$data['logged_in'] = TRUE;
 					$data['password_verified'] = TRUE;
 					$this->session->set_userdata($data);
-                    sleep(2);
+                    			sleep(2);
 					redirect(base_url('/dashboard/'));
 				endif;
 				
@@ -92,7 +92,8 @@ class Dashboard extends CI_Controller {
 		$this->load->view( 'dashboard/header', array('title' => 'Login', 'page_preview' => TRUE) );
 		$this->load->view( 'dashboard/login', $data );
 		$this->load->view( 'dashboard/footer' );
-		//var_dump($this->session->all_userdata());
+		//var_dump($this->session->all_userdata()); login issue need to fix, clue is somehow ci regenerate the session
+		//check this https://github.com/EllisLab/CodeIgniter/wiki/Native-session 
 	}
 	
 	public function verify_password(){
@@ -198,6 +199,23 @@ class Dashboard extends CI_Controller {
 		$query = $this->db->get('templates', 1);
 		if ( $query->num_rows() > 0 ):
 			$data['template'] =  $query->row();
+			$this->db->where('template_id', $template_id);
+			$this->db->order_by('order', 'ASC');
+			$query = $this->db->get('template_images');
+			if ( $query->num_rows() > 0 ):
+				$data['main_images'] = $query;
+			else:
+				$data['main_images'] = FALSE;
+			endif;
+			
+			$this->db->where('template_id', $template_id);
+			$this->db->order_by('order', 'ASC');
+			$query = $this->db->get('template_videos');
+			if ( $query->num_rows() > 0 ):
+				$data['videos'] = $query;
+			else:
+				$data['videos'] = FALSE;
+			endif;
 		else:
 			$this->new_template(array('error_msg' => 'Template not found. You may try to create new template or hit back to go to previous page!'));
 			return;
@@ -257,6 +275,8 @@ class Dashboard extends CI_Controller {
 	function ajax( $action ){
 		if ( $action == 'save_widget' )
 			$this->_save_widget();
+		elseif ( $action == 'delete_widget')
+			$this->_delete_widget();
 		elseif ( $action == 'save_layout')
 			$this->_save_layout();
 		elseif ( $action == 'upload_main_image')
@@ -297,10 +317,14 @@ class Dashboard extends CI_Controller {
 					$this->db->insert('widgets', $insert);
 					$widget_id = $this->db->insert_id();
 					
+				        ob_start();
+					draw_modal($widget_id);
 					$response = array(
 				            'success' => TRUE,
-				            'widget_id' => 'widget_' . $insert['widget_type'] . '_' . $widget_id
+				            'widget_modal' => ob_get_contents(),
+				            'widget_id' =>  'widget-' . $insert['widget_type'] . '-' . $widget_id
 				        );
+				        ob_end_clean();
 
 				elseif( valid_widget_id($this->input->post('widget_id')) ):
 					//update widget
@@ -317,7 +341,7 @@ class Dashboard extends CI_Controller {
 							$response = array(
 						            'success' => TRUE,
 						            'widget_html' => ob_get_contents(),
-						            'widget_id' => $widget_id
+						            'widget_id' =>  'widget-' . $this->input->post('widget_type') . '-' . $widget_id
 						        );
 						        ob_end_clean();
 						else:
@@ -334,23 +358,91 @@ class Dashboard extends CI_Controller {
 		exit;
 	}
 	
+	function _delete_widget(){
+		
+		$response = array(
+	            'success' 	=> FALSE,
+	            'error'		=> ''
+	        );
+			
+		if ($this->input->post()) :
+			$this->form_validation->set_rules('widget_id', 'Widget ID', "trim|required");
+			$this->form_validation->set_rules('user_id', 'User ID', 'trim|required');
+			$this->form_validation->set_rules('template_id', 'Template ID', 'trim|required');
+			if ($this->form_validation->run() == TRUE):
+				if ( ! valid_widget_id($this->input->post('widget_id')) ):
+					
+					$response = array(
+				            'success' => TRUE,
+				            'error' => 'Widget not found!'
+				        );
+
+				elseif( valid_widget_id($this->input->post('widget_id')) ):
+					$widget_id = preg_replace("/[^0-9]/","", $this->input->post('widget_id'));
+					
+					$this->db->where('id', $widget_id);
+					$this->db->where('template_id', $this->input->post('template_id'));
+					$this->db->delete('widgets');
+					if ( $this->db->affected_rows() > 0 ):
+						$response = array(
+					            'success' => TRUE,
+					            'widget_id' => $widget_id
+					        );
+					else:
+						$response['error'] = 'Fail delete widget from database!';
+					endif;
+				else:
+					$response['error'] = 'Fail delete widget. Invalid widget data.';
+				endif;
+			endif;
+		endif;
+		
+		echo json_encode($response);
+		exit;
+	}
+	
 	function _get_widget_data(){
-		if ( 'faq' == $this->input->post('widget_type')):
+		if ( 'faq' == $this->input->post('widget_type') && $this->input->post('faq-title') ):
 			$faq_title = $this->input->post('faq-title');
 			$faq_url = $this->input->post('faq-url');
 			$i = 1;
-			foreach($faq_title as $title):
-				if (filter_var($faq_url[$i], FILTER_VALIDATE_URL) !== false)
-					$url = $faq_url[$i];
-				else
-					$url = '#';
-				$faq[$i]['title'] = $title;
-				$faq[$i]['url'] = $url;
-				$i++;
-			endforeach;
+			
+			if ( is_array($faq_title) && count($faq_title) > 0):
+				foreach($faq_title as $title):
+					if (filter_var($faq_url[$i], FILTER_VALIDATE_URL) !== false)
+						$url = $faq_url[$i];
+					else
+						$url = '#';
+					$faq[$i]['title'] = $title;
+					$faq[$i]['url'] = strtolower($url);
+					$i++;
+				endforeach;
+			endif;
 			
 			if ( isset($faq) && count($faq) > 0 ):
 				return serialize($faq);
+			endif;
+		elseif ( 'links' == $this->input->post('widget_type') && $this->input->post('link-title')):
+			$link_title = $this->input->post('link-title');
+			$link_url = $this->input->post('link-url');
+			$i = 1;
+			
+			$links['title'] =$this->input->post('links-title');
+			
+			if ( is_array($link_title) && count($link_title) > 0):
+				foreach($link_title as $title):
+					if (filter_var($link_url[$i], FILTER_VALIDATE_URL) !== false)
+						$url = $link_url[$i];
+					else
+						$url = '#';
+					$links['links'][$i]['title'] = $title;
+					$links['links'][$i]['url'] = strtolower($url);
+					$i++;
+				endforeach;
+			endif;
+			
+			if ( isset($links) && count($links) > 0 ):
+				return serialize($links);
 			endif;
 		endif;
 		
@@ -826,29 +918,14 @@ class Dashboard extends CI_Controller {
     {
         $data['suspend'] = $suspend == 0 ? 1 : 0;
         $this->db->where('id', $id);
-        $this->db->update('users', $data);
+        $query = $this->db->update('users', $data);
         redirect(base_url('dashboard'));
     }
 
     function deleteuser($id)
     {
         $this->db->where('id', $id);
-        $this->db->delete('users');
-        redirect(base_url('dashboard'));
-    }
-
-    function template_status($id, $status)
-    {
-        $data['status'] = $status == 0 ? 1 : 0;
-        $this->db->where('id', $id);
-        $this->db->update('templates', $data);
-        redirect(base_url('dashboard'));
-    }
-
-    function template_delete($id)
-    {
-        $this->db->where('id', $id);
-        $this->db->delete('templates');
+        $query = $this->db->delete('users');
         redirect(base_url('dashboard'));
     }
 }

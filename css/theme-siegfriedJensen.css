@@ -32,26 +32,26 @@ body {
 .panel-review {
 	margin: 16px 0 0 0;
 }
-.widget.stories h3.title {
+.widget.stories h3.title, .widget.links h3.title {
 	border-bottom: 3px solid;
 	border-color: 55514e;
 	padding: 10px;
 }
-.widget.stories ul, .widget.faq ul {
+.widget.stories ul, .widget.faq ul, .widget.links ul {
 	list-style-type: none;
 	margin: 0;
 	padding: 0 10px 0;
 }
-.widget.stories ul li:before, .widget.faq ul li:before {
+.widget.stories ul li:before, .widget.faq ul li:before, .widget.links ul li:before {
 	content: "-";
 	position: relative;
 	left: -5px;
 }
-.widget.stories li, .widget.faq li {
+.widget.stories li, .widget.faq li, .widget.links li {
 	text-indent: -5px;
 	padding-bottom: 5px;
 }
-.widget.stories a, .widget.faq a {
+.widget.stories a, .widget.faq a, .widget.links a {
 	color: #333333;
 	text-decoration: underline;
 	font-size: 18px;
@@ -181,22 +181,35 @@ body {
 	color: #2b2b2b;
 	text-decoration: underline;
 }
-.widget.links{
+#footer .widget.links{
 	font-size: 15px;
 	color: #2b2b2b;
 	clear: none;
 }
 
-.widget.links h5{
+#footer .widget.links h5, #footer .widget.links h3{
 	font-size: 15px;
+	border-bottom: none;
+	padding: 0
 }
-.widget.links ul{
+
+#footer .widget.links ul li{
+	text-indent: 0;
+}
+
+#footer .widget.links ul li:before{
+	content: '';
+}
+
+#footer .widget.links ul{
 	list-style-type: none;
 	padding-left: 15px;
 }
-.widget.links a{
+
+#footer .widget.links a{
 	color: #2b2b2b;
 	text-decoration: none;
+	font-size: 14px;
 }
 
 .copyright, .copyright  p{

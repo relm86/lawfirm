@@ -6,14 +6,20 @@ function getYoutubeID(url) {
 function play(video){
 	document.getElementById('youtube-main').innerHTML = '<iframe width="560" height="315" src="'+video.attr("data-youtubeurl")+'?autoplay=1" frameborder="0"></iframe>';
 }
+
+function isValidURL(url){
+	url = url.toLowerCase();
+	var urlregex = new RegExp("^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$");
+  	return urlregex.test(url);
+}
 	
 $(document).ready(function() {
 	
 	/* Color Scheme Selectot */
-	$('#color_scheme_select input[type="radio"], #layout_select input[type="radio"]') .hide();
-	$('#color_scheme_select input[type="radio"], #layout_select input[type="radio"').click(function(){
-		$('#color_scheme_select input[type="radio"], #layout_select input[type="radio"]').closest('.radio').removeClass('checked');
-		$('#color_scheme_select input[type="radio"]:checked, #layout_select input[type="radio"]:checked').closest('.radio').addClass('checked');
+	$('#color_scheme_select input[type=radio], #layout_select input[type=radio]') .hide();
+	$('#color_scheme_select input[type=radio], #layout_select input[type=radio]').click(function(){
+		$('#color_scheme_select input[type=radio], #layout_select input[type=radio]').closest('.radio').removeClass('checked');
+		$('#color_scheme_select input[type=radio]:checked, #layout_select input[type=radio]:checked').closest('.radio').addClass('checked');
 	});
 	/* Color Scheme Selectot */
     
@@ -23,7 +29,10 @@ $(document).ready(function() {
   		$left = $('#main-content-left'),
   		$right = $('#main-content-right'),
   		$footer = $('#footer-widget'),
+  		$drop_here = $('<p class="drop-here">Drop Widget Here</p>'),
   		widget_id = 1;
+  	
+  	$('.widget-container').not(":has(.widget)").addClass('placeholder').append($drop_here);
   	
 	$( ".widget", $widgets ).draggable({
 		revert: "valid", // when not dropped, the item will revert back to its initial position
@@ -73,27 +82,44 @@ $(document).ready(function() {
 		beforeStop: function( event, ui ) {
 			//save or update widget
 			if ( ui.item[0].id == '' ){
-				ui.item[0].id = 'widget-' + widget_id;
-				widget_id++;
+				ui.item[0].id = 'widget-0';
 			}
-			//console.log(ui);
-			//console.log($('#'+ui.item[0].id).data("type"));
-			//console.log($('#'+ui.item[0].id).id());
+			widget_container = ui.item[0].parentElement.id;
+			widget_id = ui.item[0].id;
+			
+			widget_type =  $('#'+ui.item[0].id).data("type");
+			
+			if ( widget_container == 'footer' ){
+				$('#'+widget_id).addClass('col-md-2');
+			} else {
+				$('#'+widget_id).removeClass('col-md-2');
+			}
 			
 			$.ajax({
 				type: "POST",
-					url: ajax_url+'/save_widget/',
-					data: {user_id: $('#user_id').val(), template_id: $('#template_id').val(), widget_type: $('#'+ui.item[0].id).data("type"), widget_id: ui.item[0].id, csrf_b2b: $( "input[name='csrf_b2b']" ).val() },
-					dataType : "json",
-				})
-				.done(function( msg ) {
-					if ( msg.success == true && msg.widget_id )
-						ui.item[0].id = msg.widget_id
+				url: ajax_url+'/save_widget/',
+				data: {user_id: $('#user_id').val(), template_id: $('#template_id').val(), widget_type: widget_type, widget_id: widget_id, csrf_b2b: $( "input[name='csrf_b2b']" ).val() },
+				dataType : "json",
+			})
+			.done(function( msg ) {
+				if ( msg.success == true && msg.widget_id ){
+					ui.item[0].id = msg.widget_id
+					$('#'+msg.widget_id+' .edit-widget').attr('data-target', '#'+msg.widget_id+'-modal');
+				}
+					
+				if ( msg.success == true && msg.widget_modal ){
+					//delete modal if exists
+					$('#widget-'+widget_type+'-'+widget_id+'-modal').remove();
+					$('body').append(msg.widget_modal);
+				}
+				
+				//save layout
+				save_layout();
+				
+				$('.widget-container').has('.widget').removeClass('placeholder').find('.drop-here').remove();
+				$('.widget-container').not(":has(.widget)").addClass('placeholder').append($drop_here);
 			});
-		},
-		stop: function( event, ui ) {
-			//save layout
-			save_layout();
+			
 		}
 	});
 	
@@ -112,7 +138,7 @@ $(document).ready(function() {
 		$.ajax({
 			type: "POST",
 				url: ajax_url+'/save_layout/',
-				data: {user_id: $('#user_id').val(), template_id: $('#template_id').val(), sidebar: getItems('#left-sidebar'), left: getItems('#main-content-left'), right: getItems('#main-content-right'), footer: getItems('#footer') },
+				data: {user_id: $('#user_id').val(), template_id: $('#template_id').val(), sidebar: getItems('#left-sidebar'), left: getItems('#main-content-left'), right: getItems('#main-content-right'), footer: getItems('#footer'), csrf_b2b: $( "input[name='csrf_b2b']" ).val() },
 				dataType : "json",
 			})
 			.done(function( msg ) {
@@ -429,7 +455,7 @@ $(document).ready(function() {
 		var carousel_video = $('<div id="carousel-video" class="carousel video" data-ride="carousel">');
 		var carousel_inner_video = $('<div class="carousel-inner video">');
 		var video_nav_item = $('<div class="item active">');
-		var main_video = '';
+		var main_video = $('<div class="embed-responsive embed-responsive-16by9"></div>');
 		var error = false;
 		var i = 0;
 		$('#videos-sort .video-form').each(function(){
@@ -441,7 +467,7 @@ $(document).ready(function() {
 			if ( false == getYoutubeID(video_url) ){
 				$('#' + videoid + ' input[type=text]').val('').focus();
 				error = true;
-				alert("Please enter valid video link (youtube vimeo only)!");
+				alert("Please enter valid video link (youtube only)!");
 				return false;
 			}
 			
@@ -472,10 +498,10 @@ $(document).ready(function() {
 	/*video*/
 	
 	/* add faq*/
-	$('.faq_modal').on('click', '.add-faq', function(event){
-		widget_id = $(this).closest('.faq_modal').attr('id');
+	$('body').on('click', '.add-faq', function(event){
+		widget_id = $(this).closest('.faq_modal').attr('id'); 
 		n = $('#'+widget_id+' .faq_form').length + 1;
-		$('#'+widget_id+' .faq_sort').append('<div id="'+widget_id+'-'+n+'" class="faq_form form-inline"><div class="form-group"><input type="text" name="faq-title['+n+']" value="" class="form-control" placeholder="Title"/></div>&nbsp;<div class=" form-group"><input type="text" name="faq-url['+n+']" value="" class="form-control" placeholder="External Link"/></div>&nbsp;<div class="form-group action-button"><button type="button" class="btn btn-danger btn-sm delete-faq">Delete</button><span class="ui-icon ui-icon-arrowthick-2-n-s sort-handle"></span><span class="spinner"></span></div></div>');
+		$('#'+widget_id+' .faq_sort').append('<div id="'+widget_id+'-'+n+'" class="faq_form form-inline"><div class="form-group"><input type="text" name="faq-title['+n+']" value="" class="form-control" placeholder="Title"/></div>&nbsp;<div class=" form-group"><input type="text" name="faq-url['+n+']" value="" class="form-control form_url" placeholder="External Link"/></div>&nbsp;<div class="form-group action-button"><button type="button" class="btn btn-danger btn-sm delete-faq">Delete</button><span class="ui-icon ui-icon-arrowthick-2-n-s sort-handle"></span><span class="spinner"></span></div></div>');
 	});
 	/* add faq*/
 	
@@ -487,15 +513,39 @@ $(document).ready(function() {
 	/* sort faq */
 	
 	/* delete faq */
-	$('.faq_modal').on('click', '.delete-faq', function(event){
+	$('body').on('click', '.delete-faq', function(event){
 		$(this).closest('.faq_form').remove();
 		//no further action required
 	});
 	/* delete faq */
 	
 	/* update faq */
-	$('.faq_modal').on('hide.bs.modal', function (event) {
+	$('body').on('hide.bs.modal', '.faq_modal', function (event) {
 		widget_id = $(this).attr('id');
+		
+		var error = false;
+		$('#'+widget_id+' input').each(function(){
+			if ( $(this).val() == ''){
+				error = true;
+				$(this).focus();
+				alert("Please fill this field!");
+				return false;
+			}
+		});
+		
+		if ( true == error ) return false;
+		
+		$('#'+widget_id+' .form_url').each(function(){
+			if ( ! isValidURL($(this).val()) ){
+				error = true;
+				$(this).focus();
+				alert("Please enter valid URL!");
+				return false;
+			}
+		});
+		
+		if ( true == error ) return false;
+		
 		$.ajax({
 			type: "POST",
 				url: ajax_url+'/save_widget/',
@@ -504,12 +554,97 @@ $(document).ready(function() {
 			})
 		.done(function( msg ) {
 			if ( msg.success == true && msg.widget_html && msg.widget_id ){
-				$('#widget-faq-'+msg.widget_id+' .widget-inside .widget.faq').remove();
-				$('#widget-faq-'+msg.widget_id+' .widget-inside').append(msg.widget_html);
+				$('#'+msg.widget_id+' .widget-inside .widget.faq').remove();
+				$('#'+msg.widget_id+' .widget-inside').append(msg.widget_html);
 			}
 		});
 	});
 	/* update faq */
+	
+	/* add link*/
+	$('body').on('click', '.add-link', function(event){
+		widget_id = $(this).closest('.links_modal').attr('id');
+		n = $('#'+widget_id+' .link_form').length + 1;
+		$('#'+widget_id+' .link_sort').append('<div id="'+widget_id+'-'+n+'" class="link_form form-inline"><div class="form-group"><input type="text" name="link-title['+n+']" value="" class="form-control" placeholder="Title"/></div>&nbsp;<div class=" form-group"><input type="text" name="link-url['+n+']" value="" class="form-control form_url" placeholder="External Link"/></div>&nbsp;<div class="form-group action-button"><button type="button" class="btn btn-danger btn-sm delete-link">Delete</button><span class="ui-icon ui-icon-arrowthick-2-n-s sort-handle"></span><span class="spinner"></span></div></div>');
+	});
+	/* add link*/
+	
+	/* sort links */
+	$('.link_sort').sortable({
+		placeholder: 'placeholder',
+		handle: ".sort-handle",
+	});
+	/* sort links */
+	
+	/* delete link */
+	$('body').on('click', '.delete-link', function(event){
+		$(this).closest('.link_form').remove();
+		//no further action required
+	});
+	/* delete link */
+	
+	/* update link */
+	$('body').on('hide.bs.modal', '.links_modal', function (event) {
+		widget_id = $(this).attr('id');
+		
+		var error = false;
+		$('#'+widget_id+' input').each(function(){
+			if ( $(this).val() == ''){
+				error = true;
+				$(this).focus();
+				alert("Please fill this field!");
+				return false;
+			}
+		});
+		
+		if ( true == error ) return false;
+		
+		$('#'+widget_id+' .form_url').each(function(){
+			if ( ! isValidURL($(this).val()) ){
+				error = true;
+				$(this).focus();
+				alert("Please enter valid URL!");
+				return false;
+			}
+		});
+		
+		if ( true == error ) return false;
+		
+		$.ajax({
+			type: "POST",
+				url: ajax_url+'/save_widget/',
+				data: $('#'+widget_id+' input').serialize() + '&user_id='+$('#user_id').val()+'&template_id='+$('#template_id').val()+'&widget_type=links&widget_id='+widget_id+'&csrf_b2b='+$( "input[name='csrf_b2b']" ).val(),
+				dataType : "json",
+			})
+		.done(function( msg ) {
+			if ( msg.success == true && msg.widget_html && msg.widget_id ){
+				$('#'+msg.widget_id+' .widget-inside .widget.links').remove();
+				$('#'+msg.widget_id+' .widget-inside').append(msg.widget_html);
+			}
+		});
+	});
+	/* update link */
+	
+	/* delete widget */
+	$('.widget-container').on('click', '.delete-widget', function(event){
+		widget_id = $(this).closest('.widget').attr('id');
+		$.ajax({
+			type: "POST",
+				url: ajax_url+'/delete_widget/',
+				data:'&user_id='+$('#user_id').val()+'&template_id='+$('#template_id').val()+'&widget_id='+widget_id+'&csrf_b2b='+$( "input[name='csrf_b2b']" ).val(),
+				dataType : "json",
+			})
+		.done(function( msg ) {
+			if ( msg.success == true && msg.widget_id ){
+				$('#'+widget_id).remove();
+				//update layout
+				save_layout();
+			} else {
+				alert(msg.error);
+			}
+		});
+	});
+	/* delete widget */
 	/* preview page */
 
     /* validate edit user form */
@@ -614,25 +749,5 @@ $(document).ready(function() {
         return confirm(msg);
     });
     
-    $(document).on('click', '.btn-danger-template', function(e) {
-        var msg = '';
-
-        if ($(this).text() == 'Delete')
-        {
-            msg = 'Are you sure you want to delete this template?';
-        }
-        else
-        {
-            if ($(this).attr('data-status') == 0)
-            {
-                msg = 'Current status of this template is Active.\n\nAre you sure you want to disable this template?';
-            }
-            else
-            {
-                msg = 'Current status of this template is Inactive.\n\nAre you sure you want to enable this template?';
-            }
-        }
-
-        return confirm(msg);
-    });
+    
   });

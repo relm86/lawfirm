@@ -109,6 +109,16 @@ span.image-control{
 	margin-top: 235px;
 }
 
+.blank-widget{
+	min-height: 100px;
+	background-color: #BFB;
+	border: 1px dashed #666;
+}
+
+.blank-widget .btn {
+	margin-top: 33px;
+}
+
 .slider-image-form .form-group, .video-form .form-group{
 	vertical-align: top;
 }
@@ -131,6 +141,16 @@ span.image-control{
 
 .action-button .ui-icon{
 	display: inline-block;
+}
+
+p.drop-here {
+	font-size: 34px;
+	text-align: center;
+	padding: 50px 0;
+}
+
+#footer .widget{
+	clear: none;
 }
 
 /* Edit user form styles */
