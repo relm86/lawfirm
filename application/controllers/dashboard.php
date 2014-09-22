@@ -928,6 +928,14 @@ class Dashboard extends CI_Controller {
         $query = $this->db->delete('users');
         redirect(base_url('dashboard'));
     }
+	
+    function template_delete($id)
+    {
+        $this->db->where('id', $id);
+        $query = $this->db->delete('templates');
+        redirect(base_url('dashboard'));
+    }
+	
 }
 
 /* End of file welcome.php */
