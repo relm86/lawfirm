@@ -221,9 +221,9 @@ class Dashboard extends CI_Controller {
 			return;
 		endif;
 		
-		$this->load->view( 'dashboard/header', array('jqueryui' => TRUE, 'page_preview' => TRUE, 'layout'=> $data['template']->layout, 'color_scheme' => $data['template']->color_scheme) );
+		$this->load->view( 'dashboard/header', array('jqueryui' => TRUE, 'template_id'=> $template_id, 'sticky' => TRUE, 'page_preview' => TRUE, 'layout'=> $data['template']->layout, 'color_scheme' => $data['template']->color_scheme) );
 		$this->load->view( 'dashboard/template/preview_' . $data['template']->layout, $data );
-		$this->load->view( 'dashboard/footer', array('jqueryui' => TRUE) );
+		$this->load->view( 'dashboard/footer', array('jqueryui' => TRUE, 'sticky' => TRUE) );
 	}
 	
 	public function template_preview2( $template_id = NULL){

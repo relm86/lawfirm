@@ -19,6 +19,9 @@
 	<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url();?>css/theme-siegfriedJensen.css" />
 	<?php endif; ?>
 	<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url();?>css/theme-dashboard.css" />
+	<?php if( isset($sticky) ): ?>
+	<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url();?>css/sticky.css" />
+	<?php endif; ?>
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
@@ -36,3 +39,11 @@
 	</script>
 </head>
 <body role="document" class="<?php if (isset($layout)) echo $layout;?> <?php if (isset($color_scheme)) echo 'scheme_'.$color_scheme;?>">
+<?php if( isset($sticky) ): ?>
+
+<div id="headerx">
+	<span>
+	<a target="_blank" href="<?php echo base_url('dashboard/template_preview2/'.$template_id);?>" class="btn btn-primary btn-lg" role="button">Preview</a>
+	</span>
+</div>
+<?php endif;?>

@@ -1,0 +1,24 @@
+#headerx {
+	width: 976px;
+	height: 83px;
+	margin: 0 auto;
+	background: url("../img/sticky-header.png") center top no-repeat;
+	text-align: center;
+	color: black;
+	text-transform: uppercase;
+	margin-bottom: -100px;
+	text-shadow: none;
+	z-index: 999;
+}
+#headerx-sticky-wrapper {
+	width: 976px;
+	margin: 0 auto;
+}
+#headerx span {
+	display: block;
+	padding-top: 2px;
+}
+#headerx span em {
+	color: #ccc;
+	font-style: normal;
+}
