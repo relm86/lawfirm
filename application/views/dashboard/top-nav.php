@@ -11,8 +11,10 @@
     </div>
     <nav class="collapse navbar-collapse bs-navbar-collapse" role="navigation">
       <ul class="nav navbar-nav">
+<!--	  
         <li class="active"><a href="#">Users</a></li>
-	<li><a href="#">Templates</a></li>
+		<li><a href="#">Templates</a></li>
+-->		
       </ul>
       <ul class="nav navbar-nav navbar-right">
         <li><a href="<?=base_url('logout');?>">Logout</a></li>
