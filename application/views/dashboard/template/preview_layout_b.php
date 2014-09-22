@@ -90,37 +90,20 @@
 					<div class="widget-description">Add Twitter Feed</div>
 				</div>
 				
-				<div id="widget-faq-__i__" class="widget" data-type="faq">
+				<div id="widget-text-__i__" class="widget" data-type="text">
 					<div class="widget-top">
-						<div class="widget-title"><h4>FAQ<span class="in-widget-title"></span></h4></div>
+						<div class="widget-title"><h4>Text<span class="in-widget-title"></span></h4></div>
 					</div>
 
 					<div class="widget-inside">
-						<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-faq-__i__-modal">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
-						<div class="widget faq">
-							<h3 class="title">FAQ</h3>
-							<div class="blank-widget faqs"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-faq-__i__-modal">Add FAQ</button></div>
+						<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-text-__i__-modal">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
+						<div class="widget text">
+							<h3 class="title">Text</h3>
+							<div class="blank-widget text"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-text-__i__-modal">Add Text</button></div>
 						</div>
 					</div>
 
-					<div class="widget-description">Add FAQ</div>
-				</div>
-				
-				<div id="widget-links-__i__" class="widget" data-type="links">
-					<div class="widget-top">
-						<div class="widget-title"><h4>Links</h4></div>
-					</div>
-
-					<div class="widget-inside">
-						<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-links-__i__">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
-						<div class="widget links">
-							<h3 class="title">Links</h3>
-							<div class="blank-widget links"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-links-__i__">Add Links</button></div>
-							<div id="widget-links-__i__-sort" class="links_sort"></div>
-						</div>
-					</div>
-					
-					<div class="widget-description">Add Links</div>
+					<div class="widget-description">Add Text</div>
 				</div>
 				
 			</div>

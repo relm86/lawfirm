@@ -14,7 +14,25 @@ function isValidURL(url){
 }
 	
 $(document).ready(function() {
-	
+	/*tiny mce*/
+	tinyMCE.init({
+		selector: ".tinymce",
+		menubar:false,
+		width: '99%',
+
+		plugins: [
+					"jbimages advlist autolink link image lists charmap hr anchor pagebreak",
+					"searchreplace wordcount visualblocks visualchars code media nonbreaking",
+					"save table contextmenu directionality template paste textcolor "
+		],
+		content_css: site_url+"css/editor.css",
+		toolbar: "styleselect | bold italic | table | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | forecolor backcolor | link image media pagebreak | code | jbimages",
+		relative_urls: false,
+		remove_script_host : false,
+		convert_urls : true,
+	});
+	/*tiny mce*/
+			
 	/* Color Scheme Selectot */
 	$('#color_scheme_select input[type=radio], #layout_select input[type=radio]') .hide();
 	$('#color_scheme_select input[type=radio], #layout_select input[type=radio]').click(function(){
@@ -110,7 +128,7 @@ $(document).ready(function() {
 				if ( msg.success == true && msg.widget_modal ){
 					//delete modal if exists
 					$('#widget-'+widget_type+'-'+widget_id+'-modal').remove();
-					$('body').append(msg.widget_modal);
+					$('body').prepend(msg.widget_modal);
 				}
 				
 				//save layout
@@ -119,7 +137,6 @@ $(document).ready(function() {
 				$('.widget-container').has('.widget').removeClass('placeholder').find('.drop-here').remove();
 				$('.widget-container').not(":has(.widget)").addClass('placeholder').append($drop_here);
 			});
-			
 		}
 	});
 	
@@ -689,6 +706,54 @@ $(document).ready(function() {
 		});
 	});
 	/* delete widget */
+		
+	/* update text */
+	$('body').on('hide.bs.modal', '.text_modal', function (event) {
+		widget_id = $(this).attr('id');
+		tinymce.triggerSave();
+		//no validation
+		//just save it
+		$.ajax({
+			type: "POST",
+				url: ajax_url+'/save_widget/',
+				data: $('#'+widget_id+' input, #'+widget_id+' textarea').serialize() + '&user_id='+$('#user_id').val()+'&template_id='+$('#template_id').val()+'&widget_type=text&widget_id='+widget_id+'&csrf_b2b='+$( "input[name='csrf_b2b']" ).val(),
+				dataType : "json",
+			})
+		.done(function( msg ) {
+			if ( msg.success == true && msg.widget_html && msg.widget_id ){
+				$('#'+msg.widget_id+' .widget-inside .widget.text').remove();
+				$('#'+msg.widget_id+' .widget-inside').append(msg.widget_html);
+			}
+		});
+	});
+	$('body').on('shown.bs.modal', '.text_modal', function (event) {
+		tinyMCE.init({
+			selector: ".tinymce",
+			menubar:false,
+			width: '99%',
+
+			plugins: [
+						"jbimages advlist autolink link image lists charmap hr anchor pagebreak",
+						"searchreplace wordcount visualblocks visualchars code media nonbreaking",
+						"save table contextmenu directionality template paste textcolor "
+			],
+			content_css: site_url+"css/editor.css",
+			toolbar: "styleselect | bold italic | table | alignleft aligncenter alignright alignjustify | bullist numlist outdent indent | forecolor backcolor | link image media pagebreak | code | jbimages",
+			relative_urls: false,
+			remove_script_host : false,
+			convert_urls : true,
+		});
+	});
+	
+	/* fix bootstrap for tinymce modal issue */
+	$(document).on('focusin', function(e) {
+		if ($(e.target).closest(".mce-window").length) {
+			e.stopImmediatePropagation();
+		}
+	});
+	/* fix bootstrap for tinymce modal issue */
+	/* update text_modal */
+	
 	/* preview page */
 
     /* validate edit user form */

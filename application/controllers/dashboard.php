@@ -477,6 +477,17 @@ class Dashboard extends CI_Controller {
 			if ( isset($links) && count($links) > 0 ):
 				return serialize($links);
 			endif;
+
+		elseif ( 'text' == $this->input->post('widget_type') && $this->input->post('text-title')):
+			$title = $this->input->post('text-title');
+			$content = $this->input->post('text-content');
+			if ( $content ):
+				$this->load->library('htmlfixer');
+				$content = $this->htmlfixer->getFixedHtml($this->input->post('text-content'));
+			endif;
+			$return['title'] = $title;
+			$return['content'] = $content;
+			return serialize($return);
 		elseif ( 'twitter' == $this->input->post('widget_type')):
 			$twitter_title = $this->input->post('twitter-title');
 			$twitter_hashtag = $this->input->post('twitter-hashtag');

@@ -266,6 +266,8 @@ if ( ! function_exists('draw_widget')){
 				draw_widget_twitter($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'faq' ):
 				draw_widget_faq($widget, $position, $preview);
+			elseif ( $widget->widget_type == 'text' ):
+				draw_widget_text($widget, $position, $preview);
 			endif;
 		else:
 			return FALSE;
@@ -317,6 +319,8 @@ if ( ! function_exists('draw_modals')){
 					draw_modal_twitter($widget);
 				elseif ( $widget->widget_type == 'faq' ):
 					draw_modal_faq($widget);
+				elseif ( $widget->widget_type == 'text' ):
+					draw_modal_text($widget);
 				endif;
 			endforeach;
 		else:
@@ -346,6 +350,8 @@ if ( ! function_exists('draw_modal')){
 				draw_modal_twitter($widget);
 			elseif ( $widget->widget_type == 'faq' ):
 				draw_modal_faq($widget);
+			elseif ( $widget->widget_type == 'text' ):
+				draw_modal_text($widget);
 			endif;
 		else:
 			return FALSE;
@@ -842,6 +848,56 @@ if ( ! function_exists('draw_widget_links')){
 		endif;
 	}
 }
+
+if ( ! function_exists('draw_widget_text')){
+	function draw_widget_text($widget, $position = FALSE, $preview = FALSE ){
+		if ( ! is_object($widget) ) return FALSE;
+		$text = unserialize($widget->widget_data);
+		
+		if ( ! isset($text['title']) ) $text['title'] = 'Text';
+		
+		$col = '';
+		$preview_col = '';
+		
+		if ( $position == 'footer' && $preview ) $preview_col =' col-md-2';
+		elseif ( $position == 'footer' )$col = ' col-md-2';
+		
+		if ( $preview ):
+?>
+
+<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget<?=$preview_col;?>" data-type="<?=$widget->widget_type;?>">
+	<div class="widget-top">
+		<div class="widget-title"><h4><?=$text['title'];?><span class="in-widget-title"></span></h4></div>
+	</div>
+
+	<div class="widget-inside">
+		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
+<?php
+		endif;
+?>
+		<div class="widget text<?=$col;?>">
+			<h3 class="title"><?=$text['title'];?></h3>
+			<?php
+				if ( isset($text['content'])  ):
+					echo $text['content'];
+			?>
+			<?php
+				else:
+					echo '<div class="blank-widget text"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-'.$widget->widget_type . '-' . $widget->id.'-modal">Add Text</button></div>';
+				endif;
+			?>
+		</div>
+<?php
+		if ( $preview ):
+?>
+	</div>
+	
+	<div class="widget-description">Add Text</div>
+</div>
+<?php
+		endif;
+	}
+}
 	
 if ( ! function_exists('draw_main_image_modal')){
 	function draw_main_image_modal( $main_images ){
@@ -1043,6 +1099,38 @@ if ( ! function_exists('draw_modal_links')){
 			</div>
 			<div class="modal-footer">
 				<p>Close this to save your data!</p>
+				<span class="spinner"></span>
+			</div>
+		</div>
+	</div>
+</div>
+<?php
+	}
+}
+
+if ( ! function_exists('draw_modal_text')){
+	function draw_modal_text( $widget ){
+		if ( ! is_object($widget) ) return FALSE;
+		$text = unserialize($widget->widget_data);
+		
+		if ( ! isset($text['title']) ) $text['title'] = '';
+		if ( ! isset($text['content']) ) $text['content'] = '';
+?>
+<div class="modal fade text_modal" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabel">Text</h4>
+			</div>
+			<div class="modal-body">
+				
+				<input type="text" name="text-title" value="<?=$text['title'];?>" class="form-control" placeholder="Title"/>
+				<textarea id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-content" name="text-content" class="form-control tinymce" style="width:100%; height:300px"><?=$text['content'];?></textarea>
+				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary btn-sm save-video" data-dismiss="modal">Save</button>
 				<span class="spinner"></span>
 			</div>
 		</div>

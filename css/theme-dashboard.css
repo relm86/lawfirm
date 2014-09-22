@@ -153,6 +153,10 @@ p.drop-here {
 	clear: none;
 }
 
+.text_modal .modal-dialog {
+	width: 800px;
+}
+
 /* Edit user form styles */
 #edituser_form label {
     margin-top: 10px;

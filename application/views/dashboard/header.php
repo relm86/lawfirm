@@ -32,6 +32,7 @@
 	//<![CDATA[
 	var ajax_url = "<?php echo base_url('dashboard/ajax');?>";
 	var base_url = "<?php echo base_url('dashboard');?>";
+	var site_url = "<?php echo base_url();?>";
 	var fb_app_id = "<?php echo$this->config->item('fb_app_id');?>";
 	var google_client_id = "<?php echo $this->config->item('google_client_id');?>";
 	var linkedin_api_key = "<?php echo $this->config->item('linkedin_api_key');?>";
