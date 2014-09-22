@@ -1,134 +1,7 @@
 <div class="container page_preview">
 	<div class="row">
-		<div class="col-md-2" id="widgets-container">
-			<div id="widgets" class="cardbox">
-				<h4 class="page-header">Widgets</h4>
-				<div id="widget-greeting-__i__" class="widget" data-type="greeting">
-					<div class="widget-top">
-						<div class="widget-title"><h4>Welcome<span class="in-widget-title"></span></h4></div>
-					</div>
 
-					<div class="widget-inside">
-						<button type="button" class="btn btn-warning edit-widget">Edit</button>
-						<div class="widget photo" id="upload_foto">
-							<?php echo form_open(); ?>
-							<div class="pull-left">
-							     <div id="user_picture" style="max-width: 100px;"><img src="<?php echo get_user_picture_thumb(FALSE, 100, 100); ?>" alt="<?php if ( isset($user->first_name) ) echo $user->first_name; ?> Picture" class="img-rounded"></div>
-							    <div class="clearfix"></div>
-				                        </div>
-						        <div class="media-body">
-								<h4 class="media-heading"><?php echo get_user_fullname(); ?></h4>
-								<p>We've put together this page to provide customized information just for you.</p>
-							</div>
-							<div class="clearfix"></div>
-							<?php echo form_close(); ?>
-						</div>
-					</div>
-
-					<div class="widget-description">User picture and welcome words.</div>
-				</div>
-				
-				<div id="widget-testimonials-__i__" class="widget"  data-type="testimonials">
-					<div class="widget-top">
-						<div class="widget-title"><h4>Testimonials (Reviews)<span class="in-widget-title"></span></h4></div>
-					</div>
-
-					<div class="widget-inside">
-						<button type="button" class="btn btn-warning edit-widget">Edit</button>
-						<div class="widget reviews">
-							<div class="panel panel-default widget-testimonials-full">
-							        <div class="panel-heading">
-							          <h3 class="panel-title">Testimonials</h3>
-							        </div>
-							        <div class="panel-body">
-							          <p class="pull-left">Other people in your area who we've helped:</p>
-							          <div class="clearfix"></div>
-							           <div class="panel-review pull-left"> <img src="<?php echo base_url(); ?>img/barbara-canon.jpg" width="64" height="64" alt="" class="img64 pull-left"/>
-							            <div class="media-body">
-							              <h4 class="media-heading">Barbara Cannon</h4>
-							              <a href="http://www.siegfriedandjensen.com/barbara-cannon">Barbara Cannon was enjoying ...</a> </div>
-							          </div>
-							           <div class="panel-review pull-left"> <img src="<?php echo base_url(); ?>img/ashley.jpg" width="64" height="64" alt="" class="img64 pull-left"/>
-							            <div class="media-body">
-							              <h4 class="media-heading">Ashley Merrill </h4>
-							              <a href="http://www.siegfriedandjensen.com/our-clients/ashley-merrill">We need to make sure...</a> </div>
-							          </div>
-							           <div class="panel-review pull-left"> <img src="<?php echo base_url(); ?>img/bill.jpg" width="64" height="64" alt="" class="img64 pull-left"/>
-							            <div class="media-body">
-							              <h4 class="media-heading">Bill Thompson</h4>
-							              <a href="http://www.siegfriedandjensen.com/our-clients/bill-thompson">A Bill learned firsthand...</a> </div>
-							          </div>
-							          <div class="panel-review pull-left"> <img src="<?php echo base_url(); ?>img/sorenson.jpg" width="64" height="64" alt="" class="img64 pull-left"/>
-							            <div class="media-body">
-							              <h4 class="media-heading">Lisa Holcombe</h4>
-							              <a href="http://www.siegfriedandjensen.com/our-clients/lisa-holcombe">Lisa is a vivacious, energetic...</a> </div>
-							          </div>
-							        </div>
-							</div>
-						</div>
-					</div>
-
-					<div class="widget-description">Add Testimonials</div>
-				</div>
-				
-				
-								
-				<div id="widget-twitter-feed-__i__" class="widget" data-type="twitter">
-					<div class="widget-top">
-						<div class="widget-title"><h4>Twitter Feed<span class="in-widget-title"></span></h4></div>
-					</div>
-
-					<div class="widget-inside">
-						<button type="button" class="btn btn-warning edit-widget">Edit</button>
-						<div class="widget twitter">
-							<h3 class="title">Twitter Feed</h3>
-	        					<a class="twitter-timeline" href="https://twitter.com/hashtag/autoaccident" data-widget-id="509464469521461248" data-chrome="noheader  noborders transparent" >#autoaccident Tweets</a>
-	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-						</div>
-					</div>
-
-					<div class="widget-description">Add Twitter Feed</div>
-				</div>
-				
-				<div id="widget-faq-__i__" class="widget" data-type="faq">
-					<div class="widget-top">
-						<div class="widget-title"><h4>FAQ<span class="in-widget-title"></span></h4></div>
-					</div>
-
-					<div class="widget-inside">
-						<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-faq-__i__-modal">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
-						<div class="widget faq">
-							<h3 class="title">FAQ</h3>
-							<div class="blank-widget faqs"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-faq-__i__-modal">Add FAQ</button></div>
-						</div>
-					</div>
-
-					<div class="widget-description">Add FAQ</div>
-				</div>
-				
-				<div id="widget-links-__i__" class="widget" data-type="links">
-					<div class="widget-top">
-						<div class="widget-title"><h4>Links</h4></div>
-					</div>
-
-					<div class="widget-inside">
-						<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-links-__i__">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
-						<div class="widget links">
-							<h3 class="title">Links</h3>
-							<div class="blank-widget links"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-links-__i__">Add Links</button></div>
-							<div id="widget-links-__i__-sort" class="links_sort"></div>
-						</div>
-					</div>
-					
-					<div class="widget-description">Add Links</div>
-				</div>
-				
-			</div>
-			
-			
-		</div>
-		
-		<div class="col-md-10" id="the-page">
+		<div class="col-md-12" id="the-page">
 			<div class="col-md-12" id="header">
 				<!-- header -->
 				<div class="col-md-6">
@@ -163,7 +36,7 @@
 			</div>
 			
 			<div class="col-md-12">
-				<button type="button" class="btn btn-warning edit-widget" data-toggle="modal" data-target="#main-image-slider">Edit</button>
+<!--				<button type="button" class="btn btn-warning edit-widget" data-toggle="modal" data-target="#main-image-slider">Edit</button> -->
 				<div class="widget image-slider">
 					<div id="carousel-main-image" class="carousel slide" data-ride="carousel">
 					<?php
@@ -213,12 +86,12 @@
 			
 			<div class="col-md-4 widget-container" id="left-sidebar">
 				<!-- left sidebar -->
-				<?php echo draw_widgets($template->id, 'sidebar', TRUE); ?>
+				<?php echo draw_widgets($template->id, 'sidebar', FALSE); ?>
 				<!-- left sidebar end -->
 			</div>
 			<div class="col-md-8 " id="main-content">
 				<!-- main content -->
-				<button type="button" class="btn btn-warning edit-widget" data-toggle="modal" data-target="#videos-modal">Edit</button>
+<!--				<button type="button" class="btn btn-warning edit-widget" data-toggle="modal" data-target="#videos-modal">Edit</button> -->
 				<div class="widget videos">
 					<?php
 					if ( isset($videos) && $videos ):
@@ -258,12 +131,12 @@
 				<div class="row">
 					<!-- main content left -->
 					<div class="col-md-6 widget-container" id="main-content-left">
-						<?php echo draw_widgets($template->id, 'left', TRUE); ?>
+						<?php echo draw_widgets($template->id, 'left', FALSE); ?>
 					</div>
 					<!-- main content left end-->
 					<!-- main content right -->
 					<div class="col-md-6 widget-container" id="main-content-right">
-						<?php echo draw_widgets($template->id, 'right', TRUE); ?>
+						<?php echo draw_widgets($template->id, 'right', FALSE); ?>
 					</div>
 					<!-- main content right end -->
 				</div>
@@ -274,7 +147,7 @@
 			</div>
 			<div class="col-md-12 widget-container" id="footer">
 				<!-- footer -->
-				<?php echo draw_widgets($template->id, 'footer', TRUE); ?>
+				<?php echo draw_widgets($template->id, 'footer', FALSE); ?>
 				<!-- footer end -->
 			</div>
 			<div class="col-md-12 copyright">
