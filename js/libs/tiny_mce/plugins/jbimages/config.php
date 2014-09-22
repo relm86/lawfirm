@@ -36,14 +36,9 @@
 | $config['img_path'] = '/images/somefolder';
 | 
 | -------------------------------------------------------------------*/
-	$plugin_path = '/js/libs/tiny_mce/plugins/jbimages';
-	$base_url = str_replace($_SERVER['DOCUMENT_ROOT'] , "", dirname($_SERVER['PHP_SELF'])); 
-	$base_url = str_replace($plugin_path , "", $base_url); 
-	$base_url = 'law';
 	
 	$config['img_path'] = '/img'; // Relative to domain name
-	$config['upload_path'] = $_SERVER['DOCUMENT_ROOT'] . $base_url . $config['img_path']; // Physical path. [Usually works fine like this]
-	echo $config['upload_path'];
+	$config['upload_path'] = $_SERVER['DOCUMENT_ROOT'] . $config['img_path']; // Physical path. [Usually works fine like this]
 
 /*-------------------------------------------------------------------
 | 
