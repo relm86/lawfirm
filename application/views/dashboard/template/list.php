@@ -25,10 +25,10 @@
 								<td>n/a</td>
 								<td>n/a</td>
 								<td>
-									<span><a href="#" class="btn btn-primary btn-sm active" role="button">Edit</a></span>
+									<span><a href="dashboard/dev_template_preview/<?php echo $template->id; ?>" target="_blank" class="btn btn-primary btn-sm active" role="button">Edit</a></span>
 									<span><a href="<?=base_url('dashboard/template_preview/'.$template->id);?>" class="btn btn-primary btn-sm active" role="button" target="_blank">Preview</a></span>
-									<span><a href="#" class="btn btn-primary btn-sm active" role="button">Stats</a></span>
-									<span><a href="#" class="btn btn-danger btn-sm active" role="button">Delete</a></span>
+									<span><a href="dashboard/template_status/<?php echo $template->id; ?>/<?php echo $template->status; ?>" data-status="<?php echo $template->status; ?>" class="btn btn-primary btn-sm active btn-danger-template" role="button">Stats</a></span>
+									<span><a href="dashboard/template_delete/<?php echo $template->id; ?>" class="btn btn-danger btn-sm active btn-danger-template" role="button">Delete</a></span>
 								</td>
 							</tr>
 							<?php endforeach; ?>

@@ -826,14 +826,29 @@ class Dashboard extends CI_Controller {
     {
         $data['suspend'] = $suspend == 0 ? 1 : 0;
         $this->db->where('id', $id);
-        $query = $this->db->update('users', $data);
+        $this->db->update('users', $data);
         redirect(base_url('dashboard'));
     }
 
     function deleteuser($id)
     {
         $this->db->where('id', $id);
-        $query = $this->db->delete('users');
+        $this->db->delete('users');
+        redirect(base_url('dashboard'));
+    }
+
+    function template_status($id, $status)
+    {
+        $data['status'] = $status == 0 ? 1 : 0;
+        $this->db->where('id', $id);
+        $this->db->update('templates', $data);
+        redirect(base_url('dashboard'));
+    }
+
+    function template_delete($id)
+    {
+        $this->db->where('id', $id);
+        $this->db->delete('templates');
         redirect(base_url('dashboard'));
     }
 }

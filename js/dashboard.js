@@ -614,5 +614,25 @@ $(document).ready(function() {
         return confirm(msg);
     });
     
-    
+    $(document).on('click', '.btn-danger-template', function(e) {
+        var msg = '';
+
+        if ($(this).text() == 'Delete')
+        {
+            msg = 'Are you sure you want to delete this template?';
+        }
+        else
+        {
+            if ($(this).attr('data-status') == 0)
+            {
+                msg = 'Current status of this template is Active.\n\nAre you sure you want to disable this template?';
+            }
+            else
+            {
+                msg = 'Current status of this template is Inactive.\n\nAre you sure you want to enable this template?';
+            }
+        }
+
+        return confirm(msg);
+    });
   });
