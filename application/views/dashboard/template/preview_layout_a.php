@@ -79,7 +79,7 @@
 					</div>
 
 					<div class="widget-inside">
-						<button type="button" class="btn btn-warning edit-widget">Edit</button>
+						<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-twitter-__i__">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 						<div class="widget twitter">
 							<h3 class="title">Twitter Feed</h3>
 	        					<a class="twitter-timeline" href="https://twitter.com/hashtag/autoaccident" data-widget-id="509464469521461248" data-chrome="noheader  noborders transparent" >#autoaccident Tweets</a>

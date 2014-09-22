@@ -350,14 +350,14 @@ class Dashboard extends CI_Controller {
 					$this->db->insert('widgets', $insert);
 					$widget_id = $this->db->insert_id();
 					
-				        ob_start();
+				    ob_start();
 					draw_modal($widget_id);
 					$response = array(
 				            'success' => TRUE,
 				            'widget_modal' => ob_get_contents(),
 				            'widget_id' =>  'widget-' . $insert['widget_type'] . '-' . $widget_id
 				        );
-				        ob_end_clean();
+				    ob_end_clean();
 
 				elseif( valid_widget_id($this->input->post('widget_id')) ):
 					//update widget
@@ -376,7 +376,7 @@ class Dashboard extends CI_Controller {
 						            'widget_html' => ob_get_contents(),
 						            'widget_id' =>  'widget-' . $this->input->post('widget_type') . '-' . $widget_id
 						        );
-						        ob_end_clean();
+						    ob_end_clean();
 						else:
 							$response['error'] = 'Nothing change';
 						endif;
@@ -476,6 +476,24 @@ class Dashboard extends CI_Controller {
 			
 			if ( isset($links) && count($links) > 0 ):
 				return serialize($links);
+			endif;
+		elseif ( 'twitter' == $this->input->post('widget_type')):
+			$twitter_title = $this->input->post('twitter-title');
+			$twitter_hashtag = $this->input->post('twitter-hashtag');
+			$i = 1;
+			if(strlen($twitter_title[1])==0) {
+					$twitter_title[1] = 'Twitter Feed';
+					$twitter_title[1] = 'autoaccident';
+			} else {
+				foreach($twitter_title as $title):
+					$twitter[$i]['title'] = $title;
+					$twitter[$i]['hashtag'] = $twitter_hashtag[$i];
+					$i++;
+				endforeach;
+			}
+			
+			if ( isset($twitter) && count($twitter) > 0 ):
+				return serialize($twitter);
 			endif;
 		endif;
 		

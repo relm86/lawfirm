@@ -314,7 +314,7 @@ if ( ! function_exists('draw_modals')){
 				elseif ( $widget->widget_type == 'contact' ):
 					//draw_modal_contact($widget);
 				elseif ( $widget->widget_type == 'twitter' ):
-					//draw_modal_twitter($widget);
+					draw_modal_twitter($widget);
 				elseif ( $widget->widget_type == 'faq' ):
 					draw_modal_faq($widget);
 				endif;
@@ -343,7 +343,7 @@ if ( ! function_exists('draw_modal')){
 			elseif ( $widget->widget_type == 'contact' ):
 				//draw_modal_contact($widget);
 			elseif ( $widget->widget_type == 'twitter' ):
-				//draw_modal_twitter($widget);
+				draw_modal_twitter($widget);
 			elseif ( $widget->widget_type == 'faq' ):
 				draw_modal_faq($widget);
 			endif;
@@ -556,7 +556,88 @@ if ( ! function_exists('draw_widget_contact')){
 }
 
 if ( ! function_exists('draw_widget_twitter')){
-	function draw_widget_twitter($widget, $position = FALSE, $preview = FALSE ){
+	function draw_widget_twitter($widget, $preview = FALSE ){
+		if ( ! is_object($widget) ) return FALSE;
+		
+		$CI =& get_instance();
+		$CI->load->library('twitteroauth');
+		$CI->config->load('twitter');
+		$consumer_token  = $CI->config->item('twitter_consumer_key');
+		$consumer_secret = $CI->config->item('twitter_consumer_secret');
+		// check if user and pass are set
+		if( !isset($consumer_secret) || !isset($consumer_token) || !$consumer_secret || !$consumer_token )
+		{
+			die('ERROR: Twitter secret and token is not defined.'.PHP_EOL);
+		}
+		if($widget->widget_data=='') {
+			$widget->widget_data = 'a:1:{i:1;a:2:{s:5:"title";s:12:"Twitter Feed";s:7:"hashtag";s:12:"autoaccident";}}';
+		}
+		$twitters = unserialize($widget->widget_data);
+		if ( is_array($twitters) && count($twitters) > 0 ):
+			foreach ( $twitters as $twitter ):
+				$twitter_connection = $CI->twitteroauth->create($consumer_token, $consumer_secret);
+				if($twitter['hashtag']=='') {
+					$twitter['hashtag'] = 'autoaccident';
+				}
+				$query = array(
+				  "q" => "#".$twitter['hashtag']
+				);
+				$results = $twitter_connection->get('search/tweets', $query);
+
+				if ( $preview ):
+?>
+
+<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget" data-type="<?=$widget->widget_type;?>">
+	<div class="widget-top">
+		<div class="widget-title"><h4>Twitter Feed<span class="in-widget-title"></span></h4></div>
+	</div>
+
+	<div class="widget-inside">
+		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
+<?php
+				endif;
+?>
+		
+		<div class="widget twitter">
+			<div class="panel panel-default widget-testimonials-full">
+				<div class="panel-heading">
+				  <h3 class="panel-title"><?=$twitter['title'];?></h3>
+				</div>
+				<div class="panel-body">
+				  <div class="clearfix"></div>
+<?php					  
+					$i=0;
+					foreach ($results->statuses as $result) {
+						$i++;
+						if($i<=5):
+					
+//					  echo $result->user->screen_name . ": " . $result->text . "\n";
+?>
+				   <div class="panel-review pull-left"> <img src="<?=$result->user->profile_image_url;?>" width="64" height="64" alt="" class="img64 pull-left"/>
+					<div class="media-body">
+					  <h4 class="media-heading"><?=$result->user->screen_name;?></h4>
+					  <a href="#"><?=$result->text;?></a> </div>
+				  </div>
+<?php					  
+						endif;
+					}
+//					die();
+?>
+				</div>
+			</div>
+		</div>
+<?php	if ( $preview ): ?>		
+	</div>
+<?php	endif; ?>
+	<div class="widget-description">Add Twitter Feeds</div>
+</div>
+<?php
+			endforeach;
+		endif;
+	}
+
+
+	function draw_widget_twitter_old($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
 		
 		$col = '';
@@ -592,6 +673,69 @@ if ( ! function_exists('draw_widget_twitter')){
 </div>
 <?php
 		endif;
+	}
+}
+
+if ( ! function_exists('draw_modal_twitter')){
+	function draw_modal_twitter( $widget ){
+		if ( ! is_object($widget) ) return FALSE;
+		$twitters = unserialize($widget->widget_data);
+?>
+<div class="modal fade twitter_modal" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabel">Twitter</h4>
+			</div>
+			<div class="modal-body">
+				<div id="widget-<?=$widget->id;?>-sort" class="twitter_sort">
+				<?php
+		$i = 1;
+		if ( is_array($twitters) && count($twitters) > 0 ):
+			foreach ( $twitters as $twitter ):
+				?>
+					<div id="widget-<?=$widget->widget_type . '-' . $widget->id.'-modal-'.$i;?>" class="twitter_form form-inline">
+						<div class="form-group">
+							<input type="text" name="twitter-title[<?=$i;?>]" value="<?=$twitter['title'];?>" class="form-control" placeholder="Title"/>
+						</div>
+						<div class="form-group">
+							<input type="text" name="twitter-hashtag[<?=$i;?>]" value="<?=$twitter['hashtag'];?>" class="form-control" placeholder="hashtag without #"/>
+						</div>
+						<div class="form-group action-button">
+							<span class="spinner"></span>
+						</div>
+					</div>
+				<?php
+			endforeach;
+		else:
+				?>
+					<div id="widget-<?=$widget->widget_type . '-' . $widget->id.'-modal-'.$i;?>" class="twitter_form form-inline">
+						<div class="form-group">
+							<input type="text" name="twitter-title[<?=$i;?>]" value="Twitter Feed" class="form-control" placeholder="Title"/>
+						</div>
+						<div class="form-group">
+							<input type="text" name="twitter-hashtag[<?=$i;?>]" value="autoaccident" class="form-control" placeholder="hashtag without #"/>
+						</div>
+						<div class="form-group action-button">
+							<button type="button" class="btn btn-danger btn-sm delete-faq">Delete</button>
+							<span class="ui-icon ui-icon-arrowthick-2-n-s sort-handle"></span>
+							<span class="spinner"></span>
+						</div>
+					</div>
+				<?php
+		endif;
+				?>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<p>Close this to save your data!</p>
+				<span class="spinner"></span>
+			</div>
+		</div>
+	</div>
+</div>
+<?php
 	}
 }
 
