@@ -113,7 +113,7 @@ span.image-control{
 	vertical-align: top;
 }
 
-.slider-image-form, .video-form {
+.modal .form-inline {
 	margin-top: 10px;
 }
 
@@ -122,11 +122,15 @@ span.image-control{
 }
 
 .slider-image-form.form-inline textarea {
-	width: 260px;
+	width: 250px;
 	height: 100px;
 }
-.image-wrapper.form-group, .image-title.form-group, .save-image, .save-video {
+.modal .form-inline .form-group, .modal .form-inline button {
 	margin-right: 2px;
+}
+
+.action-button .ui-icon{
+	display: inline-block;
 }
 
 /* Edit user form styles */

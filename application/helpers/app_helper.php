@@ -212,7 +212,7 @@ if ( ! function_exists('set_theme'))
 
 if ( ! function_exists('valid_widget_id')){
 	function valid_widget_id( $widget_id ) {
-		$widget_id = (int) $widget_id;
+		$widget_id = preg_replace("/[^0-9]/","",$widget_id);
 		$CI = get_instance();
 		$CI->db->where('id', $widget_id);
 		$query = $CI->db->get('widgets',1);
@@ -264,6 +264,57 @@ if ( ! function_exists('draw_widget')){
 				draw_widget_twitter($widget, $preview);
 			elseif ( $widget->widget_type == 'faq' ):
 				draw_widget_faq($widget, $preview);
+			endif;
+		else:
+			return FALSE;
+		endif;
+	}
+}
+
+if ( ! function_exists('draw_modal')){
+	function draw_modal( $template_id ){
+		$CI = get_instance();
+		$id = preg_replace("/[^0-9]/","",$template_id);
+		
+		//image modal
+		$CI->db->where('template_id', $id);
+		$CI->db->order_by('order', 'ASC');
+		$query = $CI->db->get('template_images');
+		if ( $query->num_rows() > 0 ):
+			$main_images = $query;
+		else:
+			$main_images = FALSE;
+		endif;
+		draw_main_image_modal($main_images);
+			
+		//video modal
+		$CI->db->where('template_id', $id);
+		$CI->db->order_by('order', 'ASC');
+		$query = $CI->db->get('template_videos');
+		if ( $query->num_rows() > 0 ):
+			$videos = $query;
+		else:
+			$videos = FALSE;
+		endif;
+		draw_video_modal($videos);
+		
+		//widget modal
+		$CI->db->where('template_id', $id);
+		$query = $CI->db->get('widgets');
+		if ( $query->num_rows() > 0 ):
+			foreach($query->result() as $widget )
+			if ( $widget->widget_type == 'greeting' ):
+				//draw_modal_greeting($widget);
+			elseif ( $widget->widget_type == 'testimonials' ):
+				//draw_modal_testimonials($widget);
+			elseif ( $widget->widget_type == 'stories' ):
+				//draw_modal_stories($widget);
+			elseif ( $widget->widget_type == 'contact' ):
+				//draw_modal_contact($widget);
+			elseif ( $widget->widget_type == 'twitter' ):
+				//draw_modal_twitter($widget);
+			elseif ( $widget->widget_type == 'faq' ):
+				draw_modal_faq($widget);
 			endif;
 		else:
 			return FALSE;
@@ -481,7 +532,9 @@ if ( ! function_exists('draw_widget_twitter')){
 <?php
 		endif;
 	}
-}if ( ! function_exists('draw_widget_faq')){
+}
+
+if ( ! function_exists('draw_widget_faq')){
 	function draw_widget_faq($widget, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
 		
@@ -494,27 +547,185 @@ if ( ! function_exists('draw_widget_twitter')){
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning edit-widget">Edit</button>
+		<button type="button" class="btn btn-warning edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget">Delete</button>
 <?php
 		endif;
 ?>
 		<div class="widget faq">
 			<h3 class="title">FAQ</h3>
-			<ul>
-				<li><a href="http://www.siegfriedandjensen.com/faqs/what-to-do-after-an-accident">What to do After an Accident</a></li>
-			        <li><a href="http://www.siegfriedandjensen.com/faqs/settlements">Settlements (They&apos;re A Good Thing)</a></li>
-			        <li><a href="http://www.siegfriedandjensen.com/faqs/contingency-fees">Contingency Fees Demystified</a></li>
-			        <li><a href="http://www.siegfriedandjensen.com/faqs/3-keys-infographic">Ever Wondered If You Have a Valid Injury Claim?</a></li>
-			</ul>
+			<?php
+				$faqs = unserialize($widget->widget_data);
+				if ( is_array($faqs) && count($faqs) > 0 ):
+					echo '<ul>';
+					foreach ( $faqs as $faq ):
+						echo '<li><a href="'.$faq['url'].'">'.$faq['title'].'</a></li>';
+					endforeach;
+					echo '</ul>';
+			?>
+			<?php
+				else:
+					echo '<div class="blank-widget faqs"><button type="button" class="btn btn-warning edit-widget" data-toggle="modal" data-target="#widget-'.$widget->widget_type . '-' . $widget->id.'-modal">Add FAQ</button></div>';
+				endif;
+			?>
 		</div>
 <?php
 		if ( $preview ):
 ?>
 	</div>
-
+	
 	<div class="widget-description">Add FAQ</div>
 </div>
 <?php
 		endif;
+	}
+}
+	
+if ( ! function_exists('draw_main_image_modal')){
+	function draw_main_image_modal( $main_images ){
+		if ( ! $main_images ) return FALSE;
+		
+?>
+<div class="modal fade" id="main-image-slider" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Featured Image</h4>
+      </div>
+      <div class="modal-body" id="main_images_upload">
+		<a id="upload_main_image" href="#" class="btn btn-primary btn-sm active" role="button">Upload Image</a>
+		<p>Note: Max image file size 10MB, width 1024px and height 768px. Only jpg/jpeg/png allowed. Best Dimension 770x366px.</p>
+		<div id="main_image_sort">
+			<?php
+			if ( isset($main_images) && $main_images): 
+				foreach($main_images->result() as $image):
+			?>
+			<div id="slider-image-<?=$image->id;?>" class="slider-image-form form-inline" data-img-url="<?=base_url() . str_replace('./', '',  create_thumb($image->path, 770, 366) );?>"  role="form">
+				<div class="image-wrapper form-group"><img src="<?=base_url() . str_replace('./', '',  create_thumb($image->path, 100, 100) );?>" width="100" height="100" alt="<?=$image->title;?>"/></div>
+				<div class="image-title form-group">
+					<input type="text" name="image-title[<?=$image->id;?>]" value="<?=$image->title;?>" class="form-control" placeholder="Title"/>
+					<span class="image-control">
+						<button type="button" class="btn btn-primary btn-sm save-image">Save</button>
+						<button type="button" class="btn btn-danger btn-sm delete-image">Delete</button>
+						<span class="spinner"></span>
+					</span>
+				</div>
+				<div class="image-desc form-group"><textarea name="image-desc[<?=$image->id;?>]" class="form-control" placeholder="Short Description"><?=$image->description;?></textarea></div>
+				
+			</div>
+			<?php
+				endforeach;
+			endif;	
+			?>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <span class="spinner"></span>
+      </div>
+    </div>
+  </div>
+</div>
+<?php
+		
+	}
+}
+
+if ( ! function_exists('draw_video_modal')){
+	function draw_video_modal( $videos ){
+		if ( ! $videos ) return FALSE;
+?>
+<div class="modal fade" id="videos-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+        <h4 class="modal-title" id="myModalLabel">Video</h4>
+      </div>
+      <div class="modal-body" id="videos-sort-container">
+		<a id="upload_video_thumb" href="#" class="btn btn-primary btn-sm active" role="button">Add Video</a>
+		<p>Press Add Video button to select your video thumbnail and then place Youtube URL.</p>
+		<p>Note: Maximum video thumbnail size is 10MB, width 1024px and height 768px. Only jpg/jpeg/png allowed. Best Dimension 746x439px.</p>
+		<div id="videos-sort">
+			<?php
+			if ( isset($videos) && $videos ):
+				foreach($videos->result() as $video):
+			?>
+			<div id="video-thumb-<?=$video->id;?>" class="video-form form-inline" data-img-url="<?=base_url() . str_replace('./', '',  create_thumb($video->thumb, 746, 439) );?>"  role="form">
+				<div class="image-wrapper form-group"><img src="<?=base_url() . str_replace('./', '',  create_thumb($video->thumb, 211, 126) );?>" width="211" height="126" alt=""/></div>
+				<div class="image-title form-group">
+					<input type="text" name="video-url[<?=$video->id;?>]" value="<?=$video->url;?>" class="form-control" placeholder="Youtube URL"/>
+					<span class="image-control">
+						<button type="button" class="btn btn-primary btn-sm save-video">Save</button>
+						<button type="button" class="btn btn-danger btn-sm delete-video">Delete</button>
+						<span class="spinner"></span>
+					</span>
+				</div>
+			</div>
+			<?php
+				endforeach;
+			endif;	
+			?>
+		</div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+        <span class="spinner"></span>
+      </div>
+    </div>
+  </div>
+</div>
+<?php
+	}
+}
+
+if ( ! function_exists('draw_modal_faq')){
+	function draw_modal_faq( $widget ){
+		if ( ! is_object($widget) ) return FALSE;
+		$faqs = unserialize($widget->widget_data);
+?>
+<div class="modal fade faq_modal" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabel">FAQ</h4>
+			</div>
+			<div class="modal-body">
+				<a href="#" class="btn btn-primary btn-sm active add-faq" role="button">Add FAQ</a>
+				<div id="widget-<?=$widget->id;?>-sort" class="faq_sort">
+				<?php
+				if ( is_array($faqs) && count($faqs) > 0 ):
+				$i = 1;
+				foreach ( $faqs as $faq ):
+				?>
+					<div id="widget-<?=$widget->widget_type . '-' . $widget->id.'-modal-'.$i;?>" class="faq_form form-inline">
+						<div class="form-group">
+							<input type="text" name="faq-title[<?=$i;?>]" value="<?=$faq['title'];?>" class="form-control" placeholder="Title"/>
+						</div>
+						<div class="form-group">
+							<input type="text" name="faq-url[<?=$i;?>]" value="<?=$faq['url'];?>" class="form-control" placeholder="External Link"/>
+						</div>
+						<div class="form-group action-button">
+							<button type="button" class="btn btn-danger btn-sm delete-faq">Delete</button>
+							<span class="ui-icon ui-icon-arrowthick-2-n-s sort-handle"></span>
+							<span class="spinner"></span>
+						</div>
+					</div>
+				<?php
+				$i++;
+				endforeach;
+				endif;
+				?>
+				</div>
+			</div>
+			<div class="modal-footer">
+				<p>Close this to save your data!</p>
+				<span class="spinner"></span>
+			</div>
+		</div>
+	</div>
+</div>
+<?php
 	}
 }

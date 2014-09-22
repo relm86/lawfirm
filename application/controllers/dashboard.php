@@ -280,7 +280,8 @@ class Dashboard extends CI_Controller {
 	function _save_widget(){
 		
 		$response = array(
-	            'success' => FALSE
+	            'success' 	=> FALSE,
+	            'error'		=> ''
 	        );
 			
 		if ($this->input->post()) :
@@ -301,13 +302,59 @@ class Dashboard extends CI_Controller {
 				            'widget_id' => 'widget_' . $insert['widget_type'] . '_' . $widget_id
 				        );
 
-				else:
+				elseif( valid_widget_id($this->input->post('widget_id')) ):
+					//update widget
+					$widget_id = preg_replace("/[^0-9]/","", $this->input->post('widget_id'));
+					$update['widget_data'] = $this->_get_widget_data();
+					
+					if ( $update['widget_data'] ):
+						$this->db->where('id', $widget_id);
+						$this->db->where('template_id', $this->input->post('template_id'));
+						$this->db->update('widgets', $update);
+						if ( $this->db->affected_rows() > 0 ):
+							ob_start();
+							draw_widget($widget_id);
+							$response = array(
+						            'success' => TRUE,
+						            'widget_html' => ob_get_contents(),
+						            'widget_id' => $widget_id
+						        );
+						        ob_end_clean();
+						else:
+							$response['error'] = 'Nothing change';
+						endif;
+					else:
+						$response['error'] = 'Invalid widget data.';
+					endif;
 				endif;
 			endif;
 		endif;
 		
 		echo json_encode($response);
 		exit;
+	}
+	
+	function _get_widget_data(){
+		if ( 'faq' == $this->input->post('widget_type')):
+			$faq_title = $this->input->post('faq-title');
+			$faq_url = $this->input->post('faq-url');
+			$i = 1;
+			foreach($faq_title as $title):
+				if (filter_var($faq_url[$i], FILTER_VALIDATE_URL) !== false)
+					$url = $faq_url[$i];
+				else
+					$url = '#';
+				$faq[$i]['title'] = $title;
+				$faq[$i]['url'] = $url;
+				$i++;
+			endforeach;
+			
+			if ( isset($faq) && count($faq) > 0 ):
+				return serialize($faq);
+			endif;
+		endif;
+		
+		return FALSE;
 	}
 	
 	function _save_layout(){

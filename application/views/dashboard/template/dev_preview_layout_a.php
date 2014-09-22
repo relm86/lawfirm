@@ -1,5 +1,3 @@
-<input type="hidden" id="user_id" value="<?=$this->session->userdata('id');?>" />
-<input type="hidden" id="template_id" value="<?=$template->id;?>" />
 <div class="container page_preview">
 	<div class="row">
 		<div class="col-md-2" id="widgets-container">
@@ -374,85 +372,8 @@
 	</div>
 </div>
 
-<div class="modal fade" id="main-image-slider" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Featured Image</h4>
-      </div>
-      <div class="modal-body" id="main_images_upload">
-		<a id="upload_main_image" href="#" class="btn btn-primary btn-sm active" role="button">Upload Image</a>
-		<p>Note: Max image file size 10MB, width 1024px and height 768px. Only jpg/jpeg/png allowed. Best Dimension 770x366px.</p>
-		<div id="main_image_sort">
-			<?php
-			if ( isset($main_images) && $main_images): 
-				foreach($main_images->result() as $image):
-			?>
-			<div id="slider-image-<?=$image->id;?>" class="slider-image-form form-inline" data-img-url="<?=base_url() . str_replace('./', '',  create_thumb($image->path, 770, 366) );?>"  role="form">
-				<div class="image-wrapper form-group"><img src="<?=base_url() . str_replace('./', '',  create_thumb($image->path, 100, 100) );?>" width="100" height="100" alt="<?=$image->title;?>"/></div>
-				<div class="image-title form-group">
-					<input type="text" name="image-title[<?=$image->id;?>]" value="<?=$image->title;?>" class="form-control" placeholder="Title"/>
-					<span class="image-control">
-						<button type="button" class="btn btn-primary btn-sm save-image">Save</button>
-						<button type="button" class="btn btn-danger btn-sm delete-image">Delete</button>
-						<span class="spinner"></span>
-					</span>
-				</div>
-				<div class="image-desc form-group"><textarea name="image-desc[<?=$image->id;?>]" class="form-control" placeholder="Short Description"><?=$image->description;?></textarea></div>
-				
-			</div>
-			<?php
-				endforeach;
-			endif;	
-			?>
-		</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <span class="spinner"></span>
-      </div>
-    </div>
-  </div>
-</div>
-
-<div class="modal fade" id="videos-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
-  <div class="modal-dialog">
-    <div class="modal-content">
-      <div class="modal-header">
-        <button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-        <h4 class="modal-title" id="myModalLabel">Video</h4>
-      </div>
-      <div class="modal-body" id="videos-sort-container">
-		<a id="upload_video_thumb" href="#" class="btn btn-primary btn-sm active" role="button">Add Video</a>
-		<p>Press Add Video button to select your video thumbnail and then place Youtube URL.</p>
-		<p>Note: Maximum video thumbnail size is 10MB, width 1024px and height 768px. Only jpg/jpeg/png allowed. Best Dimension 746x439px.</p>
-		<div id="videos-sort">
-			<?php
-			if ( isset($videos) && $videos ):
-				foreach($videos->result() as $video):
-			?>
-			<div id="video-thumb-<?=$video->id;?>" class="video-form form-inline" data-img-url="<?=base_url() . str_replace('./', '',  create_thumb($video->thumb, 746, 439) );?>"  role="form">
-				<div class="image-wrapper form-group"><img src="<?=base_url() . str_replace('./', '',  create_thumb($video->thumb, 211, 126) );?>" width="211" height="126" alt="<?=$image->title;?>"/></div>
-				<div class="image-title form-group">
-					<input type="text" name="video-url[<?=$video->id;?>]" value="<?=$video->url;?>" class="form-control" placeholder="Youtube URL"/>
-					<span class="image-control">
-						<button type="button" class="btn btn-primary btn-sm save-video">Save</button>
-						<button type="button" class="btn btn-danger btn-sm delete-video">Delete</button>
-						<span class="spinner"></span>
-					</span>
-				</div>
-			</div>
-			<?php
-				endforeach;
-			endif;	
-			?>
-		</div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
-        <span class="spinner"></span>
-      </div>
-    </div>
-  </div>
-</div>
+<?php echo draw_modal($template->id);?>
+<?=form_open();?>
+<input type="hidden" id="user_id" value="<?=$this->session->userdata('id');?>" />
+<input type="hidden" id="template_id" value="<?=$template->id;?>" />
+<?=form_close();?>

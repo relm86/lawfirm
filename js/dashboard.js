@@ -470,6 +470,46 @@ $(document).ready(function() {
 	});
 	/*update the video*/
 	/*video*/
+	
+	/* add faq*/
+	$('.faq_modal').on('click', '.add-faq', function(event){
+		widget_id = $(this).closest('.faq_modal').attr('id');
+		n = $('#'+widget_id+' .faq_form').length + 1;
+		$('#'+widget_id+' .faq_sort').append('<div id="'+widget_id+'-'+n+'" class="faq_form form-inline"><div class="form-group"><input type="text" name="faq-title['+n+']" value="" class="form-control" placeholder="Title"/></div>&nbsp;<div class=" form-group"><input type="text" name="faq-url['+n+']" value="" class="form-control" placeholder="External Link"/></div>&nbsp;<div class="form-group action-button"><button type="button" class="btn btn-danger btn-sm delete-faq">Delete</button><span class="ui-icon ui-icon-arrowthick-2-n-s sort-handle"></span><span class="spinner"></span></div></div>');
+	});
+	/* add faq*/
+	
+	/* sort faq */
+	$('.faq_sort').sortable({
+		placeholder: 'placeholder',
+		handle: ".sort-handle",
+	});
+	/* sort faq */
+	
+	/* delete faq */
+	$('.faq_modal').on('click', '.delete-faq', function(event){
+		$(this).closest('.faq_form').remove();
+		//no further action required
+	});
+	/* delete faq */
+	
+	/* update faq */
+	$('.faq_modal').on('hide.bs.modal', function (event) {
+		widget_id = $(this).attr('id');
+		$.ajax({
+			type: "POST",
+				url: ajax_url+'/save_widget/',
+				data: $('#'+widget_id+' input').serialize() + '&user_id='+$('#user_id').val()+'&template_id='+$('#template_id').val()+'&widget_type=faq&widget_id='+widget_id+'&csrf_b2b='+$( "input[name='csrf_b2b']" ).val(),
+				dataType : "json",
+			})
+		.done(function( msg ) {
+			if ( msg.success == true && msg.widget_html && msg.widget_id ){
+				$('#widget-faq-'+msg.widget_id+' .widget-inside .widget.faq').remove();
+				$('#widget-faq-'+msg.widget_id+' .widget-inside').append(msg.widget_html);
+			}
+		});
+	});
+	/* update faq */
 	/* preview page */
 
     /* validate edit user form */
@@ -573,4 +613,6 @@ $(document).ready(function() {
 
         return confirm(msg);
     });
+    
+    
   });
