@@ -154,12 +154,17 @@ body {
 }
 
 .widget.twitter {
-	background-color: #8fc1da;
-	color: #ffffff;
-	padding: 0 15px;
+	background-color: blue;
+	color: #000000;
+/*	padding: 0 15px 15px;
 	border-radius: 5px;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 5px;
+*/	
+}
+
+.widget.twitter a {
+	color: #000000;
 }
 
 .widget.twitter h3.title {

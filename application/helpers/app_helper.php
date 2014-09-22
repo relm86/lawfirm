@@ -609,9 +609,7 @@ if ( ! function_exists('draw_widget_twitter')){
 					$i=0;
 					foreach ($results->statuses as $result) {
 						$i++;
-						if($i<=5):
-					
-//					  echo $result->user->screen_name . ": " . $result->text . "\n";
+						if($i<=4):
 ?>
 				   <div class="panel-review pull-left"> <img src="<?=$result->user->profile_image_url;?>" width="64" height="64" alt="" class="img64 pull-left"/>
 					<div class="media-body">
@@ -718,8 +716,6 @@ if ( ! function_exists('draw_modal_twitter')){
 							<input type="text" name="twitter-hashtag[<?=$i;?>]" value="autoaccident" class="form-control" placeholder="hashtag without #"/>
 						</div>
 						<div class="form-group action-button">
-							<button type="button" class="btn btn-danger btn-sm delete-faq">Delete</button>
-							<span class="ui-icon ui-icon-arrowthick-2-n-s sort-handle"></span>
 							<span class="spinner"></span>
 						</div>
 					</div>
@@ -729,7 +725,7 @@ if ( ! function_exists('draw_modal_twitter')){
 				</div>
 			</div>
 			<div class="modal-footer">
-				<p>Close this to save your data!</p>
+				<button type="button" class="btn btn-primary" data-dismiss="modal">Save</button>
 				<span class="spinner"></span>
 			</div>
 		</div>
