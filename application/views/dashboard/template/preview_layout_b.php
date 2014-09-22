@@ -146,8 +146,8 @@
 			</div>
 			
 			<div class="col-md-12">
-				<button type="button" class="btn btn-warning edit-widget" data-toggle="modal" data-target="#main-image-slider">Edit</button>
 				<div class="widget image-slider">
+					<button type="button" class="btn btn-warning edit-widget btn-sm" data-toggle="modal" data-target="#main-image-slider">Edit</button>
 					<div id="carousel-main-image" class="carousel slide" data-ride="carousel">
 					<?php
 					if ( isset($main_images) && $main_images ):
@@ -201,8 +201,8 @@
 			</div>
 			<div class="col-md-8 " id="main-content">
 				<!-- main content -->
-				<button type="button" class="btn btn-warning edit-widget" data-toggle="modal" data-target="#videos-modal">Edit</button>
 				<div class="widget videos">
+					<button type="button" class="btn btn-warning edit-widget btn-sm" data-toggle="modal" data-target="#videos-modal">Edit</button>
 					<?php
 					if ( isset($videos) && $videos ):
 						$i = 0;

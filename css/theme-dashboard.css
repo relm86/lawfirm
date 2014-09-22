@@ -157,6 +157,10 @@ p.drop-here {
 	width: 800px;
 }
 
+.widget-inside .widget {
+	margin-top: 0;
+}
+
 /* Edit user form styles */
 #edituser_form label {
     margin-top: 10px;
