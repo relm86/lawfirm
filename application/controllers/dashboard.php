@@ -226,6 +226,39 @@ class Dashboard extends CI_Controller {
 		$this->load->view( 'dashboard/footer', array('jqueryui' => TRUE) );
 	}
 	
+	public function template_preview2( $template_id = NULL){
+		$template_id = (int) $template_id;
+		$this->db->where('id', $template_id );
+		$query = $this->db->get('templates', 1);
+		if ( $query->num_rows() > 0 ):
+			$data['template'] =  $query->row();
+			$this->db->where('template_id', $template_id);
+			$this->db->order_by('order', 'ASC');
+			$query = $this->db->get('template_images');
+			if ( $query->num_rows() > 0 ):
+				$data['main_images'] = $query;
+			else:
+				$data['main_images'] = FALSE;
+			endif;
+			
+			$this->db->where('template_id', $template_id);
+			$this->db->order_by('order', 'ASC');
+			$query = $this->db->get('template_videos');
+			if ( $query->num_rows() > 0 ):
+				$data['videos'] = $query;
+			else:
+				$data['videos'] = FALSE;
+			endif;
+		else:
+			$this->new_template(array('error_msg' => 'Template not found. You may try to create new template or hit back to go to previous page!'));
+			return;
+		endif;
+		
+		$this->load->view( 'dashboard/header', array('jqueryui' => TRUE, 'page_preview' => TRUE, 'layout'=> $data['template']->layout, 'color_scheme' => $data['template']->color_scheme) );
+		$this->load->view( 'dashboard/template/preview2_' . $data['template']->layout, $data );
+		$this->load->view( 'dashboard/footer', array('jqueryui' => TRUE) );
+	}	
+	
 	public function dev_template_preview( $template_id = NULL){
 		$template_id = (int) $template_id;
 		$this->db->where('id', $template_id );
