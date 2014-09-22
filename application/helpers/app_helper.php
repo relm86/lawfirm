@@ -372,7 +372,7 @@ if ( ! function_exists('draw_widget_greeting')){
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning edit-widget">Edit</button>
+		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal">Edit</button>
 <?php
 		endif;
 ?>
@@ -419,7 +419,7 @@ if ( ! function_exists('draw_widget_testimonials')){
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning edit-widget">Edit</button>
+		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal">Edit</button>
 <?php
 		endif;
 ?>
@@ -485,7 +485,7 @@ if ( ! function_exists('draw_widget_stories')){
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning edit-widget">Edit</button>
+		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal">Edit</button>
 <?php
 		endif;
 ?>
@@ -531,7 +531,7 @@ if ( ! function_exists('draw_widget_contact')){
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning edit-widget">Edit</button>
+		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal">Edit</button>
 <?php
 		endif;
 ?>
@@ -574,7 +574,7 @@ if ( ! function_exists('draw_widget_twitter')){
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning edit-widget">Edit</button>
+		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal">Edit</button>
 <?php
 		endif;
 ?>
