@@ -745,6 +745,11 @@ if ( ! function_exists('draw_widget_faq')){
 	function draw_widget_faq($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
 		
+		$faq = unserialize($widget->widget_data);
+		
+		if ( ! isset($faq['title']) ) $faq['title'] = 'FAQ';
+		if ( ! isset($faq['content']) ) $faq['content'] = '';
+		
 		$col = '';
 		$preview_col = '';
 		
@@ -765,15 +770,10 @@ if ( ! function_exists('draw_widget_faq')){
 		endif;
 ?>
 		<div class="widget faq<?=$col;?>">
-			<h3 class="title">FAQ</h3>
+			<h3 class="title"><?=$faq['title'];?></h3>
 			<?php
-				$faqs = unserialize($widget->widget_data);
-				if ( is_array($faqs) && count($faqs) > 0 ):
-					echo '<ul>';
-					foreach ( $faqs as $faq ):
-						echo '<li><a href="'.$faq['url'].'">'.$faq['title'].'</a></li>';
-					endforeach;
-					echo '</ul>';
+				if ( $faq['content'] != '' ):
+					echo$faq['content'];
 			?>
 			<?php
 				else:
@@ -999,7 +999,10 @@ if ( ! function_exists('draw_video_modal')){
 if ( ! function_exists('draw_modal_faq')){
 	function draw_modal_faq( $widget ){
 		if ( ! is_object($widget) ) return FALSE;
-		$faqs = unserialize($widget->widget_data);
+		$faq = unserialize($widget->widget_data);
+		
+		if ( ! isset($faq['title']) ) $faq['title'] = '';
+		if ( ! isset($faq['content']) ) $faq['content'] = '';
 ?>
 <div class="modal fade faq_modal" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -1009,37 +1012,12 @@ if ( ! function_exists('draw_modal_faq')){
 				<h4 class="modal-title" id="myModalLabel">FAQ</h4>
 			</div>
 			<div class="modal-body">
-				<a href="#" class="btn btn-primary btn-sm active add-faq" role="button">Add FAQ</a>
+				<input type="text" name="text-title" value="<?=$faq['title'];?>" class="form-control" placeholder="Title"/>
+				<textarea id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-content" name="text-content" class="form-control tinymce" style="width:100%; height:300px"><?=$faq['content'];?></textarea>
 				
-				<p>FAQ url must lead with http:// or https://.</p>
-				<div id="widget-<?=$widget->id;?>-sort" class="faq_sort">
-				<?php
-				if ( is_array($faqs) && count($faqs) > 0 ):
-				$i = 1;
-				foreach ( $faqs as $faq ):
-				?>
-					<div id="widget-<?=$widget->widget_type . '-' . $widget->id.'-modal-'.$i;?>" class="faq_form form-inline">
-						<div class="form-group">
-							<input type="text" name="faq-title[<?=$i;?>]" value="<?=$faq['title'];?>" class="form-control" placeholder="Title"/>
-						</div>
-						<div class="form-group">
-							<input type="text" name="faq-url[<?=$i;?>]" value="<?=$faq['url'];?>" class="form-control form_url" placeholder="External Link"/>
-						</div>
-						<div class="form-group action-button">
-							<button type="button" class="btn btn-danger btn-sm delete-faq">Delete</button>
-							<span class="ui-icon ui-icon-arrowthick-2-n-s sort-handle"></span>
-							<span class="spinner"></span>
-						</div>
-					</div>
-				<?php
-				$i++;
-				endforeach;
-				endif;
-				?>
-				</div>
 			</div>
 			<div class="modal-footer">
-				<p>Close this to save your data!</p>
+				<button type="button" class="btn btn-primary btn-sm save-video" data-dismiss="modal">Save</button>
 				<span class="spinner"></span>
 			</div>
 		</div>

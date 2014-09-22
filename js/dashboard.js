@@ -539,34 +539,13 @@ $(document).ready(function() {
 	/* update faq */
 	$('body').on('hide.bs.modal', '.faq_modal', function (event) {
 		widget_id = $(this).attr('id');
-		
-		var error = false;
-		$('#'+widget_id+' input').each(function(){
-			if ( $(this).val() == ''){
-				error = true;
-				$(this).focus();
-				alert("Please fill this field!");
-				return false;
-			}
-		});
-		
-		if ( true == error ) return false;
-		
-		$('#'+widget_id+' .form_url').each(function(){
-			if ( ! isValidURL($(this).val()) ){
-				error = true;
-				$(this).focus();
-				alert("Please enter valid URL!");
-				return false;
-			}
-		});
-		
-		if ( true == error ) return false;
-		
+		tinymce.triggerSave();
+		//no validation
+		//just save it
 		$.ajax({
 			type: "POST",
 				url: ajax_url+'/save_widget/',
-				data: $('#'+widget_id+' input').serialize() + '&user_id='+$('#user_id').val()+'&template_id='+$('#template_id').val()+'&widget_type=faq&widget_id='+widget_id+'&csrf_b2b='+$( "input[name='csrf_b2b']" ).val(),
+				data: $('#'+widget_id+' input, #'+widget_id+' textarea').serialize() + '&user_id='+$('#user_id').val()+'&template_id='+$('#template_id').val()+'&widget_type=faq&widget_id='+widget_id+'&csrf_b2b='+$( "input[name='csrf_b2b']" ).val(),
 				dataType : "json",
 			})
 		.done(function( msg ) {

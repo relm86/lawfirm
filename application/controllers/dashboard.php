@@ -435,26 +435,16 @@ class Dashboard extends CI_Controller {
 	}
 	
 	function _get_widget_data(){
-		if ( 'faq' == $this->input->post('widget_type') && $this->input->post('faq-title') ):
-			$faq_title = $this->input->post('faq-title');
-			$faq_url = $this->input->post('faq-url');
-			$i = 1;
-			
-			if ( is_array($faq_title) && count($faq_title) > 0):
-				foreach($faq_title as $title):
-					if (filter_var($faq_url[$i], FILTER_VALIDATE_URL) !== false)
-						$url = $faq_url[$i];
-					else
-						$url = '#';
-					$faq[$i]['title'] = $title;
-					$faq[$i]['url'] = strtolower($url);
-					$i++;
-				endforeach;
+		if ( 'faq' == $this->input->post('widget_type') && $this->input->post('text-title') ):
+			$title = $this->input->post('text-title');
+			$content = $this->input->post('text-content');
+			if ( $content ):
+				$this->load->library('htmlfixer');
+				$content = $this->htmlfixer->getFixedHtml($this->input->post('text-content'));
 			endif;
-			
-			if ( isset($faq) && count($faq) > 0 ):
-				return serialize($faq);
-			endif;
+			$return['title'] = $title;
+			$return['content'] = $content;
+			return serialize($return);
 		elseif ( 'links' == $this->input->post('widget_type') && $this->input->post('link-title')):
 			$link_title = $this->input->post('link-title');
 			$link_url = $this->input->post('link-url');
