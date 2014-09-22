@@ -935,7 +935,8 @@ class Dashboard extends CI_Controller {
         $query = $this->db->delete('templates');
         redirect(base_url('dashboard'));
     }
-	
+
+
 }
 
 /* End of file welcome.php */
