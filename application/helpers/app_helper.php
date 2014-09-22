@@ -631,7 +631,9 @@ if ( ! function_exists('draw_widget_faq')){
 			?>
 			<?php
 				else:
-					echo '<div class="blank-widget faqs"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-'.$widget->widget_type . '-' . $widget->id.'-modal">Add FAQ</button></div>';
+					if($preview) {
+						echo '<div class="blank-widget faqs"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-'.$widget->widget_type . '-' . $widget->id.'-modal">Add FAQ</button></div>';
+					}
 				endif;
 			?>
 		</div>

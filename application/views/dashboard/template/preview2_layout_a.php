@@ -1,6 +1,6 @@
 <div class="container page_preview">
 	<div class="row">
-		<div class="col-md-12" id="the-page">
+		<div class="col-md-10" id="the-page">
 			<div class="col-md-12" id="header">
 				<!-- header -->
 				 <div class="widget header">

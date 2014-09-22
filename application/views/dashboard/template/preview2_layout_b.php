@@ -1,7 +1,7 @@
 <div class="container page_preview">
 	<div class="row">
 
-		<div class="col-md-12" id="the-page">
+		<div class="col-md-10" id="the-page">
 			<div class="col-md-12" id="header">
 				<!-- header -->
 				<div class="col-md-6">
@@ -65,7 +65,9 @@
 				<?php
 				else:
 				?>
-						<div class="blank-image"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#main-image-slider">Add Image Slider</button></div>
+						<div class="blank-image">
+						<!--<button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#main-image-slider">Add Image Slider</button>-->
+						</div>
 				<?php
 				endif;
 				?>
@@ -124,7 +126,7 @@
 						echo '</div>'; //<div class="video-nav">
 						
 					else:
-						echo '<div class="blank-video"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#videos-modal">Add Video</button></div>';
+						echo '<div class="blank-video"><!--<button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#videos-modal">Add Video</button>--></div>';
 					endif;
 					?>
 				</div><!-- end .widget.videos -->
