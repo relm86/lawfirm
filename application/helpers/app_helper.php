@@ -494,6 +494,7 @@ if ( ! function_exists('draw_widget_stories')){
 
 	<div class="widget-inside">
 		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal">Edit</button>
+		<button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 <?php
 		endif;
 ?>
