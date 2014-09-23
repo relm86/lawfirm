@@ -921,7 +921,8 @@ class Dashboard extends CI_Controller {
             'level'  => array(1 => '1', 2 => 2, 3 => '3', 4 => '4'),
             'gender' => array('m' => 'male', 'f' => 'female')
         );
-        $data['required'] = array('first_name', 'last_name', 'email_address', 'phone_number', 'zip_code');
+        //$data['required'] = array('first_name', 'last_name', 'email_address', 'phone_number', 'zip_code');
+        $data['required'] = array();
 
         if ($this->input->post())
         {
