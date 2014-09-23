@@ -29,6 +29,13 @@
 	background: #ffffff;
 	width: 100%;
 	padding: 10px;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+}
+
+#widgets h4.page-header {
+	margin: 0;
 }
 
 .widget-title h4 {

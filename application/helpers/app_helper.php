@@ -308,7 +308,7 @@ if ( ! function_exists('draw_modals')){
 		if ( $query->num_rows() > 0 ):
 			foreach($query->result() as $widget ):
 				if ( $widget->widget_type == 'greeting' ):
-					//draw_modal_greeting($widget);
+					draw_modal_greeting($widget);
 				elseif ( $widget->widget_type == 'testimonials' ):
 					draw_modal_testimonials($widget);
 				elseif ( $widget->widget_type == 'stories' ):
@@ -341,7 +341,7 @@ if ( ! function_exists('draw_modal')){
 		if ( $query->num_rows() > 0 ):
 			$widget = $query->row();
 			if ( $widget->widget_type == 'greeting' ):
-				//draw_modal_greeting($widget);
+				draw_modal_greeting($widget);
 			elseif ( $widget->widget_type == 'testimonials' ):
 				draw_modal_testimonials($widget);
 			elseif ( $widget->widget_type == 'stories' ):
@@ -367,6 +367,21 @@ if ( ! function_exists('draw_widget_greeting')){
 	function draw_widget_greeting($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
 		
+		$CI = get_instance();
+		
+		$text = unserialize($widget->widget_data);
+		
+		if ( ! isset($text['title']) ) $text['title'] = 'Hi [first-name],';
+		if ( ! isset($text['content']) ) $text['content'] = "<p>We've put together this page to provide customized information just for you.</p>";
+		$first_name = '';
+		$last_name = '';
+		if ( $CI->session->userdata('first_name') ) $first_name = $CI->session->userdata('first_name');
+		if ( $CI->session->userdata('last_name') ) $last_name = $CI->session->userdata('last_name');
+		$search = array('[first-name]','[last-name]');
+		$replace = array($first_name, $last_name);
+		$text['title'] = str_replace($search, $replace, $text['title']);
+		$text['content'] = str_replace($search, $replace, $text['content']);
+		
 		$col = '';
 		$preview_col = '';
 		
@@ -378,27 +393,25 @@ if ( ! function_exists('draw_widget_greeting')){
 
 <div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget<?=$preview_col;?>" data-type="<?=$widget->widget_type;?>">
 	<div class="widget-top">
-		<div class="widget-title"><h4>Welcome<span class="in-widget-title"></span></h4></div>
+		<div class="widget-title"><h4>Welcome Message</h4></div>
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal">Edit</button>
+		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal">Edit</button>
 		<button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 <?php
 		endif;
 ?>
-		<div class="widget photo<?=$col;?>" id="upload_foto">
-			<?php echo form_open(); ?>
+		<div class="widget text greeting<?=$col;?>">
 			<div class="pull-left">
-			     <div id="user_picture" style="max-width: 100px;"><img src="<?php echo get_user_picture_thumb(FALSE, 100, 100); ?>" alt="<?php if ( isset($user->first_name) ) echo $user->first_name; ?> Picture" class="img-rounded"></div>
+			     <div id="user_picture" style="max-width: 100px;"><img src="<?php echo get_user_picture_thumb(FALSE, 100, 100); ?>" alt="<?=$first_name;?> Picture" class="img-rounded"></div>
 			    <div class="clearfix"></div>
                         </div>
 		        <div class="media-body">
-				<h4 class="media-heading"><?php echo get_user_fullname(); ?></h4>
-				<p>We've put together this page to provide customized information just for you.</p>
+				<h4 class="media-heading"><?=$text['title'];?></h4>
+				<?=$text['content'];?>
 			</div>
 			<div class="clearfix"></div>
-			<?php echo form_close(); ?>
 		</div>
 <?php
 		if ( $preview ):
@@ -1214,6 +1227,38 @@ if ( ! function_exists('draw_modal_contact')){
 				<input type="text" name="text-title" value="<?=$text['title'];?>" class="form-control" placeholder="Title"/>
 				<textarea id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-content" name="text-content" class="form-control tinymce" style="width:100%; height:300px"><?=$text['content'];?></textarea>
 				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
+				<span class="spinner"></span>
+			</div>
+		</div>
+	</div>
+</div>
+<?php
+	}
+}
+
+if ( ! function_exists('draw_modal_greeting')){
+	function draw_modal_greeting( $widget ){
+		if ( ! is_object($widget) ) return FALSE;
+		$text = unserialize($widget->widget_data);
+		
+		if ( ! isset($text['title']) ) $text['title'] = '';
+		if ( ! isset($text['content']) ) $text['content'] = '';
+?>
+<div class="modal fade text_modal" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" data-widget-type="greeting" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabel">Welcome widget</h4>
+			</div>
+			<div class="modal-body">
+				
+				<input type="text" name="text-title" value="<?=$text['title'];?>" class="form-control" placeholder="Title"/>
+				<textarea id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-content" name="text-content" class="form-control tinymce" style="width:100%; height:100px"><?=$text['content'];?></textarea>
+				<p>You can use [first-name] or [last-name] to view user First Name or Last Name.</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>

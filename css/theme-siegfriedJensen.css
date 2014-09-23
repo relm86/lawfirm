@@ -32,26 +32,27 @@ body {
 .panel-review {
 	margin: 16px 0 0 0;
 }
-.widget.stories h3.title, .widget.links h3.title {
+.widget.stories h3.title, .widget.links h3.title, .widget.text h3.title {
 	border-bottom: 3px solid;
 	border-color: 55514e;
 	padding: 10px;
+	margin-top: 0;
 }
-.widget.stories ul, .widget.faq ul, .widget.links ul {
+.widget.stories ul, .widget.faq ul, .widget.links ul, .widget.text ul {
 	list-style-type: none;
 	margin: 0;
 	padding: 0 10px 0;
 }
-.widget.stories ul li:before, .widget.faq ul li:before, .widget.links ul li:before {
+.widget.stories ul li:before, .widget.faq ul li:before, .widget.links ul li:before, .widget.text ul li:before {
 	content: "-";
 	position: relative;
 	left: -5px;
 }
-.widget.stories li, .widget.faq li, .widget.links li {
+.widget.stories li, .widget.faq li, .widget.links li, .widget.text li {
 	text-indent: -5px;
 	padding-bottom: 5px;
 }
-.widget.stories a, .widget.faq a, .widget.links a {
+.widget.stories a, .widget.faq a, .widget.links a, .widget.text a {
 	color: #333333;
 	text-decoration: underline;
 	font-size: 18px;

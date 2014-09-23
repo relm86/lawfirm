@@ -11,8 +11,7 @@
 					<div class="widget-inside">
 						<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal">Edit</button>
 						<button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
-						<div class="widget photo" id="upload_foto">
-							<?php echo form_open(); ?>
+						<div class="widget text greeting">
 							<div class="pull-left">
 							     <div id="user_picture" style="max-width: 100px;"><img src="<?php echo get_user_picture_thumb(FALSE, 100, 100); ?>" alt="<?php if ( isset($user->first_name) ) echo $user->first_name; ?> Picture" class="img-rounded"></div>
 							    <div class="clearfix"></div>
@@ -22,7 +21,6 @@
 								<p>We've put together this page to provide customized information just for you.</p>
 							</div>
 							<div class="clearfix"></div>
-							<?php echo form_close(); ?>
 						</div>
 					</div>
 
