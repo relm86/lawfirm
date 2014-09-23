@@ -310,11 +310,13 @@ if ( ! function_exists('draw_modals')){
 				if ( $widget->widget_type == 'greeting' ):
 					//draw_modal_greeting($widget);
 				elseif ( $widget->widget_type == 'testimonials' ):
-					//draw_modal_testimonials($widget);
+					draw_modal_testimonials($widget);
+				elseif ( $widget->widget_type == 'stories' ):
+					draw_modal_stories($widget, $position, $preview);
 				elseif ( $widget->widget_type == 'links' ):
 					draw_modal_links($widget);
 				elseif ( $widget->widget_type == 'contact' ):
-					//draw_modal_contact($widget);
+					draw_modal_contact($widget);
 				elseif ( $widget->widget_type == 'twitter' ):
 					draw_modal_twitter($widget);
 				elseif ( $widget->widget_type == 'faq' ):
@@ -341,11 +343,13 @@ if ( ! function_exists('draw_modal')){
 			if ( $widget->widget_type == 'greeting' ):
 				//draw_modal_greeting($widget);
 			elseif ( $widget->widget_type == 'testimonials' ):
-				//draw_modal_testimonials($widget);
+				draw_modal_testimonials($widget);
+			elseif ( $widget->widget_type == 'stories' ):
+				draw_modal_stories($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'links' ):
 				draw_modal_links($widget);
 			elseif ( $widget->widget_type == 'contact' ):
-				//draw_modal_contact($widget);
+				draw_modal_contact($widget);
 			elseif ( $widget->widget_type == 'twitter' ):
 				draw_modal_twitter($widget);
 			elseif ( $widget->widget_type == 'faq' ):
@@ -426,7 +430,7 @@ if ( ! function_exists('draw_widget_testimonials')){
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal">Edit</button>
+		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal">Edit</button>
 		<button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 <?php
 		endif;
@@ -493,7 +497,7 @@ if ( ! function_exists('draw_widget_stories')){
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal">Edit</button>
+		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal">Edit</button>
 		<button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 <?php
 		endif;
@@ -1007,7 +1011,7 @@ if ( ! function_exists('draw_modal_faq')){
 		if ( ! isset($faq['title']) ) $faq['title'] = '';
 		if ( ! isset($faq['content']) ) $faq['content'] = '';
 ?>
-<div class="modal fade faq_modal" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade faq_modal" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" tabindex="-1" data-widget-type="faq" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -1020,7 +1024,7 @@ if ( ! function_exists('draw_modal_faq')){
 				
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary btn-sm save-video" data-dismiss="modal">Save</button>
+				<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
 				<span class="spinner"></span>
 			</div>
 		</div>
@@ -1037,7 +1041,7 @@ if ( ! function_exists('draw_modal_links')){
 		
 		if ( ! isset($links['title']) ) $links['title'] = 'Links';
 ?>
-<div class="modal fade links_modal" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade links_modal" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" tabindex="-1" data-widget-type="links" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -1097,7 +1101,7 @@ if ( ! function_exists('draw_modal_text')){
 		if ( ! isset($text['title']) ) $text['title'] = '';
 		if ( ! isset($text['content']) ) $text['content'] = '';
 ?>
-<div class="modal fade text_modal" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade text_modal" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" tabindex="-1" data-widget-type="text" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
@@ -1111,7 +1115,103 @@ if ( ! function_exists('draw_modal_text')){
 				
 			</div>
 			<div class="modal-footer">
-				<button type="button" class="btn btn-primary btn-sm save-video" data-dismiss="modal">Save</button>
+				<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
+				<span class="spinner"></span>
+			</div>
+		</div>
+	</div>
+</div>
+<?php
+	}
+}
+
+if ( ! function_exists('draw_modal_testimonials')){
+	function draw_modal_testimonials( $widget ){
+		if ( ! is_object($widget) ) return FALSE;
+		$text = unserialize($widget->widget_data);
+		
+		if ( ! isset($text['title']) ) $text['title'] = '';
+		if ( ! isset($text['content']) ) $text['content'] = '';
+?>
+<div class="modal fade text_modal" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" data-widget-type="testimonials" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabel">Testimonial</h4>
+			</div>
+			<div class="modal-body">
+				
+				<input type="text" name="text-title" value="<?=$text['title'];?>" class="form-control" placeholder="Title"/>
+				<textarea id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-content" name="text-content" class="form-control tinymce" style="width:100%; height:300px"><?=$text['content'];?></textarea>
+				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
+				<span class="spinner"></span>
+			</div>
+		</div>
+	</div>
+</div>
+<?php
+	}
+}
+
+if ( ! function_exists('draw_modal_stories')){
+	function draw_modal_stories( $widget ){
+		if ( ! is_object($widget) ) return FALSE;
+		$text = unserialize($widget->widget_data);
+		
+		if ( ! isset($text['title']) ) $text['title'] = '';
+		if ( ! isset($text['content']) ) $text['content'] = '';
+?>
+<div class="modal fade text_modal" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" data-widget-type="stories" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabel">Client Stories</h4>
+			</div>
+			<div class="modal-body">
+				
+				<input type="text" name="text-title" value="<?=$text['title'];?>" class="form-control" placeholder="Title"/>
+				<textarea id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-content" name="text-content" class="form-control tinymce" style="width:100%; height:300px"><?=$text['content'];?></textarea>
+				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
+				<span class="spinner"></span>
+			</div>
+		</div>
+	</div>
+</div>
+<?php
+	}
+}
+
+if ( ! function_exists('draw_modal_contact')){
+	function draw_modal_contact( $widget ){
+		if ( ! is_object($widget) ) return FALSE;
+		$text = unserialize($widget->widget_data);
+		
+		if ( ! isset($text['title']) ) $text['title'] = '';
+		if ( ! isset($text['content']) ) $text['content'] = '';
+?>
+<div class="modal fade contact_modal" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" data-widget-type="contact" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabel">Contact</h4>
+			</div>
+			<div class="modal-body">
+				
+				<input type="text" name="text-title" value="<?=$text['title'];?>" class="form-control" placeholder="Title"/>
+				<textarea id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-content" name="text-content" class="form-control tinymce" style="width:100%; height:300px"><?=$text['content'];?></textarea>
+				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
 				<span class="spinner"></span>
 			</div>
 		</div>
