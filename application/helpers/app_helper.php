@@ -312,7 +312,7 @@ if ( ! function_exists('draw_modals')){
 				elseif ( $widget->widget_type == 'testimonials' ):
 					draw_modal_testimonials($widget);
 				elseif ( $widget->widget_type == 'stories' ):
-					draw_modal_stories($widget, $preview);
+					draw_modal_stories($widget);
 				elseif ( $widget->widget_type == 'links' ):
 					draw_modal_links($widget);
 				elseif ( $widget->widget_type == 'contact' ):
