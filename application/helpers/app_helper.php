@@ -312,7 +312,7 @@ if ( ! function_exists('draw_modals')){
 				elseif ( $widget->widget_type == 'testimonials' ):
 					draw_modal_testimonials($widget);
 				elseif ( $widget->widget_type == 'stories' ):
-					draw_modal_stories($widget, $position, $preview);
+					draw_modal_stories($widget, $preview);
 				elseif ( $widget->widget_type == 'links' ):
 					draw_modal_links($widget);
 				elseif ( $widget->widget_type == 'contact' ):
@@ -924,8 +924,6 @@ if ( ! function_exists('draw_main_image_modal')){
         <h4 class="modal-title" id="myModalLabel">Featured Image</h4>
       </div>
       <div class="modal-body" id="main_images_upload">
-		<a id="upload_main_image" href="#" class="btn btn-primary btn-sm active" role="button">Upload Image</a>
-		<p>Note: Max image file size 10MB, width 1024px and height 768px. Only jpg/jpeg/png allowed. Best Dimension 770x366px.</p>
 		<div id="main_image_sort">
 			<?php
 			if ( isset($main_images)  && $main_images): 
@@ -951,8 +949,10 @@ if ( ! function_exists('draw_main_image_modal')){
 		</div>
       </div>
       <div class="modal-footer">
+      	<a id="upload_main_image" href="#" class="btn btn-primary btn-sm active pull-left" role="button">Add New Slide</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <span class="spinner"></span>
+        <p class="clearfix" style="text-align: left; margin-top: 10px;"><b>Note: </b>Max image file size 10MB, width 1024px and height 768px. Only jpg/jpeg/png allowed. Best Dimension 770x366px.</p>
       </div>
     </div>
   </div>
@@ -973,9 +973,6 @@ if ( ! function_exists('draw_video_modal')){
         <h4 class="modal-title" id="myModalLabel">Video</h4>
       </div>
       <div class="modal-body" id="videos-sort-container">
-		<a id="upload_video_thumb" href="#" class="btn btn-primary btn-sm active" role="button">Add Video</a>
-		<p>Press Add Video button to select your video thumbnail and then place Youtube URL.</p>
-		<p>Note: Maximum video thumbnail size is 10MB, width 1024px and height 768px. Only jpg/jpeg/png allowed. Best Dimension 746x439px.</p>
 		<div id="videos-sort">
 			<?php
 			if ( isset($videos) && $videos ):
@@ -999,8 +996,10 @@ if ( ! function_exists('draw_video_modal')){
 		</div>
       </div>
       <div class="modal-footer">
+      	<a id="upload_video_thumb" href="#" class="btn btn-primary btn-sm active pull-left" role="button">Add Video</a>
         <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
         <span class="spinner"></span>
+        <p class="clearfix" style="text-align: left; margin-top: 10px;">Press Add Video button to select your video thumbnail and then place Youtube URL.<br /><b>Note:</b> Maximum video thumbnail size is 10MB, width 1024px and height 768px. Only jpg/jpeg/png allowed. Best Dimension 746x439px.</p>
       </div>
     </div>
   </div>
