@@ -9,7 +9,8 @@
 					</div>
 
 					<div class="widget-inside">
-						<button type="button" class="btn btn-warning edit-widget">Edit</button>
+						<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal">Edit</button>
+						<button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 						<div class="widget photo" id="upload_foto">
 							<?php echo form_open(); ?>
 							<div class="pull-left">
@@ -34,7 +35,8 @@
 					</div>
 
 					<div class="widget-inside">
-						<button type="button" class="btn btn-warning edit-widget">Edit</button>
+						<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal">Edit</button>
+						<button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 						<div class="widget reviews">
 							<div class="panel panel-default widget-testimonials-full">
 							        <div class="panel-heading">
