@@ -187,32 +187,32 @@ body {
 	color: #2b2b2b;
 	text-decoration: underline;
 }
-#footer .widget.links{
+#footer .widget.links, #footer .widget.text{
 	font-size: 15px;
 	color: #2b2b2b;
 	clear: none;
 }
 
-#footer .widget.links h5, #footer .widget.links h3{
+#footer .widget.links h5, #footer .widget.links h3, #footer .widget.text h5, #footer .widget.text h3{
 	font-size: 15px;
 	border-bottom: none;
 	padding: 0
 }
 
-#footer .widget.links ul li{
+#footer .widget.links ul li, #footer .widget.text ul li{
 	text-indent: 0;
 }
 
-#footer .widget.links ul li:before{
+#footer .widget.links ul li:before, #footer .widget.text ul li:before{
 	content: '';
 }
 
-#footer .widget.links ul{
+#footer .widget.links ul, #footer .widget.text ul{
 	list-style-type: none;
 	padding-left: 15px;
 }
 
-#footer .widget.links a{
+#footer .widget.links a, #footer .widget.text a{
 	color: #2b2b2b;
 	text-decoration: none;
 	font-size: 14px;
