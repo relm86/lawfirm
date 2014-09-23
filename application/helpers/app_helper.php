@@ -711,7 +711,10 @@ if ( ! function_exists('draw_modal_twitter')){
 							<input type="text" name="twitter-title[<?=$i;?>]" value="<?=$twitter['title'];?>" class="form-control" placeholder="Title"/>
 						</div>
 						<div class="form-group">
-							<input type="text" name="twitter-hashtag[<?=$i;?>]" value="<?=$twitter['hashtag'];?>" class="form-control" placeholder="hashtag without #"/>
+							<div class="input-group">
+								<div class="input-group-addon">#</div>
+								<input type="text" name="twitter-hashtag[<?=$i;?>]" value="<?=$twitter['hashtag'];?>" class="form-control" placeholder="hashtag without #"/>
+							</div>
 						</div>
 						<div class="form-group action-button">
 							<span class="spinner"></span>
@@ -726,7 +729,10 @@ if ( ! function_exists('draw_modal_twitter')){
 							<input type="text" name="twitter-title[<?=$i;?>]" value="Twitter Feed" class="form-control" placeholder="Title"/>
 						</div>
 						<div class="form-group">
-							<input type="text" name="twitter-hashtag[<?=$i;?>]" value="autoaccident" class="form-control" placeholder="hashtag without #"/>
+							<div class="input-group">
+								<div class="input-group-addon">#</div>
+								<input type="text" name="twitter-hashtag[<?=$i;?>]" value="autoaccident" class="form-control" placeholder="hashtag without #"/>
+							</div>
 						</div>
 						<div class="form-group action-button">
 							<span class="spinner"></span>

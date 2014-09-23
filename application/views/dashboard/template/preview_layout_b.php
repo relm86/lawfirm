@@ -81,15 +81,21 @@
 					</div>
 
 					<div class="widget-inside">
-						<button type="button" class="btn btn-warning edit-widget">Edit</button>
+						<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-twitter-60-modal">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
+		
 						<div class="widget twitter">
-							<h3 class="title">Twitter Feed</h3>
-	        					<a class="twitter-timeline" href="https://twitter.com/hashtag/autoaccident" data-widget-id="509464469521461248" data-chrome="noheader  noborders transparent" >#autoaccident Tweets</a>
-	<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+							<div class="panel panel-default widget-testimonials-full">
+								<div class="panel-heading">
+								  <h3 class="panel-title">Twitter Feed</h3>
+								</div>
+								<div class="panel-body">
+								  
+								</div>
+							</div>
 						</div>
 					</div>
+					<div class="widget-description">Add Twitter Feeds</div>
 
-					<div class="widget-description">Add Twitter Feed</div>
 				</div>
 				
 				<div id="widget-faq-__i__" class="widget" data-type="faq">
