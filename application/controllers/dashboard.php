@@ -926,15 +926,15 @@ class Dashboard extends CI_Controller {
 
         if ($this->input->post())
         {
-            $this->form_validation->set_rules('first_name', 'Name', "trim|required");
-            $this->form_validation->set_rules('last_name', 'Name', "trim|required");
+            //$this->form_validation->set_rules('first_name', 'Name', "trim");
+            //$this->form_validation->set_rules('last_name', 'Name', "trim");
             //$this->form_validation->set_rules('password', 'Password', "trim|required|callback__check_password");
-            $this->form_validation->set_rules('email_address', 'Email', "trim|required|valid_email");
-            $this->form_validation->set_rules('phone_number', 'Phone Number', "trim|required|callback__isValidPhone");
-            $this->form_validation->set_rules('zip_code', 'Zip Code', "trim|required|callback__isValidZipCode");
+            //$this->form_validation->set_rules('email_address', 'Email', "trim");
+            //$this->form_validation->set_rules('phone_number', 'Phone Number', "trim|required|callback__isValidPhone");
+            //$this->form_validation->set_rules('zip_code', 'Zip Code', "trim|required|callback__isValidZipCode");
 
-            if ($this->form_validation->run() == TRUE)
-            {
+            /*if ($this->form_validation->run() == TRUE)
+            {*/
                 $data = $this->input->post();
 
                 if (!$data['password'] || $data['password'] == '') {
@@ -942,10 +942,19 @@ class Dashboard extends CI_Controller {
                 } else {
                     $data['password'] = md5($data['password']);
                 }
+
+                foreach ($data as $key => $value)
+                {
+                    if ($value == '')
+                    {
+                        unset($data[$key]);
+                    }
+                }
+
                 $this->db->where('id', $id);
                 $this->db->update('users', $data);
                 redirect(base_url('dashboard'));
-            }
+            /*}*/
             //var_dump(validation_errors()); die;
         }
 
