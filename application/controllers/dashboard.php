@@ -82,7 +82,6 @@ class Dashboard extends CI_Controller {
 					$data['logged_in'] = TRUE;
 					$data['password_verified'] = TRUE;
 					$this->session->set_userdata($data);
-                    			sleep(2);
 					redirect(base_url('/dashboard/'));
 				endif;
 				
@@ -1011,7 +1010,6 @@ class Dashboard extends CI_Controller {
         $data['logged_in'] = TRUE;
         $data['password_verified'] = TRUE;
         $this->session->set_userdata($data);
-        sleep(2);
         redirect(base_url());
     }
 

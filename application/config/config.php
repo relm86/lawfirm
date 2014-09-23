@@ -16,8 +16,7 @@
 */
 $config['base_url'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
 $config['base_url'] .= "://".$_SERVER['HTTP_HOST'];
-$config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']); 
-$config['base_url'] = 'http://www.rokowiri.com';
+$config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
 $config['fb_app_id']	= "367838596697555";
 $config['google_client_id']	= "607475603602-kund226ns28q1k7c1edoth80fr7f1jjv.apps.googleusercontent.com";
 $config['linkedin_api_key']	= "77ca2ee1u9h2g3";
@@ -258,7 +257,7 @@ $config['sess_encrypt_cookie']	= FALSE;
 $config['sess_use_database']	= TRUE;
 $config['sess_table_name']		= 'ci_sessions';
 $config['sess_match_ip']		= FALSE;
-$config['sess_match_useragent']	= TRUE;
+$config['sess_match_useragent']	= FALSE;
 $config['sess_time_to_update']	= 72000;
 
 /*

@@ -30,7 +30,7 @@
 								<td><?=$user->zip_code;?></td>
 								<td>
 									<span><a href="dashboard/edituser/<?php echo $user->id; ?>" class="btn btn-primary btn-sm active" role="button">Edit</a></span>
-<!--									<span><a href="dashboard/loginas/<?php echo $user->id; ?>" target="_blank" class="btn btn-primary btn-sm active" role="button">Login as</a></span> -->
+									<span><a href="dashboard/loginas/<?php echo $user->id; ?>" target="_blank" class="btn btn-primary btn-sm active" role="button">Login as</a></span>
 									<span><a href="dashboard/suspend/<?php echo $user->id; ?>/<?php echo $user->suspend; ?>" class="btn btn-danger btn-sm active btn-danger-user" role="button"><?php echo $user->suspend == 0 ? 'Suspend' : 'Suspended'; ?></a></span>
 									<span><a href="dashboard/deleteuser/<?php echo $user->id; ?>" class="btn btn-danger btn-sm active btn-danger-user" role="button">Delete</a></span>
 								</td>
