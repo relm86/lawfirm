@@ -254,11 +254,12 @@ class Dashboard extends CI_Controller {
 			return;
 		endif;
 		
-		$this->load->view( 'dashboard/header', array('jqueryui' => TRUE, 'page_preview' => TRUE, 'layout'=> $data['template']->layout, 'color_scheme' => $data['template']->color_scheme) );
+		$this->load->view( get_default_theme().'/header', array('jqueryui' => TRUE, 'layout'=> $data['template']->layout, 'color_scheme' => $data['template']->color_scheme) );
 		$this->load->view( 'dashboard/template/preview2_' . $data['template']->layout, $data );
-		$this->load->view( 'dashboard/footer', array('jqueryui' => TRUE, 'preview_page' => TRUE) );
+		$this->load->view( get_default_theme().'/footer', array('jqueryui' => TRUE, 'preview_page' => TRUE) );
 	}	
 	
+	/* so we all know no longer use this 
 	public function dev_template_preview( $template_id = NULL){
 		$template_id = (int) $template_id;
 		$this->db->where('id', $template_id );
@@ -291,6 +292,7 @@ class Dashboard extends CI_Controller {
 		$this->load->view( 'dashboard/template/dev_preview_' . $data['template']->layout, $data );
 		$this->load->view( 'dashboard/footer', array('jqueryui' => TRUE) );
 	}
+	*/
 	
 	function _unique_template_name(){
 		
@@ -435,6 +437,7 @@ class Dashboard extends CI_Controller {
 	}
 	
 	function _get_widget_data(){
+		
 		if ( 'faq' == $this->input->post('widget_type') && $this->input->post('text-title') ):
 			$title = $this->input->post('text-title');
 			$content = $this->input->post('text-content');
@@ -445,6 +448,7 @@ class Dashboard extends CI_Controller {
 			$return['title'] = $title;
 			$return['content'] = $content;
 			return serialize($return);
+		
 		elseif ( 'links' == $this->input->post('widget_type') && $this->input->post('link-title')):
 			$link_title = $this->input->post('link-title');
 			$link_url = $this->input->post('link-url');
@@ -480,6 +484,29 @@ class Dashboard extends CI_Controller {
 			return serialize($return);
 		
 		elseif ( 'greeting' == $this->input->post('widget_type') && $this->input->post('text-title')):
+			$title = $this->input->post('text-title');
+			$content = $this->input->post('text-content');
+			if ( $content ):
+				$this->load->library('htmlfixer');
+				$content = $this->htmlfixer->getFixedHtml($this->input->post('text-content'));
+			endif;
+			$return['title'] = $title;
+			$return['content'] = $content;
+			return serialize($return);
+		
+		elseif ( 'testimonials' == $this->input->post('widget_type') && $this->input->post('text-title')):
+			$title = $this->input->post('text-title');
+			$content = $this->input->post('text-content');
+			//turn off for now since find bug when element have more class name
+			/*if ( $content ):
+				$this->load->library('htmlfixer');
+				$content = $this->htmlfixer->getFixedHtml($this->input->post('text-content'));
+			endif;*/
+			$return['title'] = $title;
+			$return['content'] = $content;
+			return serialize($return);
+		
+		elseif ( 'stories' == $this->input->post('widget_type') && $this->input->post('text-title')):
 			$title = $this->input->post('text-title');
 			$content = $this->input->post('text-content');
 			if ( $content ):

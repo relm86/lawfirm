@@ -345,7 +345,7 @@ if ( ! function_exists('draw_modal')){
 			elseif ( $widget->widget_type == 'testimonials' ):
 				draw_modal_testimonials($widget);
 			elseif ( $widget->widget_type == 'stories' ):
-				draw_modal_stories($widget, $position, $preview);
+				draw_modal_stories($widget);
 			elseif ( $widget->widget_type == 'links' ):
 				draw_modal_links($widget);
 			elseif ( $widget->widget_type == 'contact' ):
@@ -428,6 +428,14 @@ if ( ! function_exists('draw_widget_testimonials')){
 	function draw_widget_testimonials($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
 		
+		$testimonials = unserialize($widget->widget_data);
+		
+		if ( ! isset($testimonials['title']) ) $testimonials['title'] = 'Testimonials';
+		if ( ! isset($testimonials['content']) && $preview) 
+			$testimonials['content'] = '<button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-testimonials-'.$widget->id.'-modal">Add Testimonials (Reviews)</button>';
+		elseif ( ! isset($testimonials['content']) )
+			$testimonials['content'] = '';
+		
 		$col = '';
 		$preview_col = '';
 		
@@ -448,34 +456,13 @@ if ( ! function_exists('draw_widget_testimonials')){
 <?php
 		endif;
 ?>
-		<div class="widget reviews<?=$col;?>">
+		<div class="widget testimonials<?=$col;?>">
 			<div class="panel panel-default widget-testimonials-full">
 			        <div class="panel-heading">
-			          <h3 class="panel-title">Testimonials</h3>
+			          <h3 class="panel-title"><?=$testimonials['title'];?></h3>
 			        </div>
 			        <div class="panel-body">
-			          <p class="pull-left">Other people in your area who we've helped:</p>
-			          <div class="clearfix"></div>
-			           <div class="panel-review pull-left"> <img src="<?php echo base_url(); ?>img/barbara-canon.jpg" width="64" height="64" alt="" class="img64 pull-left"/>
-			            <div class="media-body">
-			              <h4 class="media-heading">Barbara Cannon</h4>
-			              <a href="http://www.siegfriedandjensen.com/barbara-cannon">Barbara Cannon was enjoying ...</a> </div>
-			          </div>
-			           <div class="panel-review pull-left"> <img src="<?php echo base_url(); ?>img/ashley.jpg" width="64" height="64" alt="" class="img64 pull-left"/>
-			            <div class="media-body">
-			              <h4 class="media-heading">Ashley Merrill </h4>
-			              <a href="http://www.siegfriedandjensen.com/our-clients/ashley-merrill">We need to make sure...</a> </div>
-			          </div>
-			           <div class="panel-review pull-left"> <img src="<?php echo base_url(); ?>img/bill.jpg" width="64" height="64" alt="" class="img64 pull-left"/>
-			            <div class="media-body">
-			              <h4 class="media-heading">Bill Thompson</h4>
-			              <a href="http://www.siegfriedandjensen.com/our-clients/bill-thompson">A Bill learned firsthand...</a> </div>
-			          </div>
-			          <div class="panel-review pull-left"> <img src="<?php echo base_url(); ?>img/sorenson.jpg" width="64" height="64" alt="" class="img64 pull-left"/>
-			            <div class="media-body">
-			              <h4 class="media-heading">Lisa Holcombe</h4>
-			              <a href="http://www.siegfriedandjensen.com/our-clients/lisa-holcombe">Lisa is a vivacious, energetic...</a> </div>
-			          </div>
+			          <?=$testimonials['content'];?>
 			        </div>
 			</div>
 		</div>
@@ -494,6 +481,14 @@ if ( ! function_exists('draw_widget_testimonials')){
 if ( ! function_exists('draw_widget_stories')){
 	function draw_widget_stories($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
+		
+		$stories = unserialize($widget->widget_data);
+		
+		if ( ! isset($stories['title']) ) $stories['title'] = 'Client Stories';
+		if ( ! isset($stories['content']) && $preview ) 
+			$stories['content'] = '<div class="blank-widget text"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-stories-'.$widget->id.'-modal">Add Client Stories</button></div>';
+		elseif ( ! isset($stories['content']) )
+			$stories['content'] = '';
 		
 		$col = '';
 		$preview_col = '';
@@ -516,15 +511,8 @@ if ( ! function_exists('draw_widget_stories')){
 		endif;
 ?>
 		<div class="widget stories<?=$col;?>">
-			<h3 class="title">Client Stories</h3>
-		        <ul>
-		          <li><a href="http://www.siegfriedandjensen.com/tuesday-sorenson">Tuesday Sorenson</a></li>
-		          <li><a href="http://www.siegfriedandjensen.com/barbara-cannon">Barbara Cannon</a></li>
-		          <li><a href="http://www.siegfriedandjensen.com/our-clients/ashley-merrill">Ashley Merrill - Auto accident, wrongful death</a></li>
-		          <li><a href="http://www.siegfriedandjensen.com/our-clients/bill-thompson">Bill Thompson - Auto accident, catastrophic injury</a></li>
-		          <li><a href="http://www.siegfriedandjensen.com/our-clients/carl-fisher">Carl Fisher - Auto accident</a></li>
-		          <li><a href="http://www.siegfriedandjensen.com/our-clients/lisa-holcombe">Lisa Holcombe - Catastrophic injury, spinal cord injury, paralysis</a></li>
-		        </ul>
+			<h3 class="title"><?=$stories['title'];?></h3>
+		        <?=$stories['content']; ?>
 		</div>
 <?php
 		if ( $preview ):
@@ -582,10 +570,10 @@ if ( ! function_exists('draw_widget_contact')){
 }
 
 if ( ! function_exists('draw_widget_twitter')){
-	function draw_widget_twitter($widget, $preview = FALSE ){
+	function draw_widget_twitter($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
 		
-		$CI =& get_instance();
+		$CI = get_instance();
 		$CI->load->library('twitteroauth');
 		$CI->config->load('twitter');
 		$consumer_token  = $CI->config->item('twitter_consumer_key');
@@ -598,21 +586,9 @@ if ( ! function_exists('draw_widget_twitter')){
 		if($widget->widget_data=='') {
 			$widget->widget_data = 'a:1:{i:1;a:2:{s:5:"title";s:12:"Twitter Feed";s:7:"hashtag";s:12:"autoaccident";}}';
 		}
-		$twitters = unserialize($widget->widget_data);
-		if ( is_array($twitters) && count($twitters) > 0 ):
-			foreach ( $twitters as $twitter ):
-				$twitter_connection = $CI->twitteroauth->create($consumer_token, $consumer_secret);
-				if($twitter['hashtag']=='') {
-					$twitter['hashtag'] = 'autoaccident';
-				}
-				$query = array(
-				  "q" => "#".$twitter['hashtag']
-				);
-				$results = $twitter_connection->get('search/tweets', $query);
-
-				if ( $preview ):
+		
+		if ( $preview ):
 ?>
-
 <div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget" data-type="<?=$widget->widget_type;?>">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Twitter Feed<span class="in-widget-title"></span></h4></div>
@@ -621,81 +597,61 @@ if ( ! function_exists('draw_widget_twitter')){
 	<div class="widget-inside">
 		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 <?php
-				endif;
-?>
+		endif;
 		
+		$twitters = unserialize($widget->widget_data);
+		//i don't what is the plan, do you plan to support multiple hashtag?
+		//for now I assume it store in wrong way
+		if ( is_array($twitters) && count($twitters) > 0 ):
+		
+			$twitters = $twitters[1]; //-> remove this after fix store data function
+		
+?>
 		<div class="widget twitter">
 			<div class="panel panel-default widget-testimonials-full">
 				<div class="panel-heading">
-				  <h3 class="panel-title"><?=$twitter['title'];?></h3>
+					<h3 class="panel-title"><?=$twitters['title'];?></h3>
 				</div>
 				<div class="panel-body">
-				  <div class="clearfix"></div>
-<?php					  
-					$i=0;
-					foreach ($results->statuses as $result) {
-						$i++;
-						if($i<=4):
+<?php
+		
+			$twitter_connection = $CI->twitteroauth->create($consumer_token, $consumer_secret);
+			
+			if($twitters['hashtag']=='') {
+				$twitters['hashtag'] = 'autoaccident';
+			}
+			
+			$query = array(
+			  "q" => "#".$twitters['hashtag']
+			);
+				
+			$results = $twitter_connection->get('search/tweets', $query);
+			
+			$i = 0;
+			foreach ($results->statuses as $result):
+				$i++;
+				if($i<=4):
 ?>
-				   <div class="panel-review pull-left"> <img src="<?=$result->user->profile_image_url;?>" width="64" height="64" alt="" class="img64 pull-left"/>
-					<div class="media-body">
-					  <h4 class="media-heading"><?=$result->user->screen_name;?></h4>
-					  <a href="#"><?=$result->text;?></a> </div>
-				  </div>
-<?php					  
-						endif;
-					}
-//					die();
+					   <div class="panel-review pull-left"> <img src="<?=$result->user->profile_image_url;?>" width="64" height="64" alt="" class="img64 pull-left"/>
+						<div class="media-body">
+						  <h4 class="media-heading"><?=$result->user->screen_name;?></h4>
+						  <a href="#"><?=$result->text;?></a> </div>
+					  </div>
+<?php	
+				endif;
+			endforeach;
+		endif; //if ( is_array($twitters) && count($twitters) > 0 ):
 ?>
 				</div>
 			</div>
 		</div>
-<?php	if ( $preview ): ?>		
+<?php 
+		if ( $preview ): 
+?>		
 	</div>
-<?php	endif; ?>
 	<div class="widget-description">Add Twitter Feeds</div>
 </div>
-<?php
-			endforeach;
-		endif;
-	}
-
-
-	function draw_widget_twitter_old($widget, $position = FALSE, $preview = FALSE ){
-		if ( ! is_object($widget) ) return FALSE;
-		
-		$col = '';
-		$preview_col = '';
-		
-		if ( $position == 'footer' && $preview ) $preview_col =' col-md-2';
-		elseif ( $position == 'footer' )$col = ' col-md-2';
-		
-		if ( $preview ):
-?>
-
-<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget<?=$preview_col;?>" data-type="<?=$widget->widget_type;?>">
-	<div class="widget-top">
-		<div class="widget-title"><h4>Twitter Feed<span class="in-widget-title"></span></h4></div>
-	</div>
-
-	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal">Edit</button>
-<?php
-		endif;
-?>
-		<div class="widget twitter<?=$col;?>">
-			<h3 class="title">Twitter Feed</h3>
-		<a class="twitter-timeline" href="https://twitter.com/hashtag/autoaccident" data-widget-id="509464469521461248" data-chrome="noheader  noborders transparent" >#autoaccident Tweets</a>
-<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0],p=/^http:/.test(d.location)?'http':'https';if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src=p+"://platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
-		</div>
-<?php
-		if ( $preview ):
-?>
-	</div>
-
-	<div class="widget-description">Add Twitter Feed</div>
-</div>
-<?php
+<?php 
 		endif;
 	}
 }
@@ -800,12 +756,8 @@ if ( ! function_exists('draw_widget_faq')){
 			<?php
 				if ( $faq['content'] != '' ):
 					echo$faq['content'];
-			?>
-			<?php
-				else:
-					if($preview) {
-						echo '<div class="blank-widget faqs"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-'.$widget->widget_type . '-' . $widget->id.'-modal">Add FAQ</button></div>';
-					}
+				elseif($preview):
+					echo '<div class="blank-widget faqs"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-'.$widget->widget_type . '-' . $widget->id.'-modal">Add FAQ</button></div>';
 				endif;
 			?>
 		</div>
@@ -856,9 +808,7 @@ if ( ! function_exists('draw_widget_links')){
 						echo '<li><a href="'.$link['url'].'">'.$link['title'].'</a></li>';
 					endforeach;
 					echo '</ul>';
-			?>
-			<?php
-				else:
+				elseif ( $preview ):
 					echo '<div class="blank-widget faqs"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-'.$widget->widget_type . '-' . $widget->id.'-modal">Add Link</button></div>';
 				endif;
 			?>
@@ -904,11 +854,9 @@ if ( ! function_exists('draw_widget_text')){
 		<div class="widget text<?=$col;?>">
 			<h3 class="title"><?=$text['title'];?></h3>
 			<?php
-				if ( isset($text['content'])  ):
+				if ( isset($text['content']) && $text['content'] != ''  ):
 					echo $text['content'];
-			?>
-			<?php
-				else:
+				elseif( $preview ):
 					echo '<div class="blank-widget text"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-'.$widget->widget_type . '-' . $widget->id.'-modal">Add Text</button></div>';
 				endif;
 			?>
@@ -1266,6 +1214,131 @@ if ( ! function_exists('draw_modal_greeting')){
 			</div>
 		</div>
 	</div>
+</div>
+<?php
+	}
+}
+
+if ( ! function_exists('the_widgets')){
+	function the_widgets( ){
+?>
+<div id="widget-greeting-__i__" class="widget" data-type="greeting">
+	<div class="widget-top">
+		<div class="widget-title"><h4>Welcome<span class="in-widget-title"></span></h4></div>
+	</div>
+
+	<div class="widget-inside">
+		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal">Edit</button>
+		<button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
+		<div class="widget text greeting">
+			<div class="pull-left">
+			     <div id="user_picture" style="max-width: 100px;"><img src="<?php echo get_user_picture_thumb(FALSE, 100, 100); ?>" alt="<?php if ( isset($user->first_name) ) echo $user->first_name; ?> Picture" class="img-rounded"></div>
+			    <div class="clearfix"></div>
+                        </div>
+		        <div class="media-body">
+				<h4 class="media-heading"><?php echo get_user_fullname(); ?></h4>
+				<p>We've put together this page to provide customized information just for you.</p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+
+	<div class="widget-description">User picture and welcome words.</div>
+</div>
+
+<div id="widget-testimonials-__i__" class="widget"  data-type="testimonials">
+	<div class="widget-top">
+		<div class="widget-title"><h4>Testimonials (Reviews)<span class="in-widget-title"></span></h4></div>
+	</div>
+
+	<div class="widget-inside">
+		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-testimonials-__i__-modal">Edit</button>
+		<button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
+		<div class="widget testimonials">
+			<div class="panel panel-default widget-testimonials-full">
+			        <div class="panel-heading">
+			          <h3 class="panel-title">Testimonials (Reviews)</h3>
+			        </div>
+			        <div class="panel-body">
+			          <button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-testimonials-__i__-modal">Add Testimonials (Reviews)</button>
+			        </div>
+			</div>
+		</div>
+	</div>
+
+	<div class="widget-description">Add Testimonials</div>
+</div>
+
+<div id="widget-stories-__i__" class="widget"  data-type="stories">
+	<div class="widget-top">
+		<div class="widget-title"><h4>Client Stories<span class="in-widget-title"></span></h4></div>
+	</div>
+
+	<div class="widget-inside">
+		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-stories-__i__-modal">Edit</button>
+		<button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
+		<div class="widget stories">
+			<h3 class="title">Client Stories</h3>
+			<div class="blank-widget text"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-stories-__i__-modal">Add Client Stories</button></div>
+		</div>
+	</div>
+
+	<div class="widget-description">Add Client Stories</div>
+</div>
+				
+<div id="widget-twitter-feed-__i__" class="widget" data-type="twitter">
+	<div class="widget-top">
+		<div class="widget-title"><h4>Twitter Feed<span class="in-widget-title"></span></h4></div>
+	</div>
+
+	<div class="widget-inside">
+		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-twitter-60-modal">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
+
+		<div class="widget twitter">
+			<div class="panel panel-default widget-testimonials-full">
+				<div class="panel-heading">
+				  <h3 class="panel-title">Twitter Feed</h3>
+				</div>
+				<div class="panel-body">
+				  
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="widget-description">Add Twitter Feeds</div>
+
+</div>
+
+<div id="widget-faq-__i__" class="widget" data-type="faq">
+	<div class="widget-top">
+		<div class="widget-title"><h4>FAQ<span class="in-widget-title"></span></h4></div>
+	</div>
+
+	<div class="widget-inside">
+		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-faq-__i__-modal">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
+		<div class="widget faq">
+			<h3 class="title">FAQ</h3>
+			<div class="blank-widget faqs"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-faq-__i__-modal">Add FAQ</button></div>
+		</div>
+	</div>
+
+	<div class="widget-description">Add FAQ</div>
+</div>
+
+<div id="widget-text-__i__" class="widget" data-type="text">
+	<div class="widget-top">
+		<div class="widget-title"><h4>Text<span class="in-widget-title"></span></h4></div>
+	</div>
+
+	<div class="widget-inside">
+		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-text-__i__-modal">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
+		<div class="widget text">
+			<h3 class="title">Text</h3>
+			<div class="blank-widget text"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-text-__i__-modal">Add Text</button></div>
+		</div>
+	</div>
+
+	<div class="widget-description">Add Text</div>
 </div>
 <?php
 	}

@@ -671,18 +671,19 @@ $(document).ready(function() {
 	/* update text */
 	$('body').on('hide.bs.modal', '.text_modal', function (event) {
 		widget_id = $(this).attr('id');
+		widget_type = $('#'+widget_id).attr('data-widget-type');
 		tinymce.triggerSave();
 		//no validation
 		//just save it
 		$.ajax({
 			type: "POST",
 				url: ajax_url+'/save_widget/',
-				data: $('#'+widget_id+' input, #'+widget_id+' textarea').serialize() + '&user_id='+$('#user_id').val()+'&template_id='+$('#template_id').val()+'&widget_type='+$('#'+widget_id).attr('data-widget-type')+'&widget_id='+widget_id+'&csrf_b2b='+$( "input[name='csrf_b2b']" ).val(),
+				data: $('#'+widget_id+' input, #'+widget_id+' textarea').serialize() + '&user_id='+$('#user_id').val()+'&template_id='+$('#template_id').val()+'&widget_type='+widget_type+'&widget_id='+widget_id+'&csrf_b2b='+$( "input[name='csrf_b2b']" ).val(),
 				dataType : "json",
 			})
 		.done(function( msg ) {
 			if ( msg.success == true && msg.widget_html && msg.widget_id ){
-				$('#'+msg.widget_id+' .widget-inside .widget.text').remove();
+				$('#'+msg.widget_id+' .widget-inside .widget.'+widget_type).remove();
 				$('#'+msg.widget_id+' .widget-inside').append(msg.widget_html);
 			}
 		});
