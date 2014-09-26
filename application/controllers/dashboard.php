@@ -85,7 +85,7 @@ class Dashboard extends CI_Controller {
 		endif;
 		
 		$this->load->view( 'dashboard/header', array('title' => 'Login', 'page_preview' => TRUE) );
-		$this->load->view( 'dashboard/login', $data );
+		$this->load->view( get_client().'/login-dashboard', $data );
 		$this->load->view( 'dashboard/footer' );
 		//var_dump($this->session->all_userdata()); login issue need to fix, clue is somehow ci regenerate the session
 		//check this https://github.com/EllisLab/CodeIgniter/wiki/Native-session 

@@ -142,7 +142,7 @@
 			<!-- footer end -->
 		</div>
 		<div class="col-md-12 copyright">
-			<div class="col-md-4 center-block">
+			<div class="logo-footer center-block">
 				<img src="<?=base_url('img/hero-partners-footer-logo.png');?>" class="pull-left"/>
 				<p><a href="mailto:info@heropartners.com">heropartners.com</a></p>
 				<p>560 E 500 S</p>
