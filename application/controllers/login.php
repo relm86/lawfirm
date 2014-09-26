@@ -65,9 +65,9 @@ class Login extends CI_Controller {
 			endif;
 		endif;
 		
-		$this->load->view(get_current_theme() . '/header', array('title' => 'Login', 'login_page' => TRUE, 'page_name' => 'login'));
-		$this->load->view(get_current_theme() . '/login-form', $data);
-		$this->load->view(get_current_theme() . '/footer', array('login_page' => TRUE));
+		$this->load->view(get_client() . '/header', array('title' => 'Login', 'login_page' => TRUE, 'page_name' => 'login'));
+		$this->load->view(get_client() . '/login-form', $data);
+		$this->load->view(get_client() . '/footer', array('login_page' => TRUE));
 	}
 	
 	public function twitter() {

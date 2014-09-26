@@ -16,7 +16,7 @@ class Profile extends CI_Controller {
 	
 	public function index() {
 		$title = 'Update Profile';
-		$this->load->view(get_current_theme() . '/header', array('title' => $title));
+		$this->load->view(get_client() . '/header', array('title' => $title));
 		
 		$data = array();
 		
@@ -73,14 +73,14 @@ class Profile extends CI_Controller {
 		if ( ! is_profile_complete() || ! $data['user']->password ):
 			//profile not complete -> no need to verified the password
 			$data['success_msg'] = 'Please complete data below!';
-			$this->load->view(get_current_theme() . '/update_profile', $data);
+			$this->load->view(get_client() . '/update_profile', $data);
 		elseif ( ! $this->session->userdata('password_verified') ):
-			$this->load->view(get_current_theme() . '/verify_password', $data);
+			$this->load->view(get_client() . '/verify_password', $data);
 		else:
-			$this->load->view(get_current_theme() . '/update_profile', $data);
+			$this->load->view(get_client() . '/update_profile', $data);
 		endif;
 		
-		$this->load->view(get_current_theme() . '/footer', array('picture_upload' => TRUE));
+		$this->load->view(get_client() . '/footer', array('picture_upload' => TRUE));
 	}
 	
 	function _check_duplicate_email($mail){

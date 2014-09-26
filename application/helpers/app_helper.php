@@ -32,7 +32,7 @@ if ( ! function_exists('create_thumb'))
 		$CI->image_lib->initialize($config);
 		
 		if ( ! $CI->image_lib->resize()):
-			echo $this->image_lib->display_errors();
+			echo $CI->image_lib->display_errors();
 			return FALSE;
 		else:
 			return $config['new_image'];
@@ -158,15 +158,33 @@ if ( ! function_exists('IsZipCode'))
 if ( ! function_exists('get_themes'))
 {
 	function get_themes() {
-		return  array('widget', 'siegfriedJensen', 'audi1', 'audi2', 'audi3');
+		$CI = get_instance();
+		$CI->db->select('name');
+		$query = $CI->db->get('templates');
+		if ( $query->num_rows() > 0 ):
+			$themes = array();
+			foreach ( $query->result() as $row ):
+				$themes[] = $row->name;
+			endforeach;
+			return $themes;
+		else:
+			return FALSE;
+		endif;
+	}
+}
+
+if ( ! function_exists('get_client'))
+{
+	function get_client() {
+		$CI = get_instance();
+		return $CI->config->item('client');
 	}
 }
 
 if ( ! function_exists('get_default_theme'))
 {
 	function get_default_theme() {
-		$CI = get_instance();
-		return $CI->config->item('default_theme');
+		return 'default';
 	}
 }
 
@@ -174,15 +192,7 @@ if ( ! function_exists('get_current_theme'))
 {
 	function get_current_theme() {
 		$CI = get_instance();
-		$theme = $CI->session->userdata('theme');
-		$themes = get_themes();
-		$default_theme = get_default_theme();
-		if ( in_array($theme, $themes) ):
-			return $theme;
-		else:
-			set_theme( $default_theme );
-			return $default_theme;
-		endif;
+		return $CI->session->userdata('theme');
 	}
 }
 
@@ -192,6 +202,7 @@ if ( ! function_exists('set_theme'))
 		$CI = get_instance();
 		$themes = get_themes();
 		$default_theme = get_default_theme();
+	
 		if ( in_array($theme, $themes) ):
 			$result = TRUE;
 		else:
@@ -206,7 +217,7 @@ if ( ! function_exists('set_theme'))
 		$CI->db->update('users', $data); 
 		$CI->session->set_userdata($data);
 		
-		return $result;
+		return $theme;
 	}
 }
 

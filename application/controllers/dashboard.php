@@ -16,10 +16,6 @@ class Dashboard extends CI_Controller {
 			redirect(base_url('profile'));
 	        endif;
 	        
-	        $themes = get_themes();
-	        if ( $this->input->get('theme') && in_array($this->input->get('theme'), $themes) )
-	        	set_theme( $this->input->get('theme') );
-	        
 	        $this->form_validation->set_error_delimiters('<div class="alert alert-danger" role="alert">','</div>');
 	        
 	}
@@ -221,7 +217,7 @@ class Dashboard extends CI_Controller {
 		endif;
 		
 		$this->load->view( 'dashboard/header', array('jqueryui' => TRUE, 'template_id'=> $template_id, 'sticky' => TRUE, 'page_preview' => TRUE, 'layout'=> $data['template']->layout, 'color_scheme' => $data['template']->color_scheme) );
-		$this->load->view( 'dashboard/template/preview_' . $data['template']->layout, $data );
+		$this->load->view(  get_client().'/preview_' . $data['template']->layout, $data );
 		$this->load->view( 'dashboard/footer', array('jqueryui' => TRUE, 'sticky' => TRUE) );
 	}
 	
@@ -253,45 +249,10 @@ class Dashboard extends CI_Controller {
 			return;
 		endif;
 		
-		$this->load->view( get_default_theme().'/header', array('jqueryui' => TRUE, 'layout'=> $data['template']->layout, 'color_scheme' => $data['template']->color_scheme) );
-		$this->load->view( 'dashboard/template/preview2_' . $data['template']->layout, $data );
-		$this->load->view( get_default_theme().'/footer', array('jqueryui' => TRUE, 'preview_page' => TRUE) );
+		$this->load->view( get_client().'/header', array('jqueryui' => TRUE, 'layout'=> $data['template']->layout, 'color_scheme' => $data['template']->color_scheme) );
+		$this->load->view(  get_client().'/' . $data['template']->layout, $data );
+		$this->load->view( get_client().'/footer', array('jqueryui' => TRUE) );
 	}	
-	
-	/* so we all know no longer use this 
-	public function dev_template_preview( $template_id = NULL){
-		$template_id = (int) $template_id;
-		$this->db->where('id', $template_id );
-		$query = $this->db->get('templates', 1);
-		if ( $query->num_rows() > 0 ):
-			$data['template'] =  $query->row();
-			$this->db->where('template_id', $template_id);
-			$this->db->order_by('order', 'ASC');
-			$query = $this->db->get('template_images');
-			if ( $query->num_rows() > 0 ):
-				$data['main_images'] = $query;
-			else:
-				$data['main_images'] = FALSE;
-			endif;
-			
-			$this->db->where('template_id', $template_id);
-			$this->db->order_by('order', 'ASC');
-			$query = $this->db->get('template_videos');
-			if ( $query->num_rows() > 0 ):
-				$data['videos'] = $query;
-			else:
-				$data['videos'] = FALSE;
-			endif;
-		else:
-			$this->new_template(array('error_msg' => 'Template not found. You may try to create new template or hit back to go to previous page!'));
-			return;
-		endif;
-		
-		$this->load->view( 'dashboard/header', array('jqueryui' => TRUE, 'page_preview' => TRUE, 'layout'=> $data['template']->layout, 'color_scheme' => $data['template']->color_scheme) );
-		$this->load->view( 'dashboard/template/dev_preview_' . $data['template']->layout, $data );
-		$this->load->view( 'dashboard/footer', array('jqueryui' => TRUE) );
-	}
-	*/
 	
 	function _unique_template_name(){
 		
