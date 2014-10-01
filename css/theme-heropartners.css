@@ -321,6 +321,15 @@ body {
 	display: block;
 	color: #fff;
 }
+
+.widget.text h3.title{
+	text-align: center;
+}
+
+.widget.text {
+	padding: 15px;
+}
+
 @media (max-width: 768px) {
 	.login-page{
 		background: #ffffff;

@@ -821,5 +821,7 @@ $(document).ready(function() {
         return confirm(msg);
     });
     
+	$(".color-picker").colorpicker();
+    
     
   });

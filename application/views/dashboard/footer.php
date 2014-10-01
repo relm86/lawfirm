@@ -10,6 +10,7 @@
 <?php endif; ?>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/libs/plupload.full.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>js/libs/tiny_mce/tinymce.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>js/bootstrap-colorpicker.min.js"></script>
 <?php if ( isset($preview_page)) : ?>
 <script src="<?=base_url('js/dashboard2.js');?>"></script>
 <?php else : ?>

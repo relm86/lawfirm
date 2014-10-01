@@ -202,7 +202,9 @@ if ( ! function_exists('set_theme'))
 		$CI = get_instance();
 		$themes = get_themes();
 		$default_theme = get_default_theme();
-	
+		
+		if ( ! is_array($themes) ) return FALSE;
+		
 		if ( in_array($theme, $themes) ):
 			$result = TRUE;
 		else:
@@ -840,8 +842,16 @@ if ( ! function_exists('draw_widget_text')){
 	function draw_widget_text($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
 		$text = unserialize($widget->widget_data);
+		$box_style = 'style="';
+		$title_style = 'style="';
+		if ( isset($text['border-color']) && $text['border-color']  != '') $box_style .= 'border: 1px solid ' . $text['border-color'] . ';';
+		if ( isset($text['background-color']) && $text['background-color']  != '') $box_style .= ' background-color: ' . $text['background-color'] . ';';
+		if ( isset($text['title-color']) && $text['title-color']  != '') $title_style .= 'color: ' . $text['title-color'] . '; border-color: ' . $text['title-color'] . ';';
+		if ( isset($text['text-color']) && $text['text-color']  != '') $box_style .= ' color: ' . $text['text-color'] . ';';
+		$box_style .= '"';
+		$title_style .= '"';
 		
-		if ( ! isset($text['title']) ) $text['title'] = 'Text';
+		if ( ! isset($text['title']) ) $text['title'] = '';
 		
 		$col = '';
 		$preview_col = '';
@@ -862,8 +872,10 @@ if ( ! function_exists('draw_widget_text')){
 <?php
 		endif;
 ?>
-		<div class="widget text<?=$col;?>">
-			<h3 class="title"><?=$text['title'];?></h3>
+		<div class="widget text<?=$col;?>" <?=$box_style;?>>
+			<?php if ( $text['title'] != '' ): ?>
+			<h3 class="title" <?=$title_style;?>><?=$text['title'];?></h3>
+			<?php endif; ?>
 			<?php
 				if ( isset($text['content']) && $text['content'] != ''  ):
 					echo $text['content'];
@@ -1077,6 +1089,10 @@ if ( ! function_exists('draw_modal_text')){
 		
 		if ( ! isset($text['title']) ) $text['title'] = '';
 		if ( ! isset($text['content']) ) $text['content'] = '';
+		if ( ! isset($text['border-color']) ) $text['border-color'] = '';
+		if ( ! isset($text['background-color']) ) $text['background-color'] = '';
+		if ( ! isset($text['title-color']) ) $text['title-color'] = '';
+		if ( ! isset($text['text-color']) ) $text['text-color'] = '';
 ?>
 <div class="modal fade text_modal" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" tabindex="-1" data-widget-type="text" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
@@ -1089,6 +1105,45 @@ if ( ! function_exists('draw_modal_text')){
 				
 				<input type="text" name="text-title" value="<?=$text['title'];?>" class="form-control" placeholder="Title"/>
 				<textarea id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-content" name="text-content" class="form-control tinymce" style="width:100%; height:300px"><?=$text['content'];?></textarea>
+
+				<div class="row" style="margin-top: 20px;">
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="border-color">Border Color</label>
+							<div class="input-group color-picker">
+								<input type="text" class="form-control" name="border-color" value="<?=$text['border-color'];?>">
+								<span class="input-group-addon"><i></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="background-color">Background Color</label>
+							<div class="input-group color-picker">
+								<input type="text" class="form-control" name="background-color" value="<?=$text['background-color'];?>">
+								<span class="input-group-addon"><i></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="title-color">Title Color</label>
+							<div class="input-group color-picker">
+								<input type="text" class="form-control" name="title-color" value="<?=$text['title-color'];?>">
+								<span class="input-group-addon"><i></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="text-color">Text Color</label>
+							<div class="input-group color-picker">
+								<input type="text" class="form-control" name="text-color" value="<?=$text['text-color'];?>">
+								<span class="input-group-addon"><i></i></span>
+							</div>
+						</div>
+					</div>
+				</div>
 				
 			</div>
 			<div class="modal-footer">

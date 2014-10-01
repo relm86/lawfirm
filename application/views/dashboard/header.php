@@ -17,6 +17,7 @@
 	<?php endif; ?>
 	<?php if ( isset($page_preview) ): ?>
 	<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url();?>css/theme-<?php echo get_client();?>.css" />
+	<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url();?>css/bootstrap-colorpicker.min.css" />
 	<?php endif; ?>
 	<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url();?>css/theme-dashboard.css" />
 	<?php if( isset($sticky) ): ?>

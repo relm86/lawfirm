@@ -325,7 +325,7 @@ class Dashboard extends CI_Controller {
 					//update widget
 					$widget_id = preg_replace("/[^0-9]/","", $this->input->post('widget_id'));
 					$update['widget_data'] = $this->_get_widget_data();
-					
+
 					if ( $update['widget_data'] ):
 						$this->db->where('id', $widget_id);
 						$this->db->where('template_id', $this->input->post('template_id'));
@@ -397,7 +397,6 @@ class Dashboard extends CI_Controller {
 	}
 	
 	function _get_widget_data(){
-		
 		if ( 'faq' == $this->input->post('widget_type') && $this->input->post('text-title') ):
 			$title = $this->input->post('text-title');
 			$content = $this->input->post('text-content');
@@ -432,15 +431,28 @@ class Dashboard extends CI_Controller {
 				return serialize($links);
 			endif;
 
-		elseif ( 'text' == $this->input->post('widget_type') && $this->input->post('text-title')):
+		elseif ( 'text' == $this->input->post('widget_type') ):
+			$this->load->library('security');
 			$title = $this->input->post('text-title');
 			$content = $this->input->post('text-content');
+			$bordercolor = $this->input->post('border-color');
+			$backgroundcolor = $this->input->post('background-color');
+			$titlecolor = $this->input->post('title-color');
+			$textcolor = $this->input->post('text-color');
+			/*
 			if ( $content ):
 				$this->load->library('htmlfixer');
 				$content = $this->htmlfixer->getFixedHtml($this->input->post('text-content'));
 			endif;
+			*/
 			$return['title'] = $title;
-			$return['content'] = $content;
+			$return['content'] = $content; 
+			
+			if ( $bordercolor && strpos($bordercolor, '#') !== FALSE ) $return['border-color'] = $bordercolor;
+			if ( $backgroundcolor && strpos( $backgroundcolor, '#') !== FALSE ) $return['background-color'] = $backgroundcolor;
+			if ( $titlecolor && strpos( $titlecolor, '#') !== FALSE ) $return['title-color'] = $titlecolor;
+			if ( $textcolor && strpos( $textcolor, '#') !== FALSE ) $return['text-color'] = $textcolor;
+
 			return serialize($return);
 		
 		elseif ( 'greeting' == $this->input->post('widget_type') && $this->input->post('text-title')):
