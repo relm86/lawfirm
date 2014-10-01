@@ -42,40 +42,6 @@ $(document).ready(function() {
 		connectToSortable: '.widget-container'
 	});
 	
-	$sidebar.droppable({
-		accept: "#widgets .widget",
-		activeClass: "ui-state-highlight",
-		drop: function( event, ui ) {
-			move_item( ui.draggable, $sidebar);
-		}
-	});
-	
-	$left.droppable({
-		accept: "#widgets .widget",
-		activeClass: "ui-state-highlight",
-		drop: function( event, ui ) {
-			move_item( ui.draggable, $left);
-		}
-	});
-	
-	$right.droppable({
-		accept: "#widgets .widget",
-		activeClass: "ui-state-highlight",
-		drop: function( event, ui ) {
-			move_item( ui.draggable, $right);
-		}
-	});
-	
-	$footer.droppable({
-		accept: "#widgets .widget",
-		activeClass: "ui-state-highlight",
-		drop: function( event, ui ) {
-			console.log(ui);
-			console.log(ui.attr('id'));
-			move_item( ui.draggable, $footer);
-		}
-	});
-	
 	$('.widget-container').sortable({
 		connectWith: '.widget-container',
 		placeholder: 'placeholder',
@@ -116,8 +82,6 @@ $(document).ready(function() {
 				//save layout
 				save_layout();
 				
-				$('.widget-container').has('.widget').removeClass('placeholder').find('.drop-here').remove();
-				$('.widget-container').not(":has(.widget)").addClass('placeholder').append($drop_here);
 			});
 		}
 	});
@@ -137,13 +101,16 @@ $(document).ready(function() {
 		$.ajax({
 			type: "POST",
 				url: ajax_url+'/save_layout/',
-				data: {user_id: $('#user_id').val(), template_id: $('#template_id').val(), sidebar: getItems('#left-sidebar'), left: getItems('#main-content-left'), right: getItems('#main-content-right'), footer: getItems('#footer'), csrf_b2b: $( "input[name='csrf_b2b']" ).val() },
+				data: {user_id: $('#user_id').val(), template_id: $('#template_id').val(), sidebar: getItems('#left-sidebar'), left: getItems('#main-content-left'), right: getItems('#main-content-right'), footer: getItems('#footer'), footer1: getItems('#footer1'), footer2: getItems('#footer2'), footer3: getItems('#footer3'), footer4: getItems('#footer4'), footer5: getItems('#footer5'), footer6: getItems('#footer6'), csrf_b2b: $( "input[name='csrf_b2b']" ).val() },
 				dataType : "json",
 			})
 			.done(function( msg ) {
 				if ( msg.success == true )
 					console.log('Layout saved!');
 		});
+		
+		$('.widget-container').has('.widget').removeClass('placeholder').find('.drop-here').remove();
+		$('.widget-container').not(":has(.widget)").not(":has(.drop-here)").addClass('placeholder').append($drop_here);
 	}
 	
 	/* main image upload */

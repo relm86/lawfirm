@@ -49,6 +49,7 @@
 		                    	<div class="col-lg-9" id="layout_select">
 	                    			<div class="radio pull-left layout checked"><label><input type="radio" name="layout" value="layout_a" checked="checked"/><img src="<?=base_url('img/theme-layout-a.png');?>" width="200" height="300"/></label></div>
 	                    			<div class="radio pull-left layout"><label><input type="radio" name="layout" value="layout_b"/><img src="<?=base_url('img/theme-layout-b.png');?>" width="200" height="300"/></label></div>
+	                    			<div class="radio pull-left layout"><label><input type="radio" name="layout" value="layout_c"/><img src="<?=base_url('img/theme-layout-c.png');?>" width="200" height="300"/></label></div>
 	                    			<div class="clearfix"></div>
 		                    	</div>
 		                    </div>

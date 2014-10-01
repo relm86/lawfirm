@@ -528,11 +528,23 @@ class Dashboard extends CI_Controller {
 				$left = $this->input->post('left');
 				$right = $this->input->post('right');
 				$footer = $this->input->post('footer');
+				$footer1 = $this->input->post('footer1');
+				$footer2 = $this->input->post('footer2');
+				$footer3 = $this->input->post('footer3');
+				$footer4 = $this->input->post('footer4');
+				$footer5 = $this->input->post('footer5');
+				$footer6 = $this->input->post('footer6');
 				$widgets = array(
 										'sidebar' => $sidebar,
 										'left' => $left,
 										'right' => $right,
-										'footer' => $footer
+										'footer' => $footer,
+										'footer1' => $footer1,
+										'footer2' => $footer2,
+										'footer3' => $footer3,
+										'footer4' => $footer4,
+										'footer5' => $footer5,
+										'footer6' => $footer6
 									);
 				$update['widgets'] = serialize($widgets);
 				$this->db->where('id', $template_id);
