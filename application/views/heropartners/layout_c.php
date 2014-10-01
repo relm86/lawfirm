@@ -19,14 +19,13 @@
 		<div class="col-md-4">
 			<div class=" widget-container" id="left-sidebar">
 				<!-- left sidebar -->
-				<?php echo draw_widgets($template->id, 'sidebar', TRUE); ?>
+				<?php echo draw_widgets($template->id, 'sidebar', FALSE); ?>
 				<!-- left sidebar end -->
 			</div>
 		</div>
 		<div class="col-md-8 " id="main-content">
 			<!-- main content -->
 			<div class="widget image-slider">
-				<button type="button" class="btn btn-warning edit-widget btn-sm" data-toggle="modal" data-target="#main-image-slider">Edit</button>
 				<div id="carousel-main-image" class="carousel slide" data-ride="carousel">
 				 <?php
 				if ( isset($main_images) && $main_images ):
@@ -69,7 +68,6 @@
 			<div class="clearfix"></div>
 			
 			<div class="widget videos">
-				<button type="button" class="btn btn-warning edit-widget btn-sm" data-toggle="modal" data-target="#videos-modal">Edit</button>
 				<?php
 				if ( isset($videos) && $videos ):
 					$i = 0;
