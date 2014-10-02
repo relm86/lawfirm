@@ -281,6 +281,8 @@ if ( ! function_exists('draw_widget')){
 				draw_widget_faq($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'text' ):
 				draw_widget_text($widget, $position, $preview);
+			elseif ( $widget->widget_type == 'gmap' ):
+				draw_widget_gmap($widget, $position, $preview);
 			endif;
 		else:
 			return FALSE;
@@ -558,15 +560,61 @@ if ( ! function_exists('draw_widget_contact')){
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal">Edit</button>
+		<button type="button" class="btn btn-warning btn-sm save-contact">Save</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 <?php
 		endif;
 ?>
-		<div class="widget contact<?=$col;?>">
-			<img src="<?php echo base_url(); ?>img/img-appointment.png" width="175" height="156" alt="" class="pull-left"/>
-			<div class="media-body">
-				<div class="widget-box-text">Get a free review of your potential case.</div>
-				<a href="http://www.siegfriedandjensen.com/free-case-review" class="btn btn-warning widget-box-btn">Click Here</a>
+		<div class="widget contact<?=$col;?>" style="background: url(<?php echo base_url(); ?>img/learning-outdoors.jpg) no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
+			<div class="aloha-editable">
+				<h3 class="title">Learning in the great outdoors.</h3>
+				<p>Meet Rob Ryan and learn about the Sunflower Grown Companies system.</p>
+				<p><a class="btn btn-default btn-lg active" href="#">Sign Up</a></p>
+			</div>
+		</div>
+<?php
+		if ( $preview ):
+?>
+	</div>
+
+	<div class="widget-description">Add contact widget</div>
+</div>
+<?php
+		endif;
+	}
+}
+
+if ( ! function_exists('draw_widget_gmap')){
+	function draw_widget_gmap($widget, $position = FALSE, $preview = FALSE ){
+		if ( ! is_object($widget) ) return FALSE;
+		
+		$col = '';
+		$preview_col = '';
+		
+		if ( $position == 'footer' && $preview ) $preview_col =' col-md-2';
+		elseif ( $position == 'footer' )$col = ' col-md-2';
+		
+		if ( $preview ):
+?>
+
+<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget<?=$preview_col;?>" data-type="<?=$widget->widget_type;?>">
+	<div class="widget-top">
+		<div class="widget-title"><h4>Google Map<span class="in-widget-title"></span></h4></div>
+	</div>
+
+	<div class="widget-inside">
+		<button type="button" class="btn btn-warning btn-sm save-gmap-widget">Save</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
+<?php
+		endif;
+?>
+		<div class="widget gmap">
+			<div class="col-md-6 gmap-container"><iframe width="374" height="260" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/place?q=560+E+500+S,+Salt+Lake+City,+UT+84102,+United+States&key=AIzaSyDJl-y_I_6stRCFmDvJbZMmojGjQdXbX2s"></iframe></div>
+			<div class="contact-info">
+				<h3 class="title">Contact Us</h3>
+				<div class="aloha-editable">
+					<p>560 E 500 S Salt Lake City, UT 84102</p>
+					<p>801-935-4928</p>
+					<p>info@heropartners.com</p>
+				</div>
 			</div>
 			<div class="clearfix"></div>
 		</div>
@@ -1405,6 +1453,52 @@ if ( ! function_exists('the_widgets')){
 	</div>
 
 	<div class="widget-description">Add Text</div>
+</div>
+
+<div id="widget-gmap-__i__" class="widget" data-type="gmap">
+	<div class="widget-top">
+		<div class="widget-title"><h4>Google Map<span class="in-widget-title"></span></h4></div>
+	</div>
+
+	<div class="widget-inside">
+		<button type="button" class="btn btn-warning btn-sm save-gmap-widget">Save</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
+		<div class="widget gmap">
+			<div class="col-md-6 gmap-container"><iframe width="374" height="260" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/place?q=560+E+500+S,+Salt+Lake+City,+UT+84102,+United+States&key=AIzaSyDJl-y_I_6stRCFmDvJbZMmojGjQdXbX2s"></iframe></div>
+			<div class="contact-info">
+				<h3 class="title">Contact Us</h3>
+				<div class="aloha-editable">
+					<p>560 E 500 S Salt Lake City, UT 84102</p>
+					<p>801-935-4928</p>
+					<p>info@heropartners.com</p>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+
+	<div class="widget-description">Add Google Map</div>
+</div>
+
+<div id="widget-contact-__i__" class="widget" data-type="contact">
+	<div class="widget-top">
+		<div class="widget-title"><h4>Contact<span class="in-widget-title"></span></h4></div>
+	</div>
+
+	<div class="widget-inside">
+		<button type="button" class="btn btn-warning btn-sm save-contact">Save</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
+		<div class="widget contact" style="background: url(<?php echo base_url(); ?>img/learning-outdoors.jpg) no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
+			<div class="media-body">
+				<div class="aloha-editable">
+					<h3 class="title">Learning in the great outdoors.</h3>
+					<p>Meet Rob Ryan and learn about the Sunflower Grown Companies system.</p>
+					<p><a class="btn btn-default btn-lg active" href="#">Sign Up</a></p>
+				</div>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+	</div>
+
+	<div class="widget-description">Add Contact</div>
 </div>
 <?php
 	}
