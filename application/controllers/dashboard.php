@@ -439,6 +439,8 @@ class Dashboard extends CI_Controller {
 			$backgroundcolor = $this->input->post('background-color');
 			$titlecolor = $this->input->post('title-color');
 			$textcolor = $this->input->post('text-color');
+			
+			if ( ! $title && ! $content ) return FALSE; //don't save empty title & content
 			/*
 			if ( $content ):
 				$this->load->library('htmlfixer');
