@@ -1016,7 +1016,15 @@ class Dashboard extends CI_Controller {
     function template_delete($id)
     {
         $this->db->where('id', $id);
+        $this->db->where('name !=', 'default');//don't delete default template
         $query = $this->db->delete('templates');
+        
+        //delete widget
+        if ( $this->db->affected_rows() > 0):
+        	$this->db->where('template_id', $id);
+        	$this->db->delete('widgets');
+        endif;
+        
         redirect(base_url('dashboard'));
     }
 

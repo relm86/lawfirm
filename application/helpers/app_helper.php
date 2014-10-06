@@ -397,27 +397,24 @@ if ( ! function_exists('draw_widget_greeting')){
 		$text['title'] = str_replace($search, $replace, $text['title']);
 		$text['content'] = str_replace($search, $replace, $text['content']);
 		
-		$col = '';
-		$preview_col = '';
-		
-		if ( $position == 'footer' && $preview ) $preview_col =' col-md-2';
-		elseif ( $position == 'footer' )$col = ' col-md-2';
-		
 		if ( $preview ):
 ?>
 
-<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget<?=$preview_col;?>" data-type="<?=$widget->widget_type;?>">
+<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget widget-wrapper" data-type="<?=$widget->widget_type;?>">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Welcome Message</h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" title="Edit"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal">Edit</button>
-		<button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 <?php
 		endif;
 ?>
-		<div class="widget text greeting<?=$col;?>">
+		<div class="widget text greeting">
 			<div class="pull-left">
 			     <div id="user_picture" style="max-width: 100px;"><img src="<?php echo get_user_picture_thumb(FALSE, 100, 100); ?>" alt="<?=$first_name;?> Picture" class="img-rounded"></div>
 			    <div class="clearfix"></div>
@@ -451,27 +448,24 @@ if ( ! function_exists('draw_widget_testimonials')){
 		elseif ( ! isset($testimonials['content']) )
 			$testimonials['content'] = '';
 		
-		$col = '';
-		$preview_col = '';
-		
-		if ( $position == 'footer' && $preview ) $preview_col =' col-md-2';
-		elseif ( $position == 'footer' )$col = ' col-md-2';
-		
 		if ( $preview ):
 ?>
 
-<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget<?=$preview_col;?>" data-type="<?=$widget->widget_type;?>">
+<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget widget-wrapper" data-type="<?=$widget->widget_type;?>">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Testimonials (Reviews)<span class="in-widget-title"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" title="Edit"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal">Edit</button>
-		<button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 <?php
 		endif;
 ?>
-		<div class="widget testimonials<?=$col;?>">
+		<div class="widget testimonials">
 			<div class="panel panel-default widget-testimonials-full">
 			        <div class="panel-heading">
 			          <h3 class="panel-title"><?=$testimonials['title'];?></h3>
@@ -505,27 +499,24 @@ if ( ! function_exists('draw_widget_stories')){
 		elseif ( ! isset($stories['content']) )
 			$stories['content'] = '';
 		
-		$col = '';
-		$preview_col = '';
-		
-		if ( $position == 'footer' && $preview ) $preview_col =' col-md-2';
-		elseif ( $position == 'footer' )$col = ' col-md-2';
-		
 		if ( $preview ):
 ?>
 
-<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget<?=$preview_col;?>" data-type="<?=$widget->widget_type;?>">
+<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget widget-wrapper" data-type="<?=$widget->widget_type;?>">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Stories<span class="in-widget-title"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" title="Edit"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal">Edit</button>
-		<button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 <?php
 		endif;
 ?>
-		<div class="widget stories<?=$col;?>">
+		<div class="widget stories">
 			<h3 class="title"><?=$stories['title'];?></h3>
 		        <?=$stories['content']; ?>
 		</div>
@@ -545,26 +536,25 @@ if ( ! function_exists('draw_widget_contact')){
 	function draw_widget_contact($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
 		
-		$col = '';
-		$preview_col = '';
-		
-		if ( $position == 'footer' && $preview ) $preview_col =' col-md-2';
-		elseif ( $position == 'footer' )$col = ' col-md-2';
-		
 		if ( $preview ):
 ?>
 
-<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget<?=$preview_col;?>" data-type="<?=$widget->widget_type;?>">
+<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget widget-wrapper" data-type="<?=$widget->widget_type;?>">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Contact<span class="in-widget-title"></span></h4></div>
+		
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm save-contact">Save</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 <?php
 		endif;
 ?>
-		<div class="widget contact<?=$col;?>" style="background: url(<?php echo base_url(); ?>img/learning-outdoors.jpg) no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
+		<div class="widget contact"style="background: url(<?php echo base_url(); ?>img/learning-outdoors.jpg) no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
 			<div class="aloha-editable">
 				<h3 class="title">Learning in the great outdoors.</h3>
 				<p>Meet Rob Ryan and learn about the Sunflower Grown Companies system.</p>
@@ -587,22 +577,20 @@ if ( ! function_exists('draw_widget_gmap')){
 	function draw_widget_gmap($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
 		
-		$col = '';
-		$preview_col = '';
-		
-		if ( $position == 'footer' && $preview ) $preview_col =' col-md-2';
-		elseif ( $position == 'footer' )$col = ' col-md-2';
-		
 		if ( $preview ):
 ?>
 
-<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget<?=$preview_col;?>" data-type="<?=$widget->widget_type;?>">
+<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget widget-wrapper" data-type="<?=$widget->widget_type;?>">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Google Map<span class="in-widget-title"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" title="Edit"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm save-gmap-widget">Save</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 <?php
 		endif;
 ?>
@@ -623,7 +611,7 @@ if ( ! function_exists('draw_widget_gmap')){
 ?>
 	</div>
 
-	<div class="widget-description">Add contact widget</div>
+	<div class="widget-description">Add Google Map widget</div>
 </div>
 <?php
 		endif;
@@ -650,13 +638,17 @@ if ( ! function_exists('draw_widget_twitter')){
 		
 		if ( $preview ):
 ?>
-<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget" data-type="<?=$widget->widget_type;?>">
+<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget widget-wrapper" data-type="<?=$widget->widget_type;?>">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Twitter Feed<span class="in-widget-title"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" title="Edit"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 <?php
 		endif;
 		
@@ -793,26 +785,24 @@ if ( ! function_exists('draw_widget_faq')){
 		if ( ! isset($faq['title']) ) $faq['title'] = 'FAQ';
 		if ( ! isset($faq['content']) ) $faq['content'] = '';
 		
-		$col = '';
-		$preview_col = '';
-		
-		if ( $position == 'footer' && $preview ) $preview_col =' col-md-2';
-		elseif ( $position == 'footer' )$col = ' col-md-2';
-		
 		if ( $preview ):
 ?>
 
-<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget<?=$preview_col;?>" data-type="<?=$widget->widget_type;?>">
+<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget widget-wrapper" data-type="<?=$widget->widget_type;?>">
 	<div class="widget-top">
 		<div class="widget-title"><h4>FAQ<span class="in-widget-title"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" title="Edit"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 <?php
 		endif;
 ?>
-		<div class="widget faq<?=$col;?>">
+		<div class="widget faq">
 			<h3 class="title"><?=$faq['title'];?></h3>
 			<?php
 				if ( $faq['content'] != '' ):
@@ -841,26 +831,24 @@ if ( ! function_exists('draw_widget_links')){
 		
 		if ( ! isset($links['title']) ) $links['title'] = 'Links';
 		
-		$col = '';
-		$preview_col = '';
-		
-		if ( $position == 'footer' && $preview ) $preview_col =' col-md-2';
-		elseif ( $position == 'footer' )$col = ' col-md-2';
-		
 		if ( $preview ):
 ?>
 
-<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget<?=$preview_col;?>" data-type="<?=$widget->widget_type;?>">
+<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget widget-wrapper" data-type="<?=$widget->widget_type;?>">
 	<div class="widget-top">
 		<div class="widget-title"><h4><?=$links['title'];?><span class="in-widget-title"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" title="Edit"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 <?php
 		endif;
 ?>
-		<div class="widget links<?=$col;?>">
+		<div class="widget links">
 			<h3 class="title"><?=$links['title'];?></h3>
 			<?php
 				if ( isset($links['links']) && is_array($links['links']) && count($links['links']) > 0 ):
@@ -901,26 +889,24 @@ if ( ! function_exists('draw_widget_text')){
 		
 		if ( ! isset($text['title']) ) $text['title'] = '';
 		
-		$col = '';
-		$preview_col = '';
-		
-		if ( $position == 'footer' && $preview ) $preview_col =' col-md-2';
-		elseif ( $position == 'footer' )$col = ' col-md-2';
-		
 		if ( $preview ):
 ?>
 
-<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget<?=$preview_col;?>" data-type="<?=$widget->widget_type;?>">
+<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget widget-wrapper" data-type="<?=$widget->widget_type;?>">
 	<div class="widget-top">
 		<div class="widget-title"><h4><?=$text['title'];?><span class="in-widget-title"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" title="Edit"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 <?php
 		endif;
 ?>
-		<div class="widget text<?=$col;?>" <?=$box_style;?>>
+		<div class="widget text"<?=$box_style;?>>
 			<?php if ( $text['title'] != '' ): ?>
 			<h3 class="title" <?=$title_style;?>><?=$text['title'];?></h3>
 			<?php endif; ?>
@@ -1336,14 +1322,17 @@ if ( ! function_exists('draw_modal_greeting')){
 if ( ! function_exists('the_widgets')){
 	function the_widgets( ){
 ?>
-<div id="widget-greeting-__i__" class="widget" data-type="greeting">
+<div id="widget-greeting-__i__" class="widget widget-wrapper" data-type="greeting">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Welcome<span class="in-widget-title"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal">Edit</button>
-		<button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 		<div class="widget text greeting">
 			<div class="pull-left">
 			     <div id="user_picture" style="max-width: 100px;"><img src="<?php echo get_user_picture_thumb(FALSE, 100, 100); ?>" alt="<?php if ( isset($user->first_name) ) echo $user->first_name; ?> Picture" class="img-rounded"></div>
@@ -1360,14 +1349,17 @@ if ( ! function_exists('the_widgets')){
 	<div class="widget-description">User picture and welcome words.</div>
 </div>
 
-<div id="widget-testimonials-__i__" class="widget"  data-type="testimonials">
+<div id="widget-testimonials-__i__" class="widget widget-wrapper"  data-type="testimonials">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Testimonials (Reviews)<span class="in-widget-title"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-testimonials-__i__-modal"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-testimonials-__i__-modal">Edit</button>
-		<button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 		<div class="widget testimonials">
 			<div class="panel panel-default widget-testimonials-full">
 			        <div class="panel-heading">
@@ -1383,14 +1375,17 @@ if ( ! function_exists('the_widgets')){
 	<div class="widget-description">Add Testimonials</div>
 </div>
 
-<div id="widget-stories-__i__" class="widget"  data-type="stories">
+<div id="widget-stories-__i__" class="widget widget-wrapper"  data-type="stories">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Client Stories<span class="in-widget-title"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-stories-__i__-modal"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-stories-__i__-modal">Edit</button>
-		<button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 		<div class="widget stories">
 			<h3 class="title">Client Stories</h3>
 			<div class="blank-widget text"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-stories-__i__-modal">Add Client Stories</button></div>
@@ -1400,14 +1395,17 @@ if ( ! function_exists('the_widgets')){
 	<div class="widget-description">Add Client Stories</div>
 </div>
 				
-<div id="widget-twitter-feed-__i__" class="widget" data-type="twitter">
+<div id="widget-twitter-feed-__i__" class="widget widget-wrapper" data-type="twitter">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Twitter Feed<span class="in-widget-title"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-twitter-60-modal"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-twitter-60-modal">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
-
 		<div class="widget twitter">
 			<div class="panel panel-default widget-testimonials-full">
 				<div class="panel-heading">
@@ -1423,13 +1421,17 @@ if ( ! function_exists('the_widgets')){
 
 </div>
 
-<div id="widget-faq-__i__" class="widget" data-type="faq">
+<div id="widget-faq-__i__" class="widget widget-wrapper" data-type="faq">
 	<div class="widget-top">
 		<div class="widget-title"><h4>FAQ<span class="in-widget-title"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-faq-modal"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-faq-__i__-modal">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 		<div class="widget faq">
 			<h3 class="title">FAQ</h3>
 			<div class="blank-widget faqs"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-faq-__i__-modal">Add FAQ</button></div>
@@ -1439,13 +1441,17 @@ if ( ! function_exists('the_widgets')){
 	<div class="widget-description">Add FAQ</div>
 </div>
 
-<div id="widget-text-__i__" class="widget" data-type="text">
+<div id="widget-text-__i__" class="widget widget-wrapper" data-type="text">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Text<span class="in-widget-title"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-text-modal"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm edit-widget" data-toggle="modal" data-target="#widget-text-__i__-modal">Edit</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 		<div class="widget text">
 			<h3 class="title">Text</h3>
 			<div class="blank-widget text"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-text-__i__-modal">Add Text</button></div>
@@ -1455,13 +1461,17 @@ if ( ! function_exists('the_widgets')){
 	<div class="widget-description">Add Text</div>
 </div>
 
-<div id="widget-gmap-__i__" class="widget" data-type="gmap">
+<div id="widget-gmap-__i__" class="widget widget-wrapper" data-type="gmap">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Google Map<span class="in-widget-title"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-gmap-modal"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm save-gmap-widget">Save</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 		<div class="widget gmap">
 			<div class="col-md-6 gmap-container"><iframe width="374" height="260" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/place?q=560+E+500+S,+Salt+Lake+City,+UT+84102,+United+States&key=AIzaSyDJl-y_I_6stRCFmDvJbZMmojGjQdXbX2s"></iframe></div>
 			<div class="contact-info">
@@ -1479,13 +1489,17 @@ if ( ! function_exists('the_widgets')){
 	<div class="widget-description">Add Google Map</div>
 </div>
 
-<div id="widget-contact-__i__" class="widget" data-type="contact">
+<div id="widget-contact-__i__" class="widget widget-wrapper" data-type="contact">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Contact<span class="in-widget-title"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-contact-modal"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
 	</div>
 
 	<div class="widget-inside">
-		<button type="button" class="btn btn-warning btn-sm save-contact">Save</button><button type="button" class="btn btn-danger btn-sm delete-widget pull-right">Delete</button>
 		<div class="widget contact" style="background: url(<?php echo base_url(); ?>img/learning-outdoors.jpg) no-repeat center center; -webkit-background-size: cover; -moz-background-size: cover; -o-background-size: cover; background-size: cover;">
 			<div class="media-body">
 				<div class="aloha-editable">

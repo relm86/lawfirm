@@ -68,7 +68,7 @@ body {
 .icon-block a{width:32px; height:32px; display:block;}
 
 .widget.videos{
-	padding-bottom: 14px;
+	/*padding-bottom: 14px;*/
 }
 
 .widget.videos .embed-responsive, .widget.videos .video-nav{

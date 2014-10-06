@@ -27,7 +27,9 @@
 								<td>
 								<span><a href="<?=base_url('dashboard/template_preview/'.$template->id);?>" class="btn btn-primary btn-sm active" role="button" target="_blank">Edit</a></span>
 								<span><a href="<?=base_url('dashboard/template_preview2/'.$template->id);?>" class="btn btn-primary btn-sm active" role="button" target="_blank">Preview</a></span>
+								<?php if ($template->name != 'default'): //don't delete default template' ?>
 								<span><a href="<?=base_url('dashboard/template_delete/'.$template->id);?>" class="btn btn-danger btn-sm active btn-danger-template" role="button">Delete</a></span>
+								<?php endif; ?>
 <!--								
 									<span><a href="#" class="btn btn-primary btn-sm active" role="button">Edit</a></span>
 									<span><a href="<?=base_url('dashboard/template_preview/'.$template->id);?>" class="btn btn-primary btn-sm active" role="button" target="_blank">Preview</a></span>

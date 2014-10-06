@@ -38,13 +38,14 @@ $(document).ready(function() {
 		revert: "valid", // when not dropped, the item will revert back to its initial position
 		containment: "document",
 		helper: "clone",
-		cursor: "crosshair",
+		cursor: "move",
 		connectToSortable: '.widget-container'
 	});
 	
 	$('.widget-container').sortable({
 		connectWith: '.widget-container',
 		placeholder: 'placeholder',
+		handle: ".move-widget",
 		beforeStop: function( event, ui ) {
 			//save or update widget
 			if ( ui.item[0].id == '' ){
@@ -60,13 +61,14 @@ $(document).ready(function() {
 			} else {
 				$('#'+widget_id).removeClass('col-md-2');
 			}
-			
+						
 			$.ajax({
 				type: "POST",
 				url: ajax_url+'/save_widget/',
-				data: {user_id: $('#user_id').val(), template_id: $('#template_id').val(), widget_type: widget_type, widget_id: widget_id, csrf_b2b: $( "input[name='csrf_b2b']" ).val() },
-				dataType : "json",
-			})
+				data: {
+					user_id: $('#user_id').val(), template_id: $('#template_id').val(), widget_type: widget_type, widget_id: widget_id, csrf_b2b: $( "input[name='csrf_b2b']" ).val() },
+					dataType : "json",
+				})
 			.done(function( msg ) {
 				if ( msg.success == true && msg.widget_id ){
 					ui.item[0].id = msg.widget_id
@@ -77,13 +79,13 @@ $(document).ready(function() {
 					//delete modal if exists
 					$('#widget-'+widget_type+'-'+widget_id+'-modal').remove();
 					$('body').prepend(msg.widget_modal);
-				}
-				
-				//save layout
-				save_layout();
-				
+				}				
 			});
+			
+			//save layout
+			save_layout();
 		}
+			
 	});
 	
 	function getItems(element)
@@ -101,7 +103,7 @@ $(document).ready(function() {
 		$.ajax({
 			type: "POST",
 				url: ajax_url+'/save_layout/',
-				data: {user_id: $('#user_id').val(), template_id: $('#template_id').val(), sidebar: getItems('#left-sidebar'), left: getItems('#main-content-left'), right: getItems('#main-content-right'), footer: getItems('#footer'), footer1: getItems('#footer1'), footer2: getItems('#footer2'), footer3: getItems('#footer3'), footer4: getItems('#footer4'), footer5: getItems('#footer5'), footer6: getItems('#footer6'), csrf_b2b: $( "input[name='csrf_b2b']" ).val() },
+				data: {user_id: $('#user_id').val(), template_id: $('#template_id').val(), sidebar: getItems('#left-sidebar'), left: getItems('#main-content-left'), right: getItems('#main-content-right'), footer1: getItems('#footer1'), footer2: getItems('#footer2'), footer3: getItems('#footer3'), footer4: getItems('#footer4'), footer5: getItems('#footer5'), footer6: getItems('#footer6'), csrf_b2b: $( "input[name='csrf_b2b']" ).val() },
 				dataType : "json",
 			})
 			.done(function( msg ) {
@@ -109,8 +111,8 @@ $(document).ready(function() {
 					console.log('Layout saved!');
 		});
 		
-		$('.widget-container').has('.widget').removeClass('placeholder').find('.drop-here').remove();
-		$('.widget-container').not(":has(.widget)").not(":has(.drop-here)").addClass('placeholder').append($drop_here);
+		$('.widget-container').removeClass('placeholder').find('.drop-here').remove();
+		$('.widget-container').not(":has(.widget)").addClass('placeholder').append($drop_here);
 	}
 	
 	/* main image upload */
@@ -789,6 +791,12 @@ $(document).ready(function() {
     });
     
 	$(".color-picker").colorpicker();
-    
-    
+	
+	//widget action toolbar
+	$(document).on('mouseenter', '#the-page .widget-wrapper', function(e) {
+		$( this ).addClass( 'hover' ).find('.widget-action').show();
+	});
+	$(document).on('mouseleave', '#the-page .widget-wrapper', function(e) {
+		$( this ).removeClass('hover').find('.widget-action').hide();
+	});
   });

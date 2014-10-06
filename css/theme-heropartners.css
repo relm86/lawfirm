@@ -68,7 +68,7 @@ body {
 .icon-block a{width:32px; height:32px; display:block;}
 
 .widget.videos{
-	padding-bottom: 14px;
+	/*padding-bottom: 14px;*/
 }
 
 .widget.videos .embed-responsive, .widget.videos .video-nav{
@@ -329,6 +329,15 @@ body {
 .widget.text {
 	padding: 15px;
 }
+
+.widget.text.greeting {
+	padding: 0;
+}
+
+.page_preview .widget.text .blank-widget{
+	margin: -15px;
+}
+
 .widget.gmap {
 	border: 1px solid #000000;
 	background-color: #000000;

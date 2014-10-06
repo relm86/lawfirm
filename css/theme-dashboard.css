@@ -52,12 +52,54 @@
 	z-index: 2;
 	padding: 10px;
 }
-#widgets-container .widget-control-actions, #widgets-container .widget-inside, #widgets-container .widget-form, .widget-container .widget-top, .widget-container .widget-description{
+#widgets-container .widget-control-actions, #widgets-container .widget-inside, #widgets-container .widget-form, .widget-container .widget-title, .widget-container .widget-description, .widget-action{
 	display: none;
 }
 
 .widget-container. widget-inside{
 	display: block;
+}
+
+#the-page .widget-action{
+	position: absolute;
+	right: 5px;
+	top: 5px;
+	z-index: 10;
+}
+
+.widget-action span {
+	color: #ffffff;
+	background-color: #f17100;
+	padding: 3px;
+	border-radius: 3px;
+	-moz-border-radius: 3px;
+	-webkit-border-radius: 3px;
+	cursor: pointer;
+}
+
+.move-widget{
+	cursor: move !important;
+}
+
+#the-page .widget{
+	margin-top: 0 !important;
+}
+
+#the-page .widget-wrapper, #the-page .share-this, #the-page .external-site{
+	margin-top: 25px !important;
+	position: relative;
+}
+
+#the-page .widget-wrapper.hover{
+	border: 2px solid #f17100;
+}
+
+#the-page .widget-wrapper{
+	border: 2px solid transparent;
+}
+
+.widget.text .blank-widget{
+	/*margin: -15px;*/
 }
 
 .ui-droppable {
@@ -72,8 +114,12 @@
 	margin-top: 25px;
 }
 
-#widgets li.ui-draggable{
+#widgets .ui-draggable{
 	cursor: move;
+}
+
+.widget .panel{
+	margin-bottom: 0;
 }
 
 .spinner {
