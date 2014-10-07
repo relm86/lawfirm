@@ -33,8 +33,10 @@ if ( ! function_exists('create_thumb'))
 		
 		if ( ! $CI->image_lib->resize()):
 			echo $CI->image_lib->display_errors();
+			$CI->image_lib->clear(); 
 			return FALSE;
 		else:
+			$CI->image_lib->clear(); 
 			return $config['new_image'];
 		endif;
 	}

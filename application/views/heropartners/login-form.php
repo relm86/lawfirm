@@ -20,22 +20,21 @@
 					<li><button class="btn btn-linkedin" onclick="linkedinLogin();"><i class="fa fa-linkedin"></i> | Sign In with LinkedIn</button></li>
 					<?php endif; ?>
 					<?php 
-					$this->config->load('twitter');
-					if ( $this->config->item('twitter_consumer_key') != '' && $this->config->item('twitter_consumer_secret') != '' ): 
+					if ( $this->config->item('twitter_login') ): 
 					?>
 					<li><a class="btn btn-twitter" href="<?php echo base_url('/login/twitter'); ?>"><i class="fa fa-twitter"></i> | Sign In with Twitter</a></li>
 					<?php endif; ?>
 					<?php if ( $this->config->item('fb_app_id') != '' ): ?>
 					<li><button class="btn btn-facebook" onclick="fb_login();"><i class="fa fa-facebook"></i> | Sign In with Facebook</button></li>
 					<?php endif; ?>
-					<?php if ( $this->config->item('google_client_id') != '' ): ?>
+					<?php if ( $this->config->item('google_login') ): ?>
 					<li><button class="btn btn-google-plus" id="googleSignInBtn"><i class="fa fa-google-plus"></i> | Sign In with Google</button></li>
 					<?php endif; ?>
-					<?php if ( $this->config->item('linkedin_api_key') != '' || $this->config->item('fb_app_id') != '' || $this->config->item('google_client_id') != '' || ($this->config->item('twitter_consumer_key') != '' && $this->config->item('twitter_consumer_secret') != '' ) ): ?>
+					<?php if ( $this->config->item('twitter_login') || $this->config->item('fb_app_id') || $this->config->item('google_login') || $this->config->item('linkedin_login')  ): ?>
 					<li><div id="status"></div><span class="or">OR</span></li>
 					<?php endif; ?>
 				</ul>
-				<?php if ( $this->config->item('linkedin_api_key') != '' ): ?>
+				<?php if ( $this->config->item('linkedin_login') ): ?>
 				<script type="text/javascript" src="http://platform.linkedin.com/in.js">
 				api_key: <?php echo $this->config->item('linkedin_api_key')."\n";?> 
 				scope:r_basicprofile,r_emailaddress,r_network,r_fullprofile
