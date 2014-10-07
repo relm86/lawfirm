@@ -10,15 +10,13 @@
 			</div>
 			<div class="col-md-6">
 				<ul class="socbtns" style="display: none;">
-					<?php if ( $this->config->item('linkedin_api_key') != '' ): ?>
+					<?php if ( $this->config->item('linkedin_login') ): ?>
 					<li><button class="btn btn-linkedin" onclick="linkedinLogin();"><i class="fa fa-linkedin"></i> | Sign In with LinkedIn</button></li>
 					<?php endif; ?>
-					<?php 
-					if ( $this->config->item('twitter_login') ): 
-					?>
+					<?php if ( $this->config->item('twitter_login') ):  ?>
 					<li><a class="btn btn-twitter" href="<?php echo base_url('/login/twitter'); ?>"><i class="fa fa-twitter"></i> | Sign In with Twitter</a></li>
 					<?php endif; ?>
-					<?php if ( $this->config->item('fb_app_id') != '' ): ?>
+					<?php if ( $this->config->item('facebook_login') ): ?>
 					<li><button class="btn btn-facebook" onclick="fb_login();"><i class="fa fa-facebook"></i> | Sign In with Facebook</button></li>
 					<?php endif; ?>
 					<?php if ( $this->config->item('google_login') ): ?>
