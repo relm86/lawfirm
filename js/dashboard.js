@@ -39,6 +39,7 @@ $(document).ready(function() {
 		containment: "document",
 		helper: "clone",
 		cursor: "move",
+		handle: ".move-widget",
 		connectToSortable: '.widget-container'
 	});
 	
@@ -79,11 +80,12 @@ $(document).ready(function() {
 					//delete modal if exists
 					$('#widget-'+widget_type+'-'+widget_id+'-modal').remove();
 					$('body').prepend(msg.widget_modal);
-				}				
+				}
+				
+				//save layout
+				save_layout();		
 			});
 			
-			//save layout
-			save_layout();
 		}
 			
 	});

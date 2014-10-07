@@ -1322,9 +1322,9 @@ if ( ! function_exists('draw_modal_greeting')){
 if ( ! function_exists('the_widgets')){
 	function the_widgets( ){
 ?>
-<div id="widget-greeting-__i__" class="widget widget-wrapper" data-type="greeting">
+<div id="widget-greeting-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="greeting">
 	<div class="widget-top">
-		<div class="widget-title"><h4>Welcome<span class="in-widget-title"></span></h4></div>
+		<div class="widget-title"><h4>Welcome<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
 		<div class="widget-action">
 			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
 			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal"></span>
@@ -1346,12 +1346,12 @@ if ( ! function_exists('the_widgets')){
 		</div>
 	</div>
 
-	<div class="widget-description">User picture and welcome words.</div>
+	<div class="widget-description">User picture and welcome words.<p>Grab and move into place.</p></div>
 </div>
 
-<div id="widget-testimonials-__i__" class="widget widget-wrapper"  data-type="testimonials">
+<div id="widget-testimonials-__i__" class="widget widget-wrapper gradient gradient-blue"  data-type="testimonials">
 	<div class="widget-top">
-		<div class="widget-title"><h4>Testimonials (Reviews)<span class="in-widget-title"></span></h4></div>
+		<div class="widget-title"><h4>Testimonials (Reviews)<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
 		<div class="widget-action">
 			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
 			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-testimonials-__i__-modal"></span>
@@ -1372,12 +1372,12 @@ if ( ! function_exists('the_widgets')){
 		</div>
 	</div>
 
-	<div class="widget-description">Add Testimonials</div>
+	<div class="widget-description">Add Testimonials<p>Grab and move into place.</p></div>
 </div>
 
-<div id="widget-stories-__i__" class="widget widget-wrapper"  data-type="stories">
+<div id="widget-stories-__i__" class="widget widget-wrapper gradient gradient-blue"  data-type="stories">
 	<div class="widget-top">
-		<div class="widget-title"><h4>Client Stories<span class="in-widget-title"></span></h4></div>
+		<div class="widget-title"><h4>Client Stories<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
 		<div class="widget-action">
 			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
 			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-stories-__i__-modal"></span>
@@ -1392,12 +1392,12 @@ if ( ! function_exists('the_widgets')){
 		</div>
 	</div>
 
-	<div class="widget-description">Add Client Stories</div>
+	<div class="widget-description">Add Client Stories<p>Grab and move into place.</p></div>
 </div>
 				
-<div id="widget-twitter-feed-__i__" class="widget widget-wrapper" data-type="twitter">
+<div id="widget-twitter-feed-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="twitter">
 	<div class="widget-top">
-		<div class="widget-title"><h4>Twitter Feed<span class="in-widget-title"></span></h4></div>
+		<div class="widget-title"><h4>Twitter Feed<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
 		<div class="widget-action">
 			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
 			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-twitter-60-modal"></span>
@@ -1417,13 +1417,13 @@ if ( ! function_exists('the_widgets')){
 			</div>
 		</div>
 	</div>
-	<div class="widget-description">Add Twitter Feeds</div>
+	<div class="widget-description">Add Twitter Feed<p>Grab and move into place.</p></div>
 
 </div>
 
-<div id="widget-faq-__i__" class="widget widget-wrapper" data-type="faq">
+<div id="widget-faq-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="faq">
 	<div class="widget-top">
-		<div class="widget-title"><h4>FAQ<span class="in-widget-title"></span></h4></div>
+		<div class="widget-title"><h4>FAQ<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
 		<div class="widget-action">
 			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
 			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-faq-modal"></span>
@@ -1438,12 +1438,12 @@ if ( ! function_exists('the_widgets')){
 		</div>
 	</div>
 
-	<div class="widget-description">Add FAQ</div>
+	<div class="widget-description">Add FAQ<p>Grab and move into place.</p></div>
 </div>
 
-<div id="widget-text-__i__" class="widget widget-wrapper" data-type="text">
+<div id="widget-text-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="text">
 	<div class="widget-top">
-		<div class="widget-title"><h4>Text<span class="in-widget-title"></span></h4></div>
+		<div class="widget-title"><h4>Text<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
 		<div class="widget-action">
 			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
 			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-text-modal"></span>
@@ -1458,12 +1458,12 @@ if ( ! function_exists('the_widgets')){
 		</div>
 	</div>
 
-	<div class="widget-description">Add Text</div>
+	<div class="widget-description">Add Text<p>Grab and move into place.</p></div>
 </div>
 
-<div id="widget-gmap-__i__" class="widget widget-wrapper" data-type="gmap">
+<div id="widget-gmap-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="gmap">
 	<div class="widget-top">
-		<div class="widget-title"><h4>Google Map<span class="in-widget-title"></span></h4></div>
+		<div class="widget-title"><h4>Google Map<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
 		<div class="widget-action">
 			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
 			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-gmap-modal"></span>
@@ -1486,12 +1486,12 @@ if ( ! function_exists('the_widgets')){
 		</div>
 	</div>
 
-	<div class="widget-description">Add Google Map</div>
+	<div class="widget-description">Add Google Map<p>Grab and move into place.</p></div>
 </div>
 
-<div id="widget-contact-__i__" class="widget widget-wrapper" data-type="contact">
+<div id="widget-contact-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="contact">
 	<div class="widget-top">
-		<div class="widget-title"><h4>Contact<span class="in-widget-title"></span></h4></div>
+		<div class="widget-title"><h4>Contact<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
 		<div class="widget-action">
 			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
 			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-contact-modal"></span>
@@ -1512,7 +1512,7 @@ if ( ! function_exists('the_widgets')){
 		</div>
 	</div>
 
-	<div class="widget-description">Add Contact</div>
+	<div class="widget-description">Add Contact<p>Grab and move into place.</p></div>
 </div>
 <?php
 	}

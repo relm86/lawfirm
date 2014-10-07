@@ -23,6 +23,13 @@
 	<?php if( isset($sticky) ): ?>
 	<link rel="stylesheet" type="text/css" media="all" href="<?php echo base_url();?>css/sticky.css" />
 	<?php endif; ?>
+	
+	<!--[if gte IE 9]>
+	<style type="text/css">
+		.gradient {filter: none;}
+	</style>
+	<![endif]-->
+	
 	<!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
 	<!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
 	<!--[if lt IE 9]>
