@@ -124,7 +124,7 @@ if ( ! function_exists('get_user_picture_thumb'))
 		if ( $query->num_rows() > 0 ):
 			$row =  $query->row();
 			if ( ! $row->picture ) 
-				$row->picture = './img/img100.png';
+				$row->picture = './img/default-profile-photo.jpg';
 			return base_url() . str_replace('./', '',  create_thumb($row->picture, $width, $height) );
 		else:
 			return FALSE;
@@ -1516,6 +1516,166 @@ if ( ! function_exists('the_widgets')){
 	</div>
 
 	<div class="widget-description">Add Contact<p>Grab and move into place.</p></div>
+</div>
+
+<div id="widget-download-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="download">
+	<div class="widget-top">
+		<div class="widget-title"><h4>Download<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
+	</div>
+
+	<div class="widget-inside">
+		<div class="widget text download">
+			<h3 class="title">Download</h3>
+			<div class="blank-widget text download"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-download-__i__-modal">Add Download</button></div>
+		</div>
+	</div>
+
+	<div class="widget-description">Add download link. eBook, Whitepaper, PDF, etc.<p>Grab and move into place.</p></div>
+</div>
+
+<div id="widget-coupon-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="coupon">
+	<div class="widget-top">
+		<div class="widget-title"><h4>Coupon<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
+	</div>
+
+	<div class="widget-inside">
+		<div class="widget text coupon">
+			<h3 class="title">Coupon</h3>
+			<div class="blank-widget text coupon"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-coupon-__i__-modal">Add Coupon</button></div>
+		</div>
+	</div>
+
+	<div class="widget-description">Add printable image.<p>Grab and move into place.</p></div>
+</div>
+
+<div id="widget-products-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="products">
+	<div class="widget-top">
+		<div class="widget-title"><h4>Products<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
+	</div>
+
+	<div class="widget-inside">
+		<div class="widget text products">
+			<h3 class="title">Products</h3>
+			<div class="blank-widget text products"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-products-__i__-modal">Add Products</button></div>
+		</div>
+	</div>
+
+	<div class="widget-description">Add Products.<p>Grab and move into place.</p></div>
+</div>
+
+<div id="widget-services-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="services">
+	<div class="widget-top">
+		<div class="widget-title"><h4>Services<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
+	</div>
+
+	<div class="widget-inside">
+		<div class="widget text services">
+			<h3 class="title">Services</h3>
+			<div class="blank-widget text services"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-services-__i__-modal">Add Services</button></div>
+		</div>
+	</div>
+
+	<div class="widget-description">Add Services.<p>Grab and move into place.</p></div>
+</div>
+
+<div id="widget-videos-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="videos">
+	<div class="widget-top">
+		<div class="widget-title"><h4>Videos<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
+	</div>
+
+	<div class="widget-inside">
+		<div class="widget text videos">
+			<h3 class="title">Videos</h3>
+			<div class="blank-widget text videos"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-videos-__i__-modal">Add Videos</button></div>
+		</div>
+	</div>
+
+	<div class="widget-description">Add Videos.<p>Grab and move into place.</p></div>
+</div>
+
+<div id="widget-greview-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="greview">
+	<div class="widget-top">
+		<div class="widget-title"><h4>Google Reviews<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
+	</div>
+
+	<div class="widget-inside">
+		<div class="widget text greview">
+			<h3 class="title">Google Reviews</h3>
+			<div class="blank-widget text greview"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-greview-__i__-modal">Add Google Reviews</button></div>
+		</div>
+	</div>
+
+	<div class="widget-description">Add Google Reviews.<p>Grab and move into place.</p></div>
+</div>
+
+<div id="widget-yreview-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="yreview">
+	<div class="widget-top">
+		<div class="widget-title"><h4>Yelp Reviews<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
+	</div>
+
+	<div class="widget-inside">
+		<div class="widget text yreview">
+			<h3 class="title">Yelp Reviews</h3>
+			<div class="blank-widget text yreview"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-yreview-__i__-modal">Add Yelp Reviews</button></div>
+		</div>
+	</div>
+
+	<div class="widget-description">Add Yelp Reviews.<p>Grab and move into place.</p></div>
+</div>
+
+<div id="widget-forumfeed-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="forumfeed">
+	<div class="widget-top">
+		<div class="widget-title"><h4>Our Community<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
+	</div>
+
+	<div class="widget-inside">
+		<div class="widget text forumfeed">
+			<h3 class="title">Our Community</h3>
+			<div class="blank-widget text forumfeed"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-forumfeed-__i__-modal">Add Our Community</button></div>
+		</div>
+	</div>
+
+	<div class="widget-description">Add Our Community.<p>Grab and move into place.</p></div>
 </div>
 <?php
 	}

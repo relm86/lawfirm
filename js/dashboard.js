@@ -61,6 +61,14 @@ $(document).ready(function() {
 					$('#'+msg.widget_id+' .edit-widget').attr('data-target', '#'+msg.widget_id+'-modal');
 				}
 					
+				if ( msg.success == true && msg.widget_modal == '' ){
+					//add empty modal
+					if ( msg.widget_modal == '' ){
+						msg.widget_modal = '<div class="modal fade" id="'+msg.widget_id+'-modal" tabindex="-1" data-widget-type="'+widget_type+'" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true"><div class="modal-dialog"><div class="modal-content"><div class="modal-header"><button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button><h4 class="modal-title" id="myModalLabel"></h4></div><div class="modal-body"></div><div class="modal-footer"><button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button><span class="spinner"></span></div></div></div></div>';
+					}
+					console.log(msg.widget_modal);
+				}
+				
 				if ( msg.success == true && msg.widget_modal ){
 					//delete modal if exists
 					$('#widget-'+widget_type+'-'+widget_id+'-modal').remove();
