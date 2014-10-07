@@ -240,6 +240,13 @@ function validate_login(){
 		jQuery('#name').focus();
 		return false;
 	}
+	
+	if ( jQuery('#business').length > 0 && jQuery('#business').val() == '' ){
+		alert('Please enter your Business Name!');
+		jQuery('#business').focus();
+		return false;
+	}
+	
 	if ( jQuery('#email').val() == '' || ! IsEmail(jQuery('#email').val()) ){
 		alert('Please enter valid email address!');
 		jQuery('#email').focus();

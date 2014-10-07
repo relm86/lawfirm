@@ -387,6 +387,7 @@ if ( ! function_exists('draw_widget_greeting')){
 		$text = unserialize($widget->widget_data);
 		
 		if ( ! isset($text['title']) ) $text['title'] = 'Hi [first-name],';
+		if ( (! isset($text['content']) || $text['content'] == '') && NULL != $CI->config->item('greeting_widget_text') && $CI->config->item('greeting_widget_text') != '' ) $text['content'] = $CI->config->item('greeting_widget_text');
 		if ( ! isset($text['content']) ) $text['content'] = "<p>We've put together this page to provide customized information just for you.</p>";
 		$first_name = '';
 		$last_name = '';

@@ -12,6 +12,7 @@ class Login extends CI_Controller {
 		$data = array();
 		if ($this->input->post()) :
 			$this->form_validation->set_rules('name', 'Name', "trim|required");
+			if ( $this->input->post('business') ) $this->form_validation->set_rules('business', 'Business Name', "trim|required");
 			$this->form_validation->set_rules('password', 'Password', "trim|required|callback__check_password");
 			$this->form_validation->set_rules('email', 'Email', "trim|required|valid_email");
 			$this->form_validation->set_rules('phone', 'Phone Number', "trim|required|callback__isValidPhone");
@@ -32,6 +33,7 @@ class Login extends CI_Controller {
                     $parts = explode(" ", $this->input->post('name'));
                     $data['last_name'] = array_pop($parts);
                     $data['first_name'] =  implode(" ", $parts);
+                    $data['business'] =  $this->input->post('business');
                     $data['phone_number'] =  $this->input->post('phone');
                     $data['zip_code'] =  $this->input->post('zipcode');
                     $data['email_address'] =  $this->input->post('email');
@@ -48,6 +50,7 @@ class Login extends CI_Controller {
                         $data['last_name'] = array_pop($parts);
                         $data['first_name'] =  implode(" ", $parts);
                         $data['password'] = md5($this->input->post('password'));
+                        $data['business'] =  $this->input->post('business');
                         $data['phone_number'] =  $this->input->post('phone');
                         $data['zip_code'] =  $this->input->post('zipcode');
                         $this->db->where('id', $row->id);

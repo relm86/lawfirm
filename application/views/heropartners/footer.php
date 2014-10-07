@@ -1,5 +1,6 @@
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
 <script src="<?php echo base_url();?>js/libs/bootstrap.min.js"></script>
+<script type="text/javascript" src="<?php echo base_url();?>js/app.js"></script>
 <?php if ( isset($picture_upload) ): ?>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/libs/plupload.full.min.js"></script>
 <script type="text/javascript">

@@ -322,6 +322,22 @@ body {
 	color: #fff;
 }
 
+.login-logo {
+	color: #ffffff;
+	margin-bottom: 20px;
+}
+
+.login-logo h4.media-heading {
+	font-size: 24px;
+	margin-top: 12px;
+	margin-bottom: 0;
+}
+
+.login-logo a {
+	text-decoration: none;
+	color: #ffffff;
+}
+
 .widget.text h3.title{
 	text-align: center;
 }

@@ -1,18 +1,3 @@
-function getYoutubeID(url) {
-	var p = /^(?:https?:\/\/)?(?:www\.)?(?:youtu\.be\/|youtube\.com\/(?:embed\/|v\/|watch\?v=|watch\?.+&v=))((\w|-){11})(?:\S+)?$/;
-	return (url.match(p)) ? RegExp.$1 : false;
-}
-
-function play(video){
-	document.getElementById('youtube-main').innerHTML = '<iframe width="560" height="315" src="'+video.attr("data-youtubeurl")+'?autoplay=1" frameborder="0"></iframe>';
-}
-
-function isValidURL(url){
-	url = url.toLowerCase();
-	var urlregex = new RegExp("^(http:\/\/www\.|https:\/\/www\.|http:\/\/|https:\/\/)[a-z0-9]+([\-\.]{1}[a-z0-9]+)*\.[a-z]{2,5}(:[0-9]{1,5})?(\/.*)?$");
-  	return urlregex.test(url);
-}
-	
 $(document).ready(function() {
 				
 	/* Color Scheme Selectot */
@@ -373,12 +358,16 @@ $(document).ready(function() {
 		var video_id = $(this).closest('.video-form').attr('id');
 		var video_url = $('#' + video_id + ' input[type=text]').val();
 		var youtubeID = getYoutubeID(video_url);
+		var vimeoID = getvimeoID(video_url);
 		if ( youtubeID ){
 			video_url = 'https://www.youtube.com/embed/'+youtubeID;
 			$('#' + video_id + ' input[type=text]').val(video_url);
+		} else if ( vimeoID )  {
+			//video_url = 'https://player.vimeo.com/video/'+vimeoID;
+			$('#' + video_id + ' input[type=text]').val(video_url);
 		} else {
 			$('#' + video_id + ' input[type=text]').val('').focus();
-			alert("Please enter valid video link (youtube vimeo only)!");
+			alert("Please enter valid video link (youtube or vimeo only)!");
 			return false;
 		}
 		$('#'+video_id+' .spinner').html('Saving ...');
@@ -434,10 +423,10 @@ $(document).ready(function() {
 			thumb_url = $('#'+videoid+' img').attr('src');
 			video_url = $('#'+videoid+' input[type=text]').val();
 			
-			if ( false == getYoutubeID(video_url) ){
+			if ( false == getYoutubeID(video_url) && false == getvimeoID(video_url) ){
 				$('#' + videoid + ' input[type=text]').val('').focus();
 				error = true;
-				alert("Please enter valid video link (youtube only)!");
+				alert("Please enter valid video link (youtube & vimeo only)!");
 				return false;
 			}
 			
