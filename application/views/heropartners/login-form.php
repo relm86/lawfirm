@@ -1,16 +1,17 @@
 <div class="container">
 <div class="row login-form-container center-block">
 	<div class="col-md-12">
+		<div class="login-logo">
+			<img src="<?php echo base_url(); ?>/img/hero-partners-footer-logo.png" alt="Hero Partners Logo" width="68" height="67" class="pull-left"/>
+			<div class="media-body">
+				<h4 class="media-heading">Hero Global</h4>
+				<p><a href="http://heropartners.com/">A Division of Hero Partners</a></p>
+			</div>
+			<div class="clearfix"></div>
+		</div>
+		
 		<div class="row">
 			<div class="col-md-6">
-				<div class="login-logo">
-					<img src="<?php echo base_url(); ?>/img/hero-partners-footer-logo.png" alt="Hero Partners Logo" width="68" height="67" class="pull-left"/>
-					<div class="media-body">
-						<h4 class="media-heading">Hero Global</h4>
-						<p><a href="http://heropartners.com/">A Division of Hero Partners</a></p>
-					</div>
-					<div class="clearfix"></div>
-				</div>
 				<p>Accelerating companies with our proven strategy and influence.</p>
 				<p>We know entrepreneurs are the lifeblood of economic growth and cultural innovation. Hero Global is designed to accelerate the growth of high-potential entrepreneurs - and their companies - by giving access to the Hero Partners Methodology - a method that has built multiple billion dollar and centi-million dollar organizations. Simply put, we teach you our proprietary strategic approach and give you access to our influential network.</p>
 			</div>

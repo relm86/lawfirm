@@ -273,6 +273,8 @@ body {
 
 .login-form-container p{
 	color: #fff;
+	font-size: 13px;
+	margin-bottom: 3px;
 }
 
 .socbtns {
@@ -317,7 +319,7 @@ body {
 }
 
 .or {
-	margin: 3px 0;
+	margin: 10px 0;
 	display: block;
 	color: #fff;
 }
