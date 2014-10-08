@@ -20,8 +20,13 @@ $config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER
 $config['fb_app_id']	= "367838596697555";
 $config['google_client_id']	= "607475603602-kund226ns28q1k7c1edoth80fr7f1jjv.apps.googleusercontent.com";
 $config['linkedin_api_key']	= "77ca2ee1u9h2g3";
+$config['linkedin_login']	= TRUE;
+$config['facebook_login']	= TRUE;
+$config['twitter_login']		= TRUE;
+$config['google_login']		= TRUE;
 $config['client']	= 'siegfriedJensen';
 $config['show_theme_switcher']	= FALSE;
+$config['greeting_widget_text']	= "<p>We've put together this page to provide customized information just for you.</p>"; //default widget text
 /*
 |--------------------------------------------------------------------------
 | Index File
