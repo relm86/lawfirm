@@ -43,12 +43,14 @@ class Login extends CI_Controller {
 					
 					//geo ip
 					$loc = get_location_info();
-					$data['login_ip'] = $loc->ip;
-					$data['city'] = $loc->city;
-					$data['state'] = $loc->region_name;
-					$data['country'] = $loc->country_name;
-					$data['latitude'] = $loc->latitude;
-					$data['longitude'] = $loc->longitude;
+					if ( is_object($loc) && isset($loc->ip) ):
+						$data['login_ip'] = $loc->ip;
+						$data['city'] = $loc->city;
+						$data['state'] = $loc->region_name;
+						$data['country'] = $loc->country_name;
+						$data['latitude'] = $loc->latitude;
+						$data['longitude'] = $loc->longitude;
+					endif;
 
 					$this->db->insert('users', $data);
 					$data['id'] = $this->db->insert_id();
@@ -66,12 +68,14 @@ class Login extends CI_Controller {
 					
 					//geo ip
 					$loc = get_location_info();
-					$data['login_ip'] = $loc->ip;
-					if ( $row->city == '' ) $data['city'] = $loc->city;
-					if ( $row->state == '' ) $data['state'] = $loc->region_name;
-					if ( $row->country == '' ) $data['country'] = $loc->country_name;
-					if ( $row->latitude == '' ) $data['latitude'] = $loc->latitude;
-					if ( $row->longitude == '' ) $data['longitude'] = $loc->longitude;
+					if ( is_object($loc) && isset($loc->ip) ):
+						$data['login_ip'] = $loc->ip;
+						if ( $row->city == '' ) $data['city'] = $loc->city;
+						if ( $row->state == '' ) $data['state'] = $loc->region_name;
+						if ( $row->country == '' ) $data['country'] = $loc->country_name;
+						if ( $row->latitude == '' ) $data['latitude'] = $loc->latitude;
+						if ( $row->longitude == '' ) $data['longitude'] = $loc->longitude;
+					endif;
 					
 					$this->db->where('id', $row->id);
 					$this->db->update('users', $data);
