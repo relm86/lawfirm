@@ -393,10 +393,12 @@ if ( ! function_exists('draw_widget_greeting')){
 		if ( ! isset($text['content']) ) $text['content'] = "<p>We've put together this page to provide customized information just for you.</p>";
 		$first_name = '';
 		$last_name = '';
+		$city = '';
 		if ( $CI->session->userdata('first_name') ) $first_name = $CI->session->userdata('first_name');
 		if ( $CI->session->userdata('last_name') ) $last_name = $CI->session->userdata('last_name');
-		$search = array('[first-name]','[last-name]');
-		$replace = array($first_name, $last_name);
+		if ( $CI->session->userdata('city') ) $city = $CI->session->userdata('city');
+		$search = array('[first-name]','[last-name]','[city]');
+		$replace = array($first_name, $last_name, $city);
 		$text['title'] = str_replace($search, $replace, $text['title']);
 		$text['content'] = str_replace($search, $replace, $text['content']);
 		
@@ -1309,7 +1311,7 @@ if ( ! function_exists('draw_modal_greeting')){
 				
 				<input type="text" name="text-title" value="<?=$text['title'];?>" class="form-control" placeholder="Title"/>
 				<textarea id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-content" name="text-content" class="form-control tinymce" style="width:100%; height:100px"><?=$text['content'];?></textarea>
-				<p>You can use [first-name] or [last-name] to view user First Name or Last Name.</p>
+				<p>You can use [first-name] or [last-name] or [city] to view user First Name or Last Name or City.</p>
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
@@ -1678,5 +1680,51 @@ if ( ! function_exists('the_widgets')){
 	<div class="widget-description">Add Our Community.<p>Grab and move into place.</p></div>
 </div>
 <?php
+	}
+}
+
+if ( ! function_exists('get_client_ip')){
+	// Function to get the client ip address
+	function get_client_ip() {
+	    $ipaddress = '';
+	    if ($_SERVER['HTTP_CLIENT_IP'])
+	        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+	    else if($_SERVER['HTTP_X_FORWARDED_FOR'])
+	        $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	    else if($_SERVER['HTTP_X_FORWARDED'])
+	        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+	    else if($_SERVER['HTTP_FORWARDED_FOR'])
+	        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+	    else if($_SERVER['HTTP_FORWARDED'])
+	        $ipaddress = $_SERVER['HTTP_FORWARDED'];
+	    else if($_SERVER['REMOTE_ADDR'])
+	        $ipaddress = $_SERVER['REMOTE_ADDR'];
+	    else
+	        $ipaddress = 'UNKNOWN';
+	 
+	    return $ipaddress;
+	}
+}
+
+if ( ! function_exists('get_location_info')){
+	//function to get geo/location data by ip
+	// output object
+	// ip, country_code, country_name, region_code, region_name, Yogyakarta, city, zipcode, latitude, longitude, metro_code, areacode
+	function get_location_info(){
+		$ip = get_client_ip();
+		if ( $ip == 'UNKNOWN')
+			return FALSE;
+		$url = "http://freegeoip.net/json/$ip";
+		$ch  = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		//var_dump($data);
+		if ($data) {
+			$location = json_decode($data);
+			return $location;
+		}
 	}
 }

@@ -71,6 +71,15 @@ class Dashboard extends CI_Controller {
 					//update login info
 					$row = $query->row(); 
 					unset($row->password);
+					
+					//geo ip
+					$loc = get_location_info();
+					$data['login_ip'] = $loc->ip;
+					if ( $row->city == '' ) $data['city'] = $loc->city;
+					if ( $row->state == '' ) $data['state'] = $loc->region_name;
+					if ( $row->country == '' ) $data['country'] = $loc->country_name;
+					if ( $row->latitude == '' ) $data['latitude'] = $loc->latitude;
+					if ( $row->longitude == '' ) $data['longitude'] = $loc->longitude;
 
 					$this->db->where('id', $row->id);
 					$this->db->update('users', $data); 

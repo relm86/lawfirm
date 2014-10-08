@@ -35,11 +35,20 @@ class Login extends CI_Controller {
 					$parts = explode(" ", $this->input->post('name'));
 					$data['last_name'] = array_pop($parts);
 					$data['first_name'] =  implode(" ", $parts);
-					$data['business'] =  $this->input->post('business');
-					$data['phone_number'] =  $this->input->post('phone');
-					$data['zip_code'] =  $this->input->post('zipcode');
+					if ( $this->input->post('business') ) $data['business'] =  $this->input->post('business');
+					if ( $this->input->post('phone_number') ) $data['phone_number'] =  $this->input->post('phone');
+					if ( $this->input->post('zip_code') ) $data['zip_code'] =  $this->input->post('zipcode');
 					$data['email_address'] =  $this->input->post('email');
-					$data['password'] =  md5($this->input->post('password'));
+					if ( $this->input->post('password') ) $data['password'] =  md5($this->input->post('password'));
+					
+					//geo ip
+					$loc = get_location_info();
+					$data['login_ip'] = $loc->ip;
+					$data['city'] = $loc->city;
+					$data['state'] = $loc->region_name;
+					$data['country'] = $loc->country_name;
+					$data['latitude'] = $loc->latitude;
+					$data['longitude'] = $loc->longitude;
 
 					$this->db->insert('users', $data);
 					$data['id'] = $this->db->insert_id();
@@ -50,10 +59,20 @@ class Login extends CI_Controller {
 					$parts = explode(" ", $this->input->post('name'));
 					$data['last_name'] = array_pop($parts);
 					$data['first_name'] =  implode(" ", $parts);
-					$data['password'] = md5($this->input->post('password'));
-					$data['business'] =  $this->input->post('business');
-					$data['phone_number'] =  $this->input->post('phone');
-					$data['zip_code'] =  $this->input->post('zipcode');
+					if ( $this->input->post('password') ) $data['password'] = md5($this->input->post('password'));
+					if ( $this->input->post('business') ) $data['business'] =  $this->input->post('business');
+					if ( $this->input->post('phone_number') ) $data['phone_number'] =  $this->input->post('phone');
+					if ( $this->input->post('zip_code') ) $data['zip_code'] =  $this->input->post('zipcode');
+					
+					//geo ip
+					$loc = get_location_info();
+					$data['login_ip'] = $loc->ip;
+					if ( $row->city == '' ) $data['city'] = $loc->city;
+					if ( $row->state == '' ) $data['state'] = $loc->region_name;
+					if ( $row->country == '' ) $data['country'] = $loc->country_name;
+					if ( $row->latitude == '' ) $data['latitude'] = $loc->latitude;
+					if ( $row->longitude == '' ) $data['longitude'] = $loc->longitude;
+					
 					$this->db->where('id', $row->id);
 					$this->db->update('users', $data);
 					$data = array_merge($data, (array) $row);
@@ -238,48 +257,6 @@ class Login extends CI_Controller {
 		else:
 			return TRUE;
 		endif;
-	}
-	
-	// Function to get the client ip address
-	function _get_client_ip() {
-	    $ipaddress = '';
-	    if ($_SERVER['HTTP_CLIENT_IP'])
-	        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
-	    else if($_SERVER['HTTP_X_FORWARDED_FOR'])
-	        $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
-	    else if($_SERVER['HTTP_X_FORWARDED'])
-	        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
-	    else if($_SERVER['HTTP_FORWARDED_FOR'])
-	        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
-	    else if($_SERVER['HTTP_FORWARDED'])
-	        $ipaddress = $_SERVER['HTTP_FORWARDED'];
-	    else if($_SERVER['REMOTE_ADDR'])
-	        $ipaddress = $_SERVER['REMOTE_ADDR'];
-	    else
-	        $ipaddress = 'UNKNOWN';
-	 
-	    return $ipaddress;
-	}
-
-	//function to get geo/location data by ip
-	// output object
-	// ip, country_code, country_name, region_code, region_name, Yogyakarta, city, zipcode, latitude, longitude, metro_code, areacode
-	function _get_location_info(){
-		$ip = $this->_get_client_ip();
-		if ( $ip == 'UNKNOWN')
-			return FALSE;
-		$url = "http://freegeoip.net/json/$ip";
-		$ch  = curl_init();
-		curl_setopt($ch, CURLOPT_URL, $url);
-		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
-		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
-		$data = curl_exec($ch);
-		curl_close($ch);
-		//var_dump($data);
-		if ($data) {
-			$location = json_decode($data);
-			return $location;
-		}
 	}
 }
 

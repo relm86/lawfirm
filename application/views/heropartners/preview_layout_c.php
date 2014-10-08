@@ -56,10 +56,12 @@
 									?>
 									<div class="item<?=$active;?>">
 								          	<img src="<?=base_url() . str_replace('./', '',  create_thumb($image->path, 770, 366) );?>" width="770" height="366" alt=""/>
+								          	<?php if ( $image->title != '' || $image->description != '' ):?>
 								          	<div class="carousel-caption">
 											<h3><?=$image->title;?></h3>
 											<p><?=$image->description;?></p>
 										</div>
+										<?php endif; ?>
 								          </div>
 									<?php
 										endforeach;

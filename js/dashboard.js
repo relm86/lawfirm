@@ -249,20 +249,28 @@ $(document).ready(function() {
 		$('#main_image_sort .slider-image-form').each(function(){
 			slideid = $(this).attr('id');
 			img_url = $('#'+slideid).attr('data-img-url');
+			caption = '';
 			title = $('#'+slideid+' input[type=text]').val();
 			if ( '' == title ){
 				$('#'+slideid+' input[type=text]').focus();
 				error = true;
-				alert("Please enter image title!");
-				return false;
 			}
 			desc = $('#'+slideid+' textarea').val();
 			active = '';
 			if ( i == 0 ) active = ' active';
 			i++;
-			slider.append('<div class="item'+active+'"><img src="'+img_url+'" width="770" height="366" alt=""/><div class="carousel-caption"><h3>'+title+'</h3><p>'+desc+'</p></div></div>');
+			
+			if ( '' != title || '' != desc ) caption = '<div class="carousel-caption"><h3>'+title+'</h3><p>'+desc+'</p></div>';
+			
+			slider.append('<div class="item'+active+'"><img src="'+img_url+'" width="770" height="366" alt=""/>'+caption+'</div>');
+			
+			if ( true == error ) return false;
 		});
-		if ( true == error ) return false;
+		
+		if ( true == error && false == confirm("You not fill all image title! Do you wan to save the images without title?") ) {
+			return false;
+		}
+				
 		if ( i > 0 ){
 			$('#carousel-main-image').html('');
 			slider.prependTo('#carousel-main-image');
