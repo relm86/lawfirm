@@ -35,6 +35,9 @@
 				<div id="linkedin" style="display: none;"><script type="IN/Login" data-onAuth="onLinkedInAuth"></script></div>
 				<?php endif; ?>
 				<div class="login-form">
+					<?php
+				  		if ( isset($error_msg) ) echo '<div class="alert alert-danger" role="alert">' . $error_msg . '</div>';
+				  	?>
 					<?php echo form_open('login', array('class' => 'login_form', 'id' => 'login_form') ); ?>
 						<div class="form-group"> <?php echo form_error('name'); ?><input type="text" name="name" id="name" value="<?php if (isset($name)) echo $name; ?>" placeholder="Name" class="form-control" /></div>
 						<div class="form-group"> <?php echo form_error('email'); ?><input type="text" name="email" id="email" value="<?php if (isset($email)) echo $email; ?>" placeholder="Email address" class="form-control" /></div>

@@ -41,13 +41,13 @@
 				<div id="linkedin" style="display: none;"><script type="IN/Login" data-onAuth="onLinkedInAuth"></script></div>
 				<?php endif; ?>
 				<div class="login-form">
+					<?php
+				  		if ( isset($error_msg) ) echo '<div class="alert alert-danger" role="alert">' . $error_msg . '</div>';
+				  	?>
 					<?php echo form_open('login', array('class' => 'login_form', 'id' => 'login_form') ); ?>
 						<div class="form-group"> <?php echo form_error('name'); ?><input type="text" name="name" id="name" value="<?php if (isset($name)) echo $name; ?>" placeholder="Name" class="form-control" /></div>
 						<div class="form-group"> <?php echo form_error('business'); ?><input type="text" name="business" id="business" value="<?php if (isset($business)) echo $business ?>" placeholder="Business Name" class="form-control" /></div>
 						<div class="form-group"> <?php echo form_error('email'); ?><input type="text" name="email" id="email" value="<?php if (isset($email)) echo $email; ?>" placeholder="Email address" class="form-control" /></div>
-						<div class="form-group"> <?php echo form_error('password'); ?><input type="password" name="password" id="password" value="<?php if (isset($password)) echo $password; ?>" placeholder="Password" class="form-control" /></div>
-						<div class="form-group"> <?php echo form_error('phone'); ?><input type="text" name="phone" id="phone" value="<?php if (isset($phone)) echo $phone; ?>" placeholder="Phone number" class="form-control" /></div>
-						<div class="form-group"> <?php echo form_error('zipcode'); ?><input type="text" name="zipcode" id="zipcode" value="<?php if (isset($zipcode)) echo $zipcode; ?>" placeholder="Zip Code" class="form-control" /></div>
 						<button type="button" class="btn btn-success" onclick="validate_login();">Get Started</button>
 					<?php echo form_close(); ?>
 				</div>

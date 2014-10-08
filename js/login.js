@@ -252,12 +252,12 @@ function validate_login(){
 		jQuery('#email').focus();
 		return false;
 	}
-	if ( jQuery('#phone').val() == '' || ! IsPhone( jQuery('#phone').val() ) ){
+	if ( jQuery('#phone').length > 0 && ( jQuery('#phone').val() == '' || ! IsPhone( jQuery('#phone').val() ) ) ){
 		alert('Please enter valid phone number!');
 		jQuery('#phone').focus();
 		return false;
 	}
-	if ( jQuery('#zipcode').val() == '' || ! IsZipCode(jQuery('#zipcode').val()) ){
+	if ( jQuery('#zipcode').length > 0 && ( jQuery('#zipcode').val() == '' || ! IsZipCode( jQuery('#zipcode').val() ) ) ){
 		alert('Please enter valid zip code!');
 		jQuery('#zipcode').focus();
 		return false;

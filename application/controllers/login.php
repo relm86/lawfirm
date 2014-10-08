@@ -13,60 +13,63 @@ class Login extends CI_Controller {
 		if ($this->input->post()) :
 			$this->form_validation->set_rules('name', 'Name', "trim|required");
 			if ( $this->input->post('business') ) $this->form_validation->set_rules('business', 'Business Name', "trim|required");
-			$this->form_validation->set_rules('password', 'Password', "trim|required|callback__check_password");
+			if ( $this->input->post('password') ) $this->form_validation->set_rules('password', 'Password', "trim|required|callback__check_password");
 			$this->form_validation->set_rules('email', 'Email', "trim|required|valid_email");
-			$this->form_validation->set_rules('phone', 'Phone Number', "trim|required|callback__isValidPhone");
-			$this->form_validation->set_rules('zipcode', 'Zip Code', "trim|required|callback__isValidZipCode");
+			if ( $this->input->post('phone') ) $this->form_validation->set_rules('phone', 'Phone Number', "trim|required|callback__isValidPhone");
+			if ( $this->input->post('zipcode') ) $this->form_validation->set_rules('zipcode', 'Zip Code', "trim|required|callback__isValidZipCode");
 			
 			if ($this->form_validation->run() == TRUE):
-                $data['login_from'] = 'form';
+                		$data['login_from'] = 'form';
 				$data['login_ip'] = $this->session->userdata('ip_address');
 				$data['user_agent'] = $this->session->userdata('user_agent');
 				$data['last_login'] = $this->session->userdata('last_login');
 				
 				$this->db->where('email_address', $this->input->post('email'));
 				$query = $this->db->get('users', 1);
-                $user = $query->row();
-                $suspend = ($query->num_rows() == 1 && $user->suspend == 1) ? true : false;
-                if ( $query->num_rows() < 1 ):
-                    $data['level'] = 1;
-                    $parts = explode(" ", $this->input->post('name'));
-                    $data['last_name'] = array_pop($parts);
-                    $data['first_name'] =  implode(" ", $parts);
-                    $data['business'] =  $this->input->post('business');
-                    $data['phone_number'] =  $this->input->post('phone');
-                    $data['zip_code'] =  $this->input->post('zipcode');
-                    $data['email_address'] =  $this->input->post('email');
-                    $data['password'] =  md5($this->input->post('password'));
+				$user = $query->row();
+				
+				$suspend = ($query->num_rows() == 1 && $user->suspend == 1) ? true : false;
 
-                    $this->db->insert('users', $data);
-                    $data['id'] = $this->db->insert_id();
-                else:
-                    //update login info
-                    if ($suspend === false):
-                        $row = $query->row();
-                        unset($row->password);
-                        $parts = explode(" ", $this->input->post('name'));
-                        $data['last_name'] = array_pop($parts);
-                        $data['first_name'] =  implode(" ", $parts);
-                        $data['password'] = md5($this->input->post('password'));
-                        $data['business'] =  $this->input->post('business');
-                        $data['phone_number'] =  $this->input->post('phone');
-                        $data['zip_code'] =  $this->input->post('zipcode');
-                        $this->db->where('id', $row->id);
-                        $this->db->update('users', $data);
-                        $data = array_merge($data, (array) $row);
-                    endif;
-                endif;
+				if ( $query->num_rows() < 1 ):
+					$data['level'] = 1;
+					$parts = explode(" ", $this->input->post('name'));
+					$data['last_name'] = array_pop($parts);
+					$data['first_name'] =  implode(" ", $parts);
+					$data['business'] =  $this->input->post('business');
+					$data['phone_number'] =  $this->input->post('phone');
+					$data['zip_code'] =  $this->input->post('zipcode');
+					$data['email_address'] =  $this->input->post('email');
+					$data['password'] =  md5($this->input->post('password'));
 
-                if ($suspend === false):
-                    $data['logged_in'] = TRUE;
-                    $this->session->set_userdata($data);
-                    if ( ! $this->session->userdata('url') ) redirect(base_url('/welcome/'));
-                    else redirect($this->session->userdata('url'));
-                endif;
-			endif;
-		endif;
+					$this->db->insert('users', $data);
+					$data['id'] = $this->db->insert_id();
+				elseif ( $suspend === false ):
+					//update login info
+					$row = $query->row();
+					unset($row->password);
+					$parts = explode(" ", $this->input->post('name'));
+					$data['last_name'] = array_pop($parts);
+					$data['first_name'] =  implode(" ", $parts);
+					$data['password'] = md5($this->input->post('password'));
+					$data['business'] =  $this->input->post('business');
+					$data['phone_number'] =  $this->input->post('phone');
+					$data['zip_code'] =  $this->input->post('zipcode');
+					$this->db->where('id', $row->id);
+					$this->db->update('users', $data);
+					$data = array_merge($data, (array) $row);
+				else:
+					$data['error_msg'] = 'Your account is suspended. Please contact admin for more info!';
+             		  	endif; //if ( $query->num_rows() < 1 ):
+             		  	 
+             		  	 if ( $suspend === false ):
+             		  	 	$data['logged_in'] = TRUE;
+					$this->session->set_userdata($data);
+					if ( ! $this->session->userdata('url') ) redirect(base_url('/welcome/'));
+					else redirect($this->session->userdata('url'));
+				endif;
+
+			endif; //if ($this->form_validation->run() == TRUE):
+		endif; //if ($this->input->post()) :
 		
 		$this->load->view(get_client() . '/header', array('title' => 'Login', 'login_page' => TRUE, 'page_name' => 'login'));
 		$this->load->view(get_client() . '/login-form', $data);
@@ -235,6 +238,48 @@ class Login extends CI_Controller {
 		else:
 			return TRUE;
 		endif;
+	}
+	
+	// Function to get the client ip address
+	function _get_client_ip() {
+	    $ipaddress = '';
+	    if ($_SERVER['HTTP_CLIENT_IP'])
+	        $ipaddress = $_SERVER['HTTP_CLIENT_IP'];
+	    else if($_SERVER['HTTP_X_FORWARDED_FOR'])
+	        $ipaddress = $_SERVER['HTTP_X_FORWARDED_FOR'];
+	    else if($_SERVER['HTTP_X_FORWARDED'])
+	        $ipaddress = $_SERVER['HTTP_X_FORWARDED'];
+	    else if($_SERVER['HTTP_FORWARDED_FOR'])
+	        $ipaddress = $_SERVER['HTTP_FORWARDED_FOR'];
+	    else if($_SERVER['HTTP_FORWARDED'])
+	        $ipaddress = $_SERVER['HTTP_FORWARDED'];
+	    else if($_SERVER['REMOTE_ADDR'])
+	        $ipaddress = $_SERVER['REMOTE_ADDR'];
+	    else
+	        $ipaddress = 'UNKNOWN';
+	 
+	    return $ipaddress;
+	}
+
+	//function to get geo/location data by ip
+	// output object
+	// ip, country_code, country_name, region_code, region_name, Yogyakarta, city, zipcode, latitude, longitude, metro_code, areacode
+	function _get_location_info(){
+		$ip = $this->_get_client_ip();
+		if ( $ip == 'UNKNOWN')
+			return FALSE;
+		$url = "http://freegeoip.net/json/$ip";
+		$ch  = curl_init();
+		curl_setopt($ch, CURLOPT_URL, $url);
+		curl_setopt($ch, CURLOPT_RETURNTRANSFER, 1);
+		curl_setopt($ch, CURLOPT_CONNECTTIMEOUT, 5);
+		$data = curl_exec($ch);
+		curl_close($ch);
+		//var_dump($data);
+		if ($data) {
+			$location = json_decode($data);
+			return $location;
+		}
 	}
 }
 
