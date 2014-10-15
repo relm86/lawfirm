@@ -1680,6 +1680,7 @@ if ( ! function_exists('the_widgets')){
 	<div class="widget-description">Add Our Community.<p>Grab and move into place.</p></div>
 </div>
 <?php
+		require_once(APPPATH.'widgets/foursquare/app_helper.php');
 	}
 }
 
