@@ -136,7 +136,7 @@ h4.title{margin-top:0px;}
 .img128{width:128px; height:128px;}
 .img100{width:100px; height:100px;}
 .img64{width:64px; height:64px;}
-
+.foursquareicon{background: #000; width: 64px; height: 64px; float: left; margin: 0px 10px 0px 0px; }
 
 /* Media Queries */
 @media (min-width: 1200px) {

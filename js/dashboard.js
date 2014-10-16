@@ -557,7 +557,47 @@ $(document).ready(function() {
 	});
 	/* update twitter */	
 
-
+	/* update foursquare */
+	$('body').on('hide.bs.modal', '.foursquare_modal', function (event) {
+		widget_id = $(this).attr('id');
+		
+		var error = false;
+		$('#'+widget_id+' input').each(function(){
+			if ( $(this).val() == ''){
+				error = true;
+				$(this).focus();
+				alert("Please fill this field!");
+				return false;
+			}
+		});
+		
+		if ( true == error ) return false;
+		
+		$('#'+widget_id+' .form_url').each(function(){
+			if ( ! isValidURL($(this).val()) ){
+				error = true;
+				$(this).focus();
+				alert("Please enter valid URL!");
+				return false;
+			}
+		});
+		
+		if ( true == error ) return false;
+		
+		$.ajax({
+			type: "POST",
+				url: ajax_url+'/save_widget/',
+				data: $('#'+widget_id+' input').serialize() + '&user_id='+$('#user_id').val()+'&template_id='+$('#template_id').val()+'&widget_type=foursquare&widget_id='+widget_id+'&csrf_b2b='+$( "input[name='csrf_b2b']" ).val(),
+				dataType : "json",
+			})
+		.done(function( msg ) {
+			if ( msg.success == true && msg.widget_html && msg.widget_id ){
+				$('#'+msg.widget_id+' .widget-inside .widget.foursquare').remove();
+				$('#'+msg.widget_id+' .widget-inside').append(msg.widget_html);
+			}
+		});
+	});
+	/* update foursquare */
 	
 	/* add link*/
 	$('body').on('click', '.add-link', function(event){

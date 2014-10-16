@@ -6,6 +6,7 @@ body {
 }
 
 /* added by Asep Mulyawan */
+.foursquareicon{background: #000; width: 64px; height: 64px; float: left; margin: 0px 10px 0px 0px; }
 .widget {
 	clear: both;
 	margin-top: 25px;
@@ -170,6 +171,26 @@ body {
 }
 
 .widget.twitter h3.title {
+	border-bottom: 1px solid;
+	border-color: abcad8;
+	padding: 10px;
+}
+
+.widget.foursquare {
+	background-color: blue;
+	color: #000000;
+/*	padding: 0 15px 15px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+*/	
+}
+
+.widget.foursquare a {
+	color: #000000;
+}
+
+.widget.foursquare h3.title {
 	border-bottom: 1px solid;
 	border-color: abcad8;
 	padding: 10px;
