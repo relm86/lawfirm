@@ -816,7 +816,7 @@ $(document).ready(function() {
 		$.ajax({
 			type: "POST",
 				url: ajax_url+'/yelp_search/',
-				data:'&find='+$('#'+widget_id+' .yelp-find').val()+'&near='+$('#'+widget_id+' .yelp-near').val(),
+				data:'&find='+$('#'+widget_id+' .yelp-find').val()+'&near='+$('#'+widget_id+' .yelp-near').val()+'&csrf_b2b='+$( "input[name='csrf_b2b']" ).val(),
 				dataType : "json",
 			})
 		.done(function( msg ) {
