@@ -301,6 +301,8 @@ class Dashboard extends CI_Controller {
 			$this->_save_video_url();
 		elseif ( $action == 'delete_video')
 			$this->_delete_video();
+		elseif ( $action == 'yelp_search')
+			$this->_yelp_search();
 	}
 
 	function _save_widget(){
@@ -500,6 +502,11 @@ class Dashboard extends CI_Controller {
 			endif;
 			$return['title'] = $title;
 			$return['content'] = $content;
+			return serialize($return);
+		
+		elseif ( 'yreview' == $this->input->post('widget_type') && $this->input->post('business_id')):
+			$business_id = $this->input->post('business_id');
+			$return['business_id'] = $business_id;
 			return serialize($return);
 		
 		elseif ( 'twitter' == $this->input->post('widget_type')):
@@ -872,6 +879,97 @@ class Dashboard extends CI_Controller {
 				        unlink(create_thumb($row->thumb, 211, 126));
 				        unlink(create_thumb($row->thumb,  746, 439));
 				        unlink($row->thumb);
+				endif;
+			endif;
+		endif;
+		
+		echo json_encode($response);
+		exit;
+	}
+	
+	function _yelp_search(){
+		
+		$response = array(
+	            'success' => FALSE
+	        );
+			
+		if ($this->input->post()) :
+			$this->form_validation->set_rules('find', 'Find', 'trim|required');
+			$this->form_validation->set_rules('near', 'Location', 'trim|required');
+			if ($this->form_validation->run() == TRUE):
+				$this->load->library('yelpoauth');
+				$this->config->load('yelp');
+				
+				$result = $this->yelpoauth->query_api($this->input->post('find'), $this->input->post('near'));
+				
+				if ( $result ):
+					$content = '<p>Move cursor to one of business below then press select button.</p>';
+					$i = 0;
+					foreach( $result->businesses as $business):
+						$i++;
+						$business_detail = json_decode($this->yelpoauth-> get_business($business->id));
+						$content .='<div class="search-result natural-search-result biz-listing-large clearfix" data-key="' . $i . '" data-component-bound="true" id="' . $business->id . '">
+	<div class="main-attributes">
+		<div class="media-block media-block-large">
+			<div class="media-avatar">
+				<div class="photo-box pb-90s">
+					<img alt="' . $business->name . '" class="photo-box-img" height="90" src="' . $business->image_url . '" width="90">
+				</div>
+			</div>
+			<div class="media-story">
+				<h3 class="search-result-title">' . $business->name . '</h3>
+				<div class="biz-rating biz-rating-large clearfix">
+					<div class="rating-large">
+						<i class="star-img stars_4" title="4.0 star rating">
+							<img alt="4.0 star rating" class="offscreen" height="30" src="' . $business->rating_img_url_large . '" width="166">
+						</i>
+					</div>
+					<span class="review-count rating-qualifier">
+						' . $business->review_count . ' reviews
+					</span>
+				</div>
+				<div class="price-category">
+					<span class="category-str-list">
+						' . implode(', ', $business->categories[0]) . '
+					</span>
+				</div>
+				<ul class="tags">
+				</ul>
+			</div>
+		</div>
+	</div>
+
+	<div class="secondary-attributes">
+		<span class="neighborhood-str-list">
+			' . implode(', ', $business->location->neighborhoods) . '
+		</span>
+		<address>
+			' . implode(', ', $business->location->display_address) . '
+		</address>
+		<span class="offscreen">
+			Phone number
+		</span>
+		<span class="biz-phone">' . $business->display_phone . '</span>
+	</div>
+
+	<div class="snippet-block review-snippet">
+		<div class="media-block">
+			<div class="media-avatar">
+				<div class="photo-box pb-30s">
+						<img alt="' . $business_detail->reviews[0]->user->name . '" class="photo-box-img" height="30" src="' . $business_detail->reviews[0]->user->image_url . '" width="30">
+					</a>
+				</div>
+			</div>
+			<div class="media-story">
+				<p class="snippet">' . $business_detail->reviews[0]->excerpt . '</p>
+			</div>
+		</div>
+	</div>
+	
+	<div class="select_yelp_business_container"><button type="button" class="btn btn-primary btn-sm select_yelp_business" data-dismiss="modal">Select</button></div>
+</div>';
+					endforeach;
+					$response = array('success' => TRUE, 'content' => $content);
 				endif;
 			endif;
 		endif;

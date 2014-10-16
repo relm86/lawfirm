@@ -806,4 +806,58 @@ $(document).ready(function() {
 	$(document).on('mouseleave', '#the-page .widget-wrapper', function(e) {
 		$( this ).removeClass('hover').find('.widget-action').hide();
 	});
+	
+	//yelp search
+	$(document).on('click', '.yelp-search', function(e) {
+		widget_id = $(this).closest('.yelp_modal').attr('id');
+		$('#'+widget_id+' .spinner').html('Searching...');
+		$('#'+widget_id+' .spinner').delay(1000).show(0);
+		
+		$.ajax({
+			type: "POST",
+				url: ajax_url+'/yelp_search/',
+				data:'&find='+$('#'+widget_id+' .yelp-find').val()+'&near='+$('#'+widget_id+' .yelp-near').val(),
+				dataType : "json",
+			})
+		.done(function( msg ) {
+			//console.log(msg);
+			if ( msg.success == true ){
+				$('#'+widget_id+' .search-result').html(msg.content);
+				$('#'+widget_id+' .spinner').delay(1000).hide(0);
+			} else {
+				alert(msg.error);
+				$('#'+widget_id+' .spinner').delay(1000).hide(0);
+			}
+		});
+	});
+	
+	$(document).on('mouseenter', '.yelp_search .search-result .search-result', function(e) {
+		$(this).find('.select_yelp_business_container').show();
+	});
+	
+	$(document).on('mouseleave', '.yelp_search .search-result .search-result', function(e) {
+		$(this).find('.select_yelp_business_container').hide();
+	});
+	
+	$(document).on('click', '.select_yelp_business', function(e) {
+		business_id = $(this).closest('.search-result').attr('id');
+		widget_id = $(this).closest('.yelp_modal').attr('id');
+		$('#'+widget_id+' .spinner').html('Saving...');
+		$('#'+widget_id+' .spinner').delay(1000).show(0);
+		
+		$.ajax({
+			type: "POST",
+				url: ajax_url+'/save_widget/',
+				data: '&business_id='+business_id+'&user_id='+$('#user_id').val()+'&template_id='+$('#template_id').val()+'&widget_type=yreview&widget_id='+widget_id+'&csrf_b2b='+$( "input[name='csrf_b2b']" ).val(),
+				dataType : "json",
+			})
+		.done(function( msg ) {
+			if ( msg.success == true && msg.widget_html && msg.widget_id ){
+				$('#'+msg.widget_id+' .widget-inside .widget.yreview').remove();
+				$('#'+msg.widget_id+' .widget-inside').append(msg.widget_html);
+			}
+		});
+		
+		$('#'+widget_id+' .spinner').delay(1000).hide(0);
+	});
   });

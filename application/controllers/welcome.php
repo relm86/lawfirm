@@ -53,6 +53,7 @@ class Welcome extends CI_Controller {
 		$this->load->view( get_client().'/not_found' );
 		$this->load->view( get_client().'/footer' );
 	}
+	
 }
 
 /* End of file welcome.php */

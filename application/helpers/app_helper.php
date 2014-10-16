@@ -285,6 +285,8 @@ if ( ! function_exists('draw_widget')){
 				draw_widget_text($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'gmap' ):
 				draw_widget_gmap($widget, $position, $preview);
+			elseif ( $widget->widget_type == 'yreview' ):
+				draw_widget_yreview($widget, $position, $preview);
 			endif;
 		else:
 			return FALSE;
@@ -340,6 +342,8 @@ if ( ! function_exists('draw_modals')){
 					draw_modal_faq($widget);
 				elseif ( $widget->widget_type == 'text' ):
 					draw_modal_text($widget);
+				elseif ( $widget->widget_type == 'yreview' ):
+					draw_modal_yreview($widget);
 				endif;
 			endforeach;
 		else:
@@ -373,6 +377,8 @@ if ( ! function_exists('draw_modal')){
 				draw_modal_faq($widget);
 			elseif ( $widget->widget_type == 'text' ):
 				draw_modal_text($widget);
+			elseif ( $widget->widget_type == 'yreview' ):
+					draw_modal_yreview($widget);
 			endif;
 		else:
 			return FALSE;
@@ -617,6 +623,105 @@ if ( ! function_exists('draw_widget_gmap')){
 	</div>
 
 	<div class="widget-description">Add Google Map widget</div>
+</div>
+<?php
+		endif;
+	}
+}
+
+if ( ! function_exists('draw_widget_yreview')){
+	function draw_widget_yreview($widget, $position = FALSE, $preview = FALSE ){
+		if ( ! is_object($widget) ) return FALSE;
+		
+		$yelp = unserialize($widget->widget_data);
+		
+		if ( ! isset($yelp['business_id']) ) $yelp['business_id'] = '';
+		
+		if ( $yelp['business_id'] != '' ):
+			$CI = get_instance();
+			$CI->load->library('yelpoauth');
+			$CI->config->load('yelp');
+			$business_detail = json_decode($CI->yelpoauth->get_business( $yelp['business_id'] ));
+		endif;
+		
+		if ( $preview ):
+?>
+
+<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget widget-wrapper" data-type="<?=$widget->widget_type;?>">
+	<div class="widget-top">
+		<div class="widget-title"><h4>Yelp Reviews<span class="in-widget-title"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" title="Edit"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
+	</div>
+
+	<div class="widget-inside">
+<?php
+		endif;
+?>
+		<div class="widget yreview">
+			<?php if ( isset($business_detail) ): ?>
+				<div class="search-result natural-search-result biz-listing-large clearfix" id="<?php echo $business_detail->id; ?>">
+					<div class="main-attributes">
+						<div class="media-block media-block-large">
+							<div class="media-avatar">
+								<div class="photo-box pb-90s">
+									<img alt="<?php echo $business_detail->name; ?>" class="photo-box-img" height="90" src="<?php echo $business_detail->image_url; ?>" width="90">
+								</div>
+							</div>
+							<div class="media-story">
+								<h3 class="search-result-title"><a href="<?php echo $business_detail->url; ?>" target="_blank"><?php echo $business_detail->name; ?></a></h3>
+								<div class="biz-rating biz-rating-large clearfix">
+									<div class="rating-large">
+										<i class="star-img stars_4" title="4.0 star rating">
+											<img alt="4.0 star rating" class="offscreen" height="30" src="<?php echo $business_detail->rating_img_url_large; ?>" width="166">
+										</i>
+									</div>
+									<span class="review-count rating-qualifier"><?php echo $business_detail->review_count;?> reviews</span>
+								</div>
+								<div class="price-category">
+									<span class="category-str-list"><?php echo implode(', ', $business_detail->categories[0]);?></span>
+								</div>
+								<ul class="tags"></ul>
+							</div>
+						</div>
+					</div>
+
+					<div class="secondary-attributes">
+						<span class="neighborhood-str-list"><?php echo implode(', ', $business_detail->location->neighborhoods); ?></span>
+						<address><?php echo implode(', ', $business_detail->location->display_address); ?></address>
+						<span class="offscreen">Phone number</span>
+						<span class="biz-phone"><?php echo $business_detail->display_phone;?></span>
+					</div>
+
+					<div class="snippet-block review-snippet">
+						<div class="media-block">
+							<div class="media-avatar">
+								<div class="photo-box pb-30s">
+										<img alt="<?php echo $business_detail->reviews[0]->user->name;?>" class="photo-box-img" height="30" src="<?php echo $business_detail->reviews[0]->user->image_url;?>" width="30">
+									</a>
+								</div>
+							</div>
+							<div class="media-story">
+								<p class="snippet"><?php echo $business_detail->reviews[0]->excerpt; ?></p>
+							</div>
+						</div>
+					</div>
+					
+					<div class="yelp-copyright"><a href="<?php echo $business_detail->url; ?>" target="_blank"><img alt="<?php echo $business_detail->name; ?>" src="http://s3-media3.fl.yelpcdn.com/assets/2/www/img/3049d7633b6e/developers/reviewsFromYelpRED.gif" width="115" height="25"/></a></div>
+					
+				</div>
+			<?php endif; ?>
+			<div class="clearfix"></div>
+		</div>
+<?php
+		if ( $preview ):
+?>
+	</div>
+
+	<div class="widget-description">Add Yelp Reviews widget</div>
 </div>
 <?php
 		endif;
@@ -1315,6 +1420,50 @@ if ( ! function_exists('draw_modal_greeting')){
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
+				<span class="spinner"></span>
+			</div>
+		</div>
+	</div>
+</div>
+<?php
+	}
+}
+
+if ( ! function_exists('draw_modal_yreview')){
+	function draw_modal_yreview( $widget ){
+		if ( ! is_object($widget) ) return FALSE;
+		$yelp = unserialize($widget->widget_data);
+		
+		if ( ! isset($yelp['business_id']) ) $yelp['business_id'] = '';
+?>
+<div class="modal fade yelp_modal" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" data-widget-type="yreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabel">Yelp! Business & Review</h4>
+			</div>
+			<div class="modal-body">
+				
+				<div class="yelp_search  form-inline">
+					<div class="form-group" style="max-width: 235px;">
+						<div class="input-group">
+							<div class="input-group-addon">Find</div>
+							<input type="text" name="find" value="" class="yelp-find form-control" placeholder="tacos, cheap dinner, Max’s"/>
+						</div>
+					</div>
+					<div class="form-group">
+						<div class="input-group">
+							<div class="input-group-addon">Near</div>
+							<input type="text" name="find" value="" class="yelp-near form-control" placeholder="address, neighborhood, city, state or zip"/>
+						</div>
+					</div>
+					<div class="form-group"><button type="button" class="btn btn-primary btn-sm yelp-search">Search</button></div>
+					
+					<div class="search-result clearfix"></div>
+				</div>
+			</div>
+			<div class="modal-footer">
 				<span class="spinner"></span>
 			</div>
 		</div>
