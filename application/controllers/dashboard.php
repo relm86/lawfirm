@@ -527,9 +527,10 @@ class Dashboard extends CI_Controller {
 			if ( isset($twitter) && count($twitter) > 0 ):
 				return serialize($twitter);
 			endif;
-		endif;
+		
 		require_once(APPPATH.'widgets/foursquare/dashboard_get_widget_data.php');
 		
+		endif;
 		return FALSE;
 	}
 	
