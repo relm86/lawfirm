@@ -3,7 +3,7 @@
 		<div class="widget-title"><h4>Foursquare Feed<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
 		<div class="widget-action">
 			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
-			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-foursquare-60-modal"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-dummy-99-modal"></span>
 			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
 		</div>
 	</div>

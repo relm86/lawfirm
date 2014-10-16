@@ -279,6 +279,8 @@ if ( ! function_exists('draw_widget')){
 				draw_widget_contact($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'twitter' ):
 				draw_widget_twitter($widget, $position, $preview);
+			elseif ( $widget->widget_type == 'foursquare' ):
+				draw_widget_foursquare($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'faq' ):
 				draw_widget_faq($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'text' ):
@@ -338,6 +340,8 @@ if ( ! function_exists('draw_modals')){
 					draw_modal_contact($widget);
 				elseif ( $widget->widget_type == 'twitter' ):
 					draw_modal_twitter($widget);
+				elseif ( $widget->widget_type == 'foursquare' ):
+					draw_modal_foursquare($widget);
 				elseif ( $widget->widget_type == 'faq' ):
 					draw_modal_faq($widget);
 				elseif ( $widget->widget_type == 'text' ):
@@ -373,6 +377,8 @@ if ( ! function_exists('draw_modal')){
 				draw_modal_contact($widget);
 			elseif ( $widget->widget_type == 'twitter' ):
 				draw_modal_twitter($widget);
+			elseif ( $widget->widget_type == 'foursquare' ):
+				draw_modal_foursquare($widget);
 			elseif ( $widget->widget_type == 'faq' ):
 				draw_modal_faq($widget);
 			elseif ( $widget->widget_type == 'text' ):
@@ -890,6 +896,8 @@ if ( ! function_exists('draw_modal_twitter')){
 <?php
 	}
 }
+
+require_once(APPPATH.'widgets/foursquare/app_helper_draw_widget.php');
 
 if ( ! function_exists('draw_widget_faq')){
 	function draw_widget_faq($widget, $position = FALSE, $preview = FALSE ){

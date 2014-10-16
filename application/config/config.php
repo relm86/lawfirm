@@ -17,6 +17,8 @@
 $config['base_url'] = ((isset($_SERVER['HTTPS']) && $_SERVER['HTTPS'] == "on") ? "https" : "http");
 $config['base_url'] .= "://".$_SERVER['HTTP_HOST'];
 $config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
+$config['foursquare_key'] = '2CRPXAN4L1IQIGV51ZL4LW12HV0SJVKW5T03JF0YFHDQNU3Z';
+$config['foursquare_secret'] = '23JTVVP1G1ICORWNQ5WNWBCMJMGU1HZWH3X1RCN1VHW3EMRL';
 $config['fb_app_id']	= "367838596697555";
 $config['google_client_id']	= "607475603602-kund226ns28q1k7c1edoth80fr7f1jjv.apps.googleusercontent.com";
 $config['linkedin_api_key']	= "77ca2ee1u9h2g3";
