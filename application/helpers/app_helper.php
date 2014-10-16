@@ -713,6 +713,11 @@ if ( ! function_exists('draw_widget_yreview')){
 					<div class="yelp-copyright"><a href="<?php echo $business_detail->url; ?>" target="_blank"><img alt="<?php echo $business_detail->name; ?>" src="http://s3-media3.fl.yelpcdn.com/assets/2/www/img/3049d7633b6e/developers/reviewsFromYelpRED.gif" width="115" height="25"/></a></div>
 					
 				</div>
+			<?php else: ?>
+				<h3 class="title">Yelp Reviews</h3>
+				<?php if ( $preview ): ?>
+				<div class="blank-widget text yreview"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal">Add Yelp Reviews</button></div>
+				<?php endif; ?>
 			<?php endif; ?>
 			<div class="clearfix"></div>
 		</div>
