@@ -298,6 +298,8 @@ if ( ! function_exists('draw_widget')){
 				draw_widget_gmap($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'yreview' ):
 				draw_widget_yreview($widget, $position, $preview);
+			elseif ( $widget->widget_type == 'greview' ):
+				draw_widget_greview($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'forumfeed' ):
 				draw_widget_feed($widget, $position, $preview);
 			endif;
@@ -786,6 +788,114 @@ if ( ! function_exists('draw_widget_yreview')){
 	</div>
 
 	<div class="widget-description">Add Yelp Reviews widget</div>
+</div>
+<?php
+		endif;
+	}
+}
+
+if ( ! function_exists('draw_widget_greview')){
+	function draw_widget_greview($widget, $position = FALSE, $preview = FALSE ){
+		if ( ! is_object($widget) ) return FALSE;
+		
+		$greview = unserialize($widget->widget_data);
+		
+		if ( ! isset($greview['business_id']) ) $greview['business_id'] = 'ChIJMyAHO2n1UocRC-jO4YzR6bE';
+		
+		if ( $greview['business_id'] != '' ):
+			$CI = get_instance();
+			$CI->load->library('googleplace');
+			$business_detail = json_decode($CI->googleplace->place_detail( $greview['business_id'] ));
+			//var_dump($business_detail);
+			if ( ! is_object($business_detail) || ! isset($business_detail->status) || $business_detail->status != 'OK' ){
+				$error = $business_detail->status . ': ' . $business_detail->error_message;
+				unset($business_detail);
+			} else {
+				$business_detail = $business_detail->result;
+				$short_website = parse_url($business_detail->website);
+				$website = '';
+				if ( $short_website ){
+					$short_website = $short_website['scheme'] . '://' . $short_website['host'];
+					$website = '<a href="' . $business_detail->website . '" target="_blank">' . $short_website . '</a>';
+				}
+			}
+		endif;
+		
+		if ( $preview ):
+?>
+
+<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget widget-wrapper" data-type="<?=$widget->widget_type;?>">
+	<div class="widget-top">
+		<div class="widget-title"><h4>Google Reviews<span class="in-widget-title"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" title="Edit"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
+	</div>
+
+	<div class="widget-inside">
+<?php
+		endif;
+?>
+		<div class="widget greview">
+			<div class="panel panel-default widget-testimonials-full">
+				<div class="panel-heading">
+					<?php if ( isset($business_detail) ): ?>
+					<h3 class="panel-title">What people in your neighborhood are saying about <?php echo $business_detail->name; ?></h3>
+				 	<?php else: ?>
+				 	<h3 class="panel-title">Google Review</h3>
+				 	<?php endif; ?>
+				</div>
+				<div class="panel-body">
+					<?php if ( isset($error) ): ?>
+					<p><?=$error;?></p>
+					<?php endif; ?>
+					
+					<?php if ( isset($business_detail) ): ?>
+					<div class="place-container" id="placeid-<?=$business_detail->place_id;?>">
+						<h3><a href="<?=$business_detail->url;?>" target="_blank"><?=$business_detail->name;?></a></h3>
+						<div class="location-info">
+							<p><label>Address</label><?=$business_detail->formatted_address;?></p>
+							<p><label>Phone</label><?=$business_detail->formatted_phone_number;?></p>
+							<p><label>Website</label><?=$website;?></p>
+							<p><label>Rating</label><?=$business_detail->rating;?></p>
+						</div>
+						<div class="reviews">
+						<?php if ( isset($business_detail->reviews) && is_array($business_detail->reviews) && count($business_detail->reviews) > 0 ):?>
+							<?php 
+							foreach( $business_detail->reviews as $review ):
+								$plus_id = preg_replace("/[^0-9]/","", $review->author_url);
+								$user_image  = $CI->googleplace->user_image_url($plus_id);
+							?>
+							<div class="review">
+								<div class="panel-review">
+									<?php if ( $user_image ): ?>
+									<img class="img64 pull-left" src="<?=$user_image;?>" alt="" width="64" height="64">
+									<?php endif; ?>
+									<div class="media-body">
+										<h4 class="media-heading"><?=$review->author_name;?></h4>
+										<p><?=$review->text;?></p>
+									</div>
+								</div>
+							</div>
+							<?php endforeach;?>
+						<?php endif; ?>
+						</div>
+					</div>
+					<?php elseif ( $preview ): ?>
+					<div class="blank-widget text greview"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal">Add Google Reviews</button></div>
+					<?php endif; ?>
+				</div>
+			</div>
+			
+		</div>
+<?php
+		if ( $preview ):
+?>
+	</div>
+
+	<div class="widget-description">Add Google Reviews widget</div>
 </div>
 <?php
 		endif;
@@ -2082,7 +2192,7 @@ if ( ! function_exists('the_widgets')){
 
 	<div class="widget-description">Add Videos.<p>Grab and move into place.</p></div>
 </div>
-
+-->
 <div id="widget-greview-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="greview">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Google Reviews<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
@@ -2095,14 +2205,20 @@ if ( ! function_exists('the_widgets')){
 
 	<div class="widget-inside">
 		<div class="widget text greview">
-			<h3 class="title">Google Reviews</h3>
-			<div class="blank-widget text greview"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-greview-__i__-modal">Add Google Reviews</button></div>
+			<div class="panel panel-default widget-testimonials-full">
+				<div class="panel-heading">
+				  <h3 class="panel-title">Google Reviews</h3>
+				</div>
+				<div class="panel-body">
+				  	<div class="blank-widget text greview"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-greview-__i__-modal">Add Google Reviews</button></div>
+				</div>
+			</div>
 		</div>
 	</div>
 
 	<div class="widget-description">Add Google Reviews.<p>Grab and move into place.</p></div>
 </div>
--->
+
 <div id="widget-yreview-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="yreview">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Yelp Reviews<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>

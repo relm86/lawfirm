@@ -564,3 +564,26 @@ body {
 	text-align: right;
 }
 /* YELP */
+
+/* GOOGLE REVIEW */
+.widget.text.greview {
+	padding: 0;
+}
+
+.blank-widget.text.greview {
+	margin: -15px;
+}
+
+.greview .location-info p {
+	margin: 0;
+}
+
+.greview .location-info label {
+	width: 70px;
+}
+
+.greview .place-container h3 {
+	margin-top: 0;
+}
+
+/* GOOGLE REVIEW */
