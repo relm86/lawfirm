@@ -368,6 +368,8 @@ if ( ! function_exists('draw_modals')){
 					draw_modal_text($widget);
 				elseif ( $widget->widget_type == 'forumfeed' ):
 					draw_modal_feed($widget);
+				elseif ( $widget->widget_type == 'gmap' ):
+					draw_modal_gmap($widget);
 				endif;
 			endforeach;
 		else:
@@ -415,6 +417,8 @@ if ( ! function_exists('draw_modal')){
 				draw_modal_text($widget);
 			elseif ( $widget->widget_type == 'forumfeed' ):
 				draw_modal_feed($widget);
+			elseif ( $widget->widget_type == 'gmap' ):
+				draw_modal_gmap($widget);
 			endif;
 		else:
 			return FALSE;
@@ -624,6 +628,17 @@ if ( ! function_exists('draw_widget_gmap')){
 	function draw_widget_gmap($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
 		
+		$gmap = unserialize($widget->widget_data);
+		
+		if ( ! isset($gmap['location']) ) $gmap['location'] = '';
+		if ( ! isset($gmap['content']) ) $gmap['content'] = '';
+		if ( ! isset($gmap['border-color']) ) $gmap['border-color'] = '';
+		if ( ! isset($gmap['background-color']) ) $gmap['background-color'] = '';
+		if ( ! isset($gmap['text-color']) ) $gmap['text-color'] = '';
+		$query = str_replace(' ', '+', $gmap['location']);
+		$query = urlencode($query);
+		$CI = get_instance();
+		
 		if ( $preview ):
 ?>
 
@@ -641,16 +656,13 @@ if ( ! function_exists('draw_widget_gmap')){
 <?php
 		endif;
 ?>
-		<div class="widget gmap">
-			<div class="col-md-6 gmap-container"><iframe width="374" height="260" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/place?q=560+E+500+S,+Salt+Lake+City,+UT+84102,+United+States&key=AIzaSyDJl-y_I_6stRCFmDvJbZMmojGjQdXbX2s"></iframe></div>
-			<div class="contact-info">
-				<h3 class="title">Contact Us</h3>
-				<div class="aloha-editable">
-					<p>560 E 500 S Salt Lake City, UT 84102</p>
-					<p>801-935-4928</p>
-					<p>info@heropartners.com</p>
-				</div>
+		<div class="widget gmap" style="border: 1px solid <?=$gmap['border-color'];?>; background-color: <?=$gmap['background-color'];?>; color: <?=$gmap['text-color'];?>;">
+			<div class="col-md-6 gmap-container">
+				<?php if ( $query != '' ): ?>
+				<iframe class="gmap-iframe" width="374" height="260" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/place?q=<?=$query;?>&key=<?=$CI->config->item('gmap_key');?>"></iframe>
+				<?php endif; ?>
 			</div>
+			<div class="contact-info col-md-6"><?=$gmap['content'];?></div>
 			<div class="clearfix"></div>
 		</div>
 <?php
@@ -1438,9 +1450,28 @@ if ( ! function_exists('draw_modal_feed')){
 			</div>
 			<div class="modal-body">
 				
-				<input type="text" name="feed-title" value="<?=$feed['title'];?>" class="form-control" placeholder="Title"/>
-				<input type="text" name="feed-url" value="<?=$feed['feed_url'];?>" class="form-control" placeholder="Feed URL"/>
-				<input type="text" name="feed-number" value="<?=$feed['feed_number'];?>" class="form-control" placeholder="Number of Feed"/>
+				<div class="row">
+					<form class="form-horizontal col-sm-12" role="form">
+						<div class="form-group">
+							<label  class="col-sm-2 control-label">Title</label>
+							<div class=" col-sm-10">
+								<input type="text" name="feed-title" value="<?=$feed['title'];?>" class="form-control" placeholder="Title"/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label  class="col-sm-2 control-label">Feed URL</label>
+							<div class=" col-sm-10">
+								<input type="text" name="feed-url" value="<?=$feed['feed_url'];?>" class="form-control" placeholder="Feed URL"/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label  class="col-sm-2 control-label">Feed Number</label>
+							<div class=" col-sm-2">
+								<input type="text" name="feed-number" value="<?=$feed['feed_number'];?>" class="form-control" placeholder="Number of Feed"/>
+							</div>
+						</div>
+					</form>
+				</div>
 
 				<div class="row" style="margin-top: 20px;">
 					<div class="col-md-3">
@@ -1475,6 +1506,86 @@ if ( ! function_exists('draw_modal_feed')){
 							<label for="text-color">Text Color</label>
 							<div class="input-group color-picker">
 								<input type="text" class="form-control" name="text-color" value="<?=$feed['text-color'];?>">
+								<span class="input-group-addon"><i></i></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
+				<span class="spinner"></span>
+			</div>
+		</div>
+	</div>
+</div>
+<?php
+	}
+}
+
+if ( ! function_exists('draw_modal_gmap')){
+	function draw_modal_gmap( $widget ){
+		if ( ! is_object($widget) ) return FALSE;
+		$gmap = unserialize($widget->widget_data);
+		
+		if ( ! isset($gmap['location']) ) $gmap['location'] = '';
+		if ( ! isset($gmap['content']) ) $gmap['content'] = '';
+		if ( ! isset($gmap['border-color']) ) $gmap['border-color'] = '';
+		if ( ! isset($gmap['background-color']) ) $gmap['background-color'] = '';
+		if ( ! isset($gmap['text-color']) ) $gmap['text-color'] = '';
+		$query = str_replace(' ', '+', $gmap['location']);
+		$query = urlencode($query);
+		$CI = get_instance();
+?>
+<div class="modal fade gmap_modal <?=$widget->widget_type;?>" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" tabindex="-1" data-widget-type="<?=$widget->widget_type;?>" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabel">Google Map</h4>
+			</div>
+			<div class="modal-body">
+				
+				<div class="widget gmap" style="border: 1px solid <?=$gmap['border-color'];?>; background-color: <?=$gmap['background-color'];?>; color: <?=$gmap['text-color'];?>;">
+					<div class="col-md-6 gmap-container">
+						<div class="gmap-search-container">
+							<input id="pac-input-<?=$widget->id;?>" name="gmap-location" class="controls pac-input" type="text" placeholder="Search Box" value="<?=$gmap['location'];?>">
+						</div>
+						<?php if ( $query != '' ): ?>
+						<iframe class="gmap-iframe" width="374" height="260" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/place?q=<?=$query;?>&key=<?=$CI->config->item('gmap_key');?>"></iframe>
+						<?php endif; ?>
+					</div>
+					<div class="contact-info col-md-6">
+						<textarea id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-content" name="gmap-content" class="form-control tinymce" style="width:100%; height:260"><?=$gmap['content'];?></textarea>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				
+				<div class="row" style="margin-top: 20px;">
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="border-color">Border Color</label>
+							<div class="input-group color-picker">
+								<input type="text" class="form-control" name="border-color" value="<?=$gmap['border-color'];?>">
+								<span class="input-group-addon"><i></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="background-color">Background Color</label>
+							<div class="input-group color-picker">
+								<input type="text" class="form-control" name="background-color" value="<?=$gmap['background-color'];?>">
+								<span class="input-group-addon"><i></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="text-color">Text Color</label>
+							<div class="input-group color-picker">
+								<input type="text" class="form-control" name="text-color" value="<?=$gmap['text-color'];?>">
 								<span class="input-group-addon"><i></i></span>
 							</div>
 						</div>

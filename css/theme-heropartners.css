@@ -387,7 +387,7 @@ body {
 }
 .gmap-container {
 	padding-left: 0;
-	margin-right: 40px;
+	/*margin-right: 40px;*/
 }
 .gmap-container iframe {
 	max-width: 100%;

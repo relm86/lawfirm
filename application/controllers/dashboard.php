@@ -491,6 +491,24 @@ class Dashboard extends CI_Controller {
 			if ( $textcolor && strpos( $textcolor, '#') !== FALSE ) $return['text-color'] = $textcolor;
 
 			return serialize($return);
+			
+		elseif ( 'gmap' == $this->input->post('widget_type') ):
+			$location = $this->input->post('gmap-location');
+			$content = $this->input->post('gmap-content');
+			$bordercolor = $this->input->post('border-color');
+			$backgroundcolor = $this->input->post('background-color');
+			$textcolor = $this->input->post('text-color');
+			
+			if ( ! $location && ! $content ) return FALSE; //don't save empty title & content
+			
+			$return['location'] = $location;
+			$return['content'] = $content; 
+			
+			if ( $bordercolor && strpos($bordercolor, '#') !== FALSE ) $return['border-color'] = $bordercolor;
+			if ( $backgroundcolor && strpos( $backgroundcolor, '#') !== FALSE ) $return['background-color'] = $backgroundcolor;
+			if ( $textcolor && strpos( $textcolor, '#') !== FALSE ) $return['text-color'] = $textcolor;
+
+			return serialize($return);
 		
 		elseif ( 'greeting' == $this->input->post('widget_type') && $this->input->post('text-title')):
 			$title = $this->input->post('text-title');
