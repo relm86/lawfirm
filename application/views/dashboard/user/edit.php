@@ -12,7 +12,7 @@
                     <?php echo form_open('dashboard/edituser/'.$row->id, array('class' => 'edituser_form', 'id' => 'edituser_form') ); ?>
                         <div id="edituser_button_top">
 							<div id="edituser_button_right">
-                            <a href="<?php echo site_url().'/dashboard/'; ?>" class="btn btn-default">Cancel</a> &nbsp; <button type="submit" class="btn btn-success">Save</button>
+                            <a href="<?php echo site_url().'/dashboard'; ?>" class="btn btn-default">Cancel</a> &nbsp; <button type="submit" class="btn btn-success">Save</button>
 							</div>
                         </div>
                         <?php foreach ($row as $key => $value): ?>
@@ -42,7 +42,7 @@
                             <?php endif; ?>
                         <?php endforeach; ?>
                         <div id="edituser_button_right">
-							<a href="<?php echo site_url().'/dashboard/'; ?>" class="btn btn-default">Cancel</a> &nbsp; <button type="submit" class="btn btn-success">Save</button>
+							<a href="<?php echo site_url().'/dashboard'; ?>" class="btn btn-default">Cancel</a> &nbsp; <button type="submit" class="btn btn-success">Save</button>
 						</div>
                     <?php echo form_close(); ?>
                 </div>

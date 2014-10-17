@@ -700,12 +700,14 @@ if ( ! function_exists('draw_widget_yreview')){
 
 <div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget widget-wrapper" data-type="<?=$widget->widget_type;?>">
 	<div class="widget-top">
-		<div class="widget-title"><h4>Yelp Reviews<span class="in-widget-title"></span></h4></div>
+	<div class="panel panel-default widget-testimonials-full">
+		<div class="panel-heading"><h3 class="panel-title">What people in your neighborhood are saying about <?php echo $business_detail->name; ?></h3></div>
 		<div class="widget-action">
 			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
 			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" title="Edit"></span>
 			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
 		</div>
+	</div>
 	</div>
 
 	<div class="widget-inside">
