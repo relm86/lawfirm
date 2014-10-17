@@ -735,6 +735,32 @@ $(document).ready(function() {
 	/* fix bootstrap for tinymce modal issue */
 	/* update text_modal */
 	
+	/* update feed */
+	$('body').on('hide.bs.modal', '.feed_modal', function (event) {
+		widget_id = $(this).attr('id');
+		widget_type = $('#'+widget_id).attr('data-widget-type');
+		//no validation
+		//just save it
+		$.ajax({
+			type: "POST",
+				url: ajax_url+'/save_widget/',
+				data: $('#'+widget_id+' input').serialize() + '&user_id='+$('#user_id').val()+'&template_id='+$('#template_id').val()+'&widget_type='+widget_type+'&widget_id='+widget_id+'&csrf_b2b='+$( "input[name='csrf_b2b']" ).val(),
+				dataType : "json",
+			})
+		.done(function( msg ) {
+			if ( msg.success == true && msg.widget_html && msg.widget_id ){
+				$('#'+msg.widget_id+' .widget-inside .widget.'+widget_type).remove();
+				$('#'+msg.widget_id+' .widget-inside').append(msg.widget_html);
+			}
+		});
+	});
+	
+	$('body').on('shown.bs.modal', '.feed_modal', function (event) {
+		$(".color-picker").colorpicker();
+	});
+	
+	/* update feed_modal */
+	
 	/* preview page */
 
     /* validate edit user form */

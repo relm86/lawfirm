@@ -469,6 +469,28 @@ class Dashboard extends CI_Controller {
 			if ( $textcolor && strpos( $textcolor, '#') !== FALSE ) $return['text-color'] = $textcolor;
 
 			return serialize($return);
+			
+		elseif ( 'forumfeed' == $this->input->post('widget_type') ):
+			$title = $this->input->post('feed-title');
+			$url = $this->input->post('feed-url');
+			$number = (int) $this->input->post('feed-number');
+			$bordercolor = $this->input->post('border-color');
+			$backgroundcolor = $this->input->post('background-color');
+			$titlecolor = $this->input->post('title-color');
+			$textcolor = $this->input->post('text-color');
+			
+			if ( ! $title && ! $url ) return FALSE; //don't save empty title & content
+			
+			$return['title'] = $title;
+			$return['feed_url'] = $url; 
+			$return['feed_number'] = $number; 
+			
+			if ( $bordercolor && strpos($bordercolor, '#') !== FALSE ) $return['border-color'] = $bordercolor;
+			if ( $backgroundcolor && strpos( $backgroundcolor, '#') !== FALSE ) $return['background-color'] = $backgroundcolor;
+			if ( $titlecolor && strpos( $titlecolor, '#') !== FALSE ) $return['title-color'] = $titlecolor;
+			if ( $textcolor && strpos( $textcolor, '#') !== FALSE ) $return['text-color'] = $textcolor;
+
+			return serialize($return);
 		
 		elseif ( 'greeting' == $this->input->post('widget_type') && $this->input->post('text-title')):
 			$title = $this->input->post('text-title');
