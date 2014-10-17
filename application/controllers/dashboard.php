@@ -444,7 +444,7 @@ class Dashboard extends CI_Controller {
 				return serialize($links);
 			endif;
 
-		elseif ( 'text' == $this->input->post('widget_type') ||  'download' == $this->input->post('widget_type') ||  'coupon' == $this->input->post('widget_type') ||  'products' == $this->input->post('widget_type') ||  'services' == $this->input->post('widget_type') ):
+		elseif ( 'text' == $this->input->post('widget_type') ||  'download' == $this->input->post('widget_type') ||  'coupon' == $this->input->post('widget_type') ||  'products' == $this->input->post('widget_type') ||  'services' == $this->input->post('widget_type') ||  'contact' == $this->input->post('widget_type') ):
 			$this->load->library('security');
 			$title = $this->input->post('text-title');
 			$content = $this->input->post('text-content');
@@ -466,6 +466,46 @@ class Dashboard extends CI_Controller {
 			if ( $bordercolor && strpos($bordercolor, '#') !== FALSE ) $return['border-color'] = $bordercolor;
 			if ( $backgroundcolor && strpos( $backgroundcolor, '#') !== FALSE ) $return['background-color'] = $backgroundcolor;
 			if ( $titlecolor && strpos( $titlecolor, '#') !== FALSE ) $return['title-color'] = $titlecolor;
+			if ( $textcolor && strpos( $textcolor, '#') !== FALSE ) $return['text-color'] = $textcolor;
+
+			return serialize($return);
+			
+		elseif ( 'forumfeed' == $this->input->post('widget_type') ):
+			$title = $this->input->post('feed-title');
+			$url = $this->input->post('feed-url');
+			$number = (int) $this->input->post('feed-number');
+			$bordercolor = $this->input->post('border-color');
+			$backgroundcolor = $this->input->post('background-color');
+			$titlecolor = $this->input->post('title-color');
+			$textcolor = $this->input->post('text-color');
+			
+			if ( ! $title && ! $url ) return FALSE; //don't save empty title & content
+			
+			$return['title'] = $title;
+			$return['feed_url'] = $url; 
+			$return['feed_number'] = $number; 
+			
+			if ( $bordercolor && strpos($bordercolor, '#') !== FALSE ) $return['border-color'] = $bordercolor;
+			if ( $backgroundcolor && strpos( $backgroundcolor, '#') !== FALSE ) $return['background-color'] = $backgroundcolor;
+			if ( $titlecolor && strpos( $titlecolor, '#') !== FALSE ) $return['title-color'] = $titlecolor;
+			if ( $textcolor && strpos( $textcolor, '#') !== FALSE ) $return['text-color'] = $textcolor;
+
+			return serialize($return);
+			
+		elseif ( 'gmap' == $this->input->post('widget_type') ):
+			$location = $this->input->post('gmap-location');
+			$content = $this->input->post('gmap-content');
+			$bordercolor = $this->input->post('border-color');
+			$backgroundcolor = $this->input->post('background-color');
+			$textcolor = $this->input->post('text-color');
+			
+			if ( ! $location && ! $content ) return FALSE; //don't save empty title & content
+			
+			$return['location'] = $location;
+			$return['content'] = $content; 
+			
+			if ( $bordercolor && strpos($bordercolor, '#') !== FALSE ) $return['border-color'] = $bordercolor;
+			if ( $backgroundcolor && strpos( $backgroundcolor, '#') !== FALSE ) $return['background-color'] = $backgroundcolor;
 			if ( $textcolor && strpos( $textcolor, '#') !== FALSE ) $return['text-color'] = $textcolor;
 
 			return serialize($return);

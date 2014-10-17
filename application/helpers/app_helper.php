@@ -276,7 +276,8 @@ if ( ! function_exists('draw_widget')){
 			elseif ( $widget->widget_type == 'links' ):
 				draw_widget_links($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'contact' ):
-				draw_widget_contact($widget, $position, $preview);
+				//draw_widget_contact($widget, $position, $preview);
+				draw_widget_text($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'twitter' ):
 				draw_widget_twitter($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'foursquare' ):
@@ -297,6 +298,8 @@ if ( ! function_exists('draw_widget')){
 				draw_widget_gmap($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'yreview' ):
 				draw_widget_yreview($widget, $position, $preview);
+			elseif ( $widget->widget_type == 'forumfeed' ):
+				draw_widget_feed($widget, $position, $preview);
 			endif;
 		else:
 			return FALSE;
@@ -345,7 +348,8 @@ if ( ! function_exists('draw_modals')){
 				elseif ( $widget->widget_type == 'links' ):
 					draw_modal_links($widget);
 				elseif ( $widget->widget_type == 'contact' ):
-					draw_modal_contact($widget);
+					//draw_modal_contact($widget);
+					draw_modal_text($widget);
 				elseif ( $widget->widget_type == 'twitter' ):
 					draw_modal_twitter($widget);
 				elseif ( $widget->widget_type == 'foursquare' ):
@@ -364,6 +368,10 @@ if ( ! function_exists('draw_modals')){
 					draw_modal_text($widget);
 				elseif ( $widget->widget_type == 'services' ):
 					draw_modal_text($widget);
+				elseif ( $widget->widget_type == 'forumfeed' ):
+					draw_modal_feed($widget);
+				elseif ( $widget->widget_type == 'gmap' ):
+					draw_modal_gmap($widget);
 				endif;
 			endforeach;
 		else:
@@ -390,7 +398,8 @@ if ( ! function_exists('draw_modal')){
 			elseif ( $widget->widget_type == 'links' ):
 				draw_modal_links($widget);
 			elseif ( $widget->widget_type == 'contact' ):
-				draw_modal_contact($widget);
+				//draw_modal_contact($widget);
+				draw_modal_text($widget);
 			elseif ( $widget->widget_type == 'twitter' ):
 				draw_modal_twitter($widget);
 			elseif ( $widget->widget_type == 'foursquare' ):
@@ -409,6 +418,10 @@ if ( ! function_exists('draw_modal')){
 				draw_modal_text($widget);
 			elseif ( $widget->widget_type == 'services' ):
 				draw_modal_text($widget);
+			elseif ( $widget->widget_type == 'forumfeed' ):
+				draw_modal_feed($widget);
+			elseif ( $widget->widget_type == 'gmap' ):
+				draw_modal_gmap($widget);
 			endif;
 		else:
 			return FALSE;
@@ -618,6 +631,17 @@ if ( ! function_exists('draw_widget_gmap')){
 	function draw_widget_gmap($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
 		
+		$gmap = unserialize($widget->widget_data);
+		
+		if ( ! isset($gmap['location']) ) $gmap['location'] = '';
+		if ( ! isset($gmap['content']) ) $gmap['content'] = '';
+		if ( ! isset($gmap['border-color']) ) $gmap['border-color'] = '';
+		if ( ! isset($gmap['background-color']) ) $gmap['background-color'] = '';
+		if ( ! isset($gmap['text-color']) ) $gmap['text-color'] = '';
+		$query = str_replace(' ', '+', $gmap['location']);
+		$query = urlencode($query);
+		$CI = get_instance();
+		
 		if ( $preview ):
 ?>
 
@@ -635,16 +659,13 @@ if ( ! function_exists('draw_widget_gmap')){
 <?php
 		endif;
 ?>
-		<div class="widget gmap">
-			<div class="col-md-6 gmap-container"><iframe width="374" height="260" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/place?q=560+E+500+S,+Salt+Lake+City,+UT+84102,+United+States&key=AIzaSyDJl-y_I_6stRCFmDvJbZMmojGjQdXbX2s"></iframe></div>
-			<div class="contact-info">
-				<h3 class="title">Contact Us</h3>
-				<div class="aloha-editable">
-					<p>560 E 500 S Salt Lake City, UT 84102</p>
-					<p>801-935-4928</p>
-					<p>info@heropartners.com</p>
-				</div>
+		<div class="widget gmap" style="border: 1px solid <?=$gmap['border-color'];?>; background-color: <?=$gmap['background-color'];?>; color: <?=$gmap['text-color'];?>;">
+			<div class="col-md-6 gmap-container">
+				<?php if ( $query != '' ): ?>
+				<iframe class="gmap-iframe" width="374" height="260" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/place?q=<?=$query;?>&key=<?=$CI->config->item('gmap_key');?>"></iframe>
+				<?php endif; ?>
 			</div>
+			<div class="contact-info col-md-6"><?=$gmap['content'];?></div>
 			<div class="clearfix"></div>
 		</div>
 <?php
@@ -1076,6 +1097,78 @@ if ( ! function_exists('draw_widget_text')){
 		endif;
 	}
 }
+
+if ( ! function_exists('draw_widget_feed')){
+	function draw_widget_feed($widget, $position = FALSE, $preview = FALSE ){
+		if ( ! is_object($widget) ) return FALSE;
+		$feed = unserialize($widget->widget_data);
+		$box_style = 'style="';
+		$title_style = 'style="';
+		if ( isset($feed['border-color']) && $feed['border-color']  != '') $box_style .= 'border: 1px solid ' . $feed['border-color'] . ';';
+		if ( isset($feed['background-color']) && $feed['background-color']  != '') $box_style .= ' background-color: ' . $feed['background-color'] . ';';
+		if ( isset($feed['title-color']) && $feed['title-color']  != '') $title_style .= 'color: ' . $feed['title-color'] . '; border-color: ' . $feed['title-color'] . ';';
+		if ( isset($feed['text-color']) && $feed['text-color']  != '') $box_style .= ' color: ' . $feed['text-color'] . ';';
+		$box_style .= '"';
+		$title_style .= '"';
+		
+		if ( ! isset($feed['title']) ) $feed['title'] = '';
+		if ( ! isset($feed['feed_number']) || $feed['feed_number'] < 1 ) $feed['feed_number'] = 5;
+		if ( ! isset($feed['feed_url']) ) $feed['feed_url'] = '';
+		
+		if ( $preview ):
+?>
+
+<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget widget-wrapper" data-type="<?=$widget->widget_type;?>">
+	<div class="widget-top">
+		<div class="widget-title"><h4><?=$feed['title'];?><span class="in-widget-title"></span></h4></div>
+		<div class="widget-action">
+			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
+			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" title="Edit"></span>
+			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
+		</div>
+	</div>
+
+	<div class="widget-inside">
+<?php
+		endif;
+?>
+		<div class="widget text <?=$widget->widget_type;?>"<?=$box_style;?>>
+			<?php if ( $feed['title'] != '' ): ?>
+			<h3 class="title" <?=$title_style;?>><?=$feed['title'];?></h3>
+			<?php endif; ?>
+			<?php
+				if ( isset($feed['feed_url']) && $feed['feed_url'] != ''  ):
+					//Load the shiny new rssparse
+					$CI = get_instance();
+					$CI->load->library('RSSParser', array('url' =>$feed['feed_url'], 'life' => 2));
+					//Get six items from the feed
+					$data = $CI->rssparser->getFeed($feed['feed_number']);
+					
+					if ( is_array($data) && count($data) > 0 ):
+						echo '<ul>';
+						foreach ($data as $item) :
+							// do stuff with $item['title'], $item['description'], etc.
+							echo '<li><a href="' . $item['link'] . '" target="_blank">' . $item['title'] . '</a></li>';
+						endforeach;
+						echo '</ul>';
+					endif;
+					
+				elseif( $preview ):
+					echo '<div class="blank-widget feed ' . $widget->widget_type . '"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-'.$widget->widget_type . '-' . $widget->id.'-modal">Add Feed</button></div>';
+				endif;
+			?>
+		</div>
+<?php
+		if ( $preview ):
+?>
+	</div>
+	
+	<div class="widget-description">Add Feed</div>
+</div>
+<?php
+		endif;
+	}
+}
 	
 if ( ! function_exists('draw_main_image_modal')){
 	function draw_main_image_modal( $main_images ){
@@ -1320,6 +1413,182 @@ if ( ! function_exists('draw_modal_text')){
 							<label for="text-color">Text Color</label>
 							<div class="input-group color-picker">
 								<input type="text" class="form-control" name="text-color" value="<?=$text['text-color'];?>">
+								<span class="input-group-addon"><i></i></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
+				<span class="spinner"></span>
+			</div>
+		</div>
+	</div>
+</div>
+<?php
+	}
+}
+
+if ( ! function_exists('draw_modal_feed')){
+	function draw_modal_feed( $widget ){
+		if ( ! is_object($widget) ) return FALSE;
+		$feed = unserialize($widget->widget_data);
+		
+		if ( ! isset($feed['title']) ) $feed['title'] = '';
+		if ( ! isset($feed['feed_url']) ) $feed['feed_url'] = '';
+		if ( ! isset($feed['feed_number']) ) $feed['feed_number'] = '';
+		if ( ! isset($feed['border-color']) ) $feed['border-color'] = '';
+		if ( ! isset($feed['background-color']) ) $feed['background-color'] = '';
+		if ( ! isset($feed['title-color']) ) $feed['title-color'] = '';
+		if ( ! isset($feed['text-color']) ) $feed['text-color'] = '';
+?>
+<div class="modal fade feed_modal <?=$widget->widget_type;?>" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" tabindex="-1" data-widget-type="<?=$widget->widget_type;?>" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabel">Feed</h4>
+			</div>
+			<div class="modal-body">
+				
+				<div class="row">
+					<form class="form-horizontal col-sm-12" role="form">
+						<div class="form-group">
+							<label  class="col-sm-2 control-label">Title</label>
+							<div class=" col-sm-10">
+								<input type="text" name="feed-title" value="<?=$feed['title'];?>" class="form-control" placeholder="Title"/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label  class="col-sm-2 control-label">Feed URL</label>
+							<div class=" col-sm-10">
+								<input type="text" name="feed-url" value="<?=$feed['feed_url'];?>" class="form-control" placeholder="Feed URL"/>
+							</div>
+						</div>
+						<div class="form-group">
+							<label  class="col-sm-2 control-label">Feed Number</label>
+							<div class=" col-sm-2">
+								<input type="text" name="feed-number" value="<?=$feed['feed_number'];?>" class="form-control" placeholder="Number of Feed"/>
+							</div>
+						</div>
+					</form>
+				</div>
+
+				<div class="row" style="margin-top: 20px;">
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="border-color">Border Color</label>
+							<div class="input-group color-picker">
+								<input type="text" class="form-control" name="border-color" value="<?=$feed['border-color'];?>">
+								<span class="input-group-addon"><i></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="background-color">Background Color</label>
+							<div class="input-group color-picker">
+								<input type="text" class="form-control" name="background-color" value="<?=$feed['background-color'];?>">
+								<span class="input-group-addon"><i></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="title-color">Title Color</label>
+							<div class="input-group color-picker">
+								<input type="text" class="form-control" name="title-color" value="<?=$feed['title-color'];?>">
+								<span class="input-group-addon"><i></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="text-color">Text Color</label>
+							<div class="input-group color-picker">
+								<input type="text" class="form-control" name="text-color" value="<?=$feed['text-color'];?>">
+								<span class="input-group-addon"><i></i></span>
+							</div>
+						</div>
+					</div>
+				</div>
+				
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
+				<span class="spinner"></span>
+			</div>
+		</div>
+	</div>
+</div>
+<?php
+	}
+}
+
+if ( ! function_exists('draw_modal_gmap')){
+	function draw_modal_gmap( $widget ){
+		if ( ! is_object($widget) ) return FALSE;
+		$gmap = unserialize($widget->widget_data);
+		
+		if ( ! isset($gmap['location']) ) $gmap['location'] = '';
+		if ( ! isset($gmap['content']) ) $gmap['content'] = '';
+		if ( ! isset($gmap['border-color']) ) $gmap['border-color'] = '';
+		if ( ! isset($gmap['background-color']) ) $gmap['background-color'] = '';
+		if ( ! isset($gmap['text-color']) ) $gmap['text-color'] = '';
+		$query = str_replace(' ', '+', $gmap['location']);
+		$query = urlencode($query);
+		$CI = get_instance();
+?>
+<div class="modal fade gmap_modal <?=$widget->widget_type;?>" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" tabindex="-1" data-widget-type="<?=$widget->widget_type;?>" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabel">Google Map</h4>
+			</div>
+			<div class="modal-body">
+				
+				<div class="widget gmap" style="border: 1px solid <?=$gmap['border-color'];?>; background-color: <?=$gmap['background-color'];?>; color: <?=$gmap['text-color'];?>;">
+					<div class="col-md-6 gmap-container">
+						<div class="gmap-search-container">
+							<input id="pac-input-<?=$widget->id;?>" name="gmap-location" class="controls pac-input" type="text" placeholder="Search Box" value="<?=$gmap['location'];?>">
+						</div>
+						<?php if ( $query != '' ): ?>
+						<iframe class="gmap-iframe" width="374" height="260" frameborder="0" style="border:0"src="https://www.google.com/maps/embed/v1/place?q=<?=$query;?>&key=<?=$CI->config->item('gmap_key');?>"></iframe>
+						<?php endif; ?>
+					</div>
+					<div class="contact-info col-md-6">
+						<textarea id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-content" name="gmap-content" class="form-control tinymce" style="width:100%; height:260"><?=$gmap['content'];?></textarea>
+					</div>
+					<div class="clearfix"></div>
+				</div>
+				
+				<div class="row" style="margin-top: 20px;">
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="border-color">Border Color</label>
+							<div class="input-group color-picker">
+								<input type="text" class="form-control" name="border-color" value="<?=$gmap['border-color'];?>">
+								<span class="input-group-addon"><i></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="background-color">Background Color</label>
+							<div class="input-group color-picker">
+								<input type="text" class="form-control" name="background-color" value="<?=$gmap['background-color'];?>">
+								<span class="input-group-addon"><i></i></span>
+							</div>
+						</div>
+					</div>
+					<div class="col-md-3">
+						<div class="form-group">
+							<label for="text-color">Text Color</label>
+							<div class="input-group color-picker">
+								<input type="text" class="form-control" name="text-color" value="<?=$gmap['text-color'];?>">
 								<span class="input-group-addon"><i></i></span>
 							</div>
 						</div>
@@ -1785,7 +2054,7 @@ if ( ! function_exists('the_widgets')){
 
 	<div class="widget-description">Add Services.<p>Grab and move into place.</p></div>
 </div>
-
+<!-- temporary removed
 <div id="widget-videos-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="videos">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Videos<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
@@ -1825,7 +2094,7 @@ if ( ! function_exists('the_widgets')){
 
 	<div class="widget-description">Add Google Reviews.<p>Grab and move into place.</p></div>
 </div>
-
+-->
 <div id="widget-yreview-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="yreview">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Yelp Reviews<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>

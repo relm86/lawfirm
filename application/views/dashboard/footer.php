@@ -8,6 +8,7 @@
 <?php if ( isset($login_page) ): ?>
 <script type='text/javascript' src='<?php echo base_url();?>js/login.js'></script>
 <?php endif; ?>
+<script src="https://maps.googleapis.com/maps/api/js?libraries=places&key=<?php echo $this->config->item('gmap_key');?>"></script>
 <script type="text/javascript" src="<?php echo base_url(); ?>js/libs/plupload.full.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>js/libs/tiny_mce/tinymce.min.js"></script>
 <script type="text/javascript" src="<?php echo base_url();?>js/bootstrap-colorpicker.min.js"></script>

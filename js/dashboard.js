@@ -735,6 +735,144 @@ $(document).ready(function() {
 	/* fix bootstrap for tinymce modal issue */
 	/* update text_modal */
 	
+	/* update feed */
+	$('body').on('hide.bs.modal', '.feed_modal', function (event) {
+		widget_id = $(this).attr('id');
+		widget_type = $('#'+widget_id).attr('data-widget-type');
+		//no validation
+		//just save it
+		$.ajax({
+			type: "POST",
+				url: ajax_url+'/save_widget/',
+				data: $('#'+widget_id+' input').serialize() + '&user_id='+$('#user_id').val()+'&template_id='+$('#template_id').val()+'&widget_type='+widget_type+'&widget_id='+widget_id+'&csrf_b2b='+$( "input[name='csrf_b2b']" ).val(),
+				dataType : "json",
+			})
+		.done(function( msg ) {
+			if ( msg.success == true && msg.widget_html && msg.widget_id ){
+				$('#'+msg.widget_id+' .widget-inside .widget.'+widget_type).remove();
+				$('#'+msg.widget_id+' .widget-inside').append(msg.widget_html);
+			}
+		});
+	});
+	
+	$('body').on('shown.bs.modal', '.feed_modal', function (event) {
+		$(".color-picker").colorpicker();
+	});
+	
+	/* update feed_modal */
+	
+	/* gmap widget */
+	$('body').on('shown.bs.modal', '.gmap_modal', function (event) {
+		tinyMCE.init({
+			selector: ".tinymce",
+			menubar:false,
+			width: '99%',
+
+			plugins: [
+						"jbimages advlist autolink link image lists charmap hr anchor pagebreak",
+						"searchreplace wordcount visualblocks visualchars code media nonbreaking",
+						"save table contextmenu directionality template paste textcolor "
+			],
+			content_css: site_url+"css/gmap-editor.css",
+			toolbar: "bold italic | alignleft aligncenter alignright alignjustify | code ",
+			relative_urls: false,
+			remove_script_host : false,
+			convert_urls : true,
+		});
+		
+		$(".color-picker").colorpicker();
+		
+		inputID = $(this).find('.pac-input').attr('id');
+		initialize(inputID);
+	});
+	
+	$('body').on('hide.bs.modal', '.gmap_modal', function (event) {
+		widget_id = $(this).attr('id');
+		widget_type = $('#'+widget_id).attr('data-widget-type');
+		tinymce.triggerSave();
+		//no validation
+		//just save it
+		$.ajax({
+			type: "POST",
+				url: ajax_url+'/save_widget/',
+				data: $('#'+widget_id+' input, #'+widget_id+' textarea').serialize() + '&user_id='+$('#user_id').val()+'&template_id='+$('#template_id').val()+'&widget_type='+widget_type+'&widget_id='+widget_id+'&csrf_b2b='+$( "input[name='csrf_b2b']" ).val(),
+				dataType : "json",
+			})
+		.done(function( msg ) {
+			if ( msg.success == true && msg.widget_html && msg.widget_id ){
+				$('#'+msg.widget_id+' .widget-inside .widget.'+widget_type).remove();
+				$('#'+msg.widget_id+' .widget-inside').append(msg.widget_html);
+			}
+		});
+	});
+	
+	function initialize( inputID ) {
+
+		var markers = [];
+
+		// Create the search box and link it to the UI element.
+		var input = /** @type {HTMLInputElement} */(
+		document.getElementById( inputID ));
+
+		var searchBox = new google.maps.places.SearchBox(
+		/** @type {HTMLInputElement} */(input));
+
+		// [START region_getplaces]
+		// Listen for the event fired when the user selects an item from the
+		// pick list. Retrieve the matching places for that item.
+		google.maps.event.addListener(searchBox, 'places_changed', function() {
+			var places = searchBox.getPlaces();
+
+			if (places.length == 0) {
+				return;
+			}
+			for (var i = 0, marker; marker = markers[i]; i++) {
+				marker.setMap(null);
+			}
+
+			// For each place, get the icon, place name, and location.
+			markers = [];
+			var bounds = new google.maps.LatLngBounds();
+			for (var i = 0, place; place = places[i]; i++) {
+				var image = {
+					url: place.icon,
+					size: new google.maps.Size(71, 71),
+					origin: new google.maps.Point(0, 0),
+					anchor: new google.maps.Point(17, 34),
+					scaledSize: new google.maps.Size(25, 25)
+				};
+
+				// Create a marker for each place.
+					var marker = new google.maps.Marker({
+					icon: image,
+					title: place.name,
+					position: place.geometry.location
+				});
+
+				markers.push(marker);
+
+				bounds.extend(place.geometry.location);
+			}
+
+			//console.log(bounds);
+			//console.log(bounds.toString());
+			//console.log(bounds.Ea.j);
+			//console.log(bounds.va.j);
+			//console.log($('#'+inputID).val());
+			//console.log(gmap_key);
+			query = $('#'+inputID).val();
+			query = encodeURIComponent(query);
+			query = query.replace(/%20/g, '+');
+			//console.log(query);
+			$('#'+inputID).closest('.gmap_modal').find('iframe.gmap-iframe').attr('src', 'https://www.google.com/maps/embed/v1/place?q='+query+'&key='+gmap_key);
+		});
+		// [END region_getplaces]
+
+	}
+
+	//google.maps.event.addDomListener(window, 'load', initialize);
+	/* gmap widget */
+	
 	/* preview page */
 
     /* validate edit user form */

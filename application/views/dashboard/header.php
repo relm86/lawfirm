@@ -44,6 +44,7 @@
 	var fb_app_id = "<?php echo$this->config->item('fb_app_id');?>";
 	var google_client_id = "<?php echo $this->config->item('google_client_id');?>";
 	var linkedin_api_key = "<?php echo $this->config->item('linkedin_api_key');?>";
+	var gmap_key = "<?php echo $this->config->item('gmap_key');?>";
 	// ]]>
 	</script>
 </head>

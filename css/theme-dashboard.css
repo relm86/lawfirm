@@ -211,9 +211,82 @@ p.drop-here {
 	clear: none;
 }
 
-.text_modal .modal-dialog {
+.text_modal .modal-dialog, .feed_modal .modal-dialog {
 	width: 800px;
 }
+
+/* gmap */
+.gmap_modal .modal-dialog {
+	width: 778px;
+}
+
+.gmap_modal .widget.gmap .contact-info {
+	height: 260px;
+	overflow: hidden;
+}
+
+.gmap_modal .gmap-container{
+	margin-right: 0;
+	padding: 0;
+}
+
+.gmap_modal .widget.gmap .contact-info {
+	padding: 0;
+}
+
+.gmap_modal .controls {
+	margin-top: 16px;
+	border: 1px solid transparent;
+	border-radius: 2px 0 0 2px;
+	box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	height: 32px;
+	outline: none;
+	box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.gmap_modal .pac-input {
+	background-color: #fff;
+	padding: 0 11px 0 13px;
+	width: 100%;
+	font-family: Roboto;
+	font-size: 15px;
+	font-weight: 300;
+	text-overflow: ellipsis;
+	color: #000000;
+	margin-top: 0;
+}
+
+.gmap_modal .pac-input:focus {
+	border-color: #4d90fe;
+	margin-left: -1px;
+	padding-left: 14px;  /* Regular padding-left + 1. */
+	width: 100%;
+}
+
+.gmap_modal .pac-container {
+	font-family: Roboto;
+	z-index: 20;
+}
+
+.gmap_modal #type-selector {
+	color: #fff;
+	background-color: #4d90fe;
+	padding: 5px 11px 0px 11px;
+}
+
+.gmap_modal #type-selector label {
+	font-family: Roboto;
+	font-size: 13px;
+	font-weight: 300;
+}
+.gmap_modal.modal{
+	z-index: 20;   
+}
+.modal-backdrop{
+	z-index: 10;        
+}​
+/* gmap */
 
 .widget-inside .widget {
 	margin-top: 0;
