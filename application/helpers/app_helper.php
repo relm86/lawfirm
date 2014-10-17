@@ -276,7 +276,8 @@ if ( ! function_exists('draw_widget')){
 			elseif ( $widget->widget_type == 'links' ):
 				draw_widget_links($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'contact' ):
-				draw_widget_contact($widget, $position, $preview);
+				//draw_widget_contact($widget, $position, $preview);
+				draw_widget_text($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'twitter' ):
 				draw_widget_twitter($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'foursquare' ):
@@ -347,7 +348,8 @@ if ( ! function_exists('draw_modals')){
 				elseif ( $widget->widget_type == 'links' ):
 					draw_modal_links($widget);
 				elseif ( $widget->widget_type == 'contact' ):
-					draw_modal_contact($widget);
+					//draw_modal_contact($widget);
+					draw_modal_text($widget);
 				elseif ( $widget->widget_type == 'twitter' ):
 					draw_modal_twitter($widget);
 				elseif ( $widget->widget_type == 'foursquare' ):
@@ -396,7 +398,8 @@ if ( ! function_exists('draw_modal')){
 			elseif ( $widget->widget_type == 'links' ):
 				draw_modal_links($widget);
 			elseif ( $widget->widget_type == 'contact' ):
-				draw_modal_contact($widget);
+				//draw_modal_contact($widget);
+				draw_modal_text($widget);
 			elseif ( $widget->widget_type == 'twitter' ):
 				draw_modal_twitter($widget);
 			elseif ( $widget->widget_type == 'foursquare' ):

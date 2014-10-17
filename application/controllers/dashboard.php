@@ -444,7 +444,7 @@ class Dashboard extends CI_Controller {
 				return serialize($links);
 			endif;
 
-		elseif ( 'text' == $this->input->post('widget_type') ||  'download' == $this->input->post('widget_type') ||  'coupon' == $this->input->post('widget_type') ||  'products' == $this->input->post('widget_type') ||  'services' == $this->input->post('widget_type') ):
+		elseif ( 'text' == $this->input->post('widget_type') ||  'download' == $this->input->post('widget_type') ||  'coupon' == $this->input->post('widget_type') ||  'products' == $this->input->post('widget_type') ||  'services' == $this->input->post('widget_type') ||  'contact' == $this->input->post('widget_type') ):
 			$this->load->library('security');
 			$title = $this->input->post('text-title');
 			$content = $this->input->post('text-content');

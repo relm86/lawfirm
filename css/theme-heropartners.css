@@ -20,6 +20,7 @@ body {
 	height: auto;
 }
 
+/*
 .widget.contact {
 	background: #55514e;
 	width: 100%;
@@ -27,9 +28,33 @@ body {
 	color: #ffffff;
 	text-align: center;
 }
+*/
+
+.widget.contact{
+	background: url(../img/learning-outdoors.jpg) no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	width: 100%;
+	padding: 14px;
+	color: #ffffff;
+	text-align: center;
+}
+
 .widget.contact  .media-body{
 	margin-top: 24px;
 }
+
+.widget.text.contact h3.title {
+	border-bottom: 0;
+	border-color: 55514e;
+	padding: 0;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	font-size: 24px;
+}
+
 .panel-review {
 	margin: 16px 0 0 0;
 }
