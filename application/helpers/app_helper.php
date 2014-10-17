@@ -2054,7 +2054,7 @@ if ( ! function_exists('the_widgets')){
 
 	<div class="widget-description">Add Services.<p>Grab and move into place.</p></div>
 </div>
-
+<!-- temporary removed
 <div id="widget-videos-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="videos">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Videos<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
@@ -2094,7 +2094,7 @@ if ( ! function_exists('the_widgets')){
 
 	<div class="widget-description">Add Google Reviews.<p>Grab and move into place.</p></div>
 </div>
-
+-->
 <div id="widget-yreview-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="yreview">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Yelp Reviews<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
