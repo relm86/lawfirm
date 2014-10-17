@@ -228,7 +228,7 @@ class Dashboard extends CI_Controller {
 		endif;
 		
 		$this->load->view( 'dashboard/header', array('jqueryui' => TRUE, 'template_id'=> $template_id, 'sticky' => TRUE, 'page_preview' => TRUE, 'layout'=> $data['template']->layout, 'color_scheme' => $data['template']->color_scheme) );
-		$this->load->view(  get_client().'/preview_' . $data['template']->layout, $data );
+		$this->load->view(  get_client() . '/preview_' . $data['template']->layout, $data );
 		$this->load->view( 'dashboard/footer', array('jqueryui' => TRUE, 'sticky' => TRUE) );
 	}
 	
@@ -261,7 +261,7 @@ class Dashboard extends CI_Controller {
 		endif;
 		
 		$this->load->view( get_client().'/header', array('jqueryui' => TRUE, 'layout'=> $data['template']->layout, 'color_scheme' => $data['template']->color_scheme) );
-		$this->load->view(  get_client().'/' . $data['template']->layout, $data );
+		$this->load->view(  get_client().'/'.$data['template']->layout, $data );
 		$this->load->view( get_client().'/footer', array('jqueryui' => TRUE) );
 	}	
 	
@@ -444,7 +444,7 @@ class Dashboard extends CI_Controller {
 				return serialize($links);
 			endif;
 
-		elseif ( 'text' == $this->input->post('widget_type') ):
+		elseif ( 'text' == $this->input->post('widget_type') ||  'download' == $this->input->post('widget_type') ||  'coupon' == $this->input->post('widget_type') ||  'products' == $this->input->post('widget_type') ||  'services' == $this->input->post('widget_type') ):
 			$this->load->library('security');
 			$title = $this->input->post('text-title');
 			$content = $this->input->post('text-content');
@@ -924,32 +924,37 @@ class Dashboard extends CI_Controller {
 				if ( $result ):
 					$content = '<p>Move cursor to one of business below then press select button.</p>';
 					$i = 0;
+					
+					ob_start();
 					foreach( $result->businesses as $business):
 						$i++;
 						$business_detail = json_decode($this->yelpoauth-> get_business($business->id));
-						$content .='<div class="search-result natural-search-result biz-listing-large clearfix" data-key="' . $i . '" data-component-bound="true" id="' . $business->id . '">
+						?>
+<div class="search-result natural-search-result biz-listing-large clearfix" data-key="<?=$i;?>" data-component-bound="true" id="<?=$business->id;?>">
 	<div class="main-attributes">
 		<div class="media-block media-block-large">
 			<div class="media-avatar">
 				<div class="photo-box pb-90s">
-					<img alt="' . $business->name . '" class="photo-box-img" height="90" src="' . $business->image_url . '" width="90">
+					<?php if ( isset($business->image_url) ): ?>
+					<img alt="<?=$business->name; ?>" class="photo-box-img" height="90" src="<?=$business->image_url;?>" width="90">
+					<?php endif; ?>
 				</div>
 			</div>
 			<div class="media-story">
-				<h3 class="search-result-title">' . $business->name . '</h3>
+				<h3 class="search-result-title"><?=$business->name;?></h3>
 				<div class="biz-rating biz-rating-large clearfix">
 					<div class="rating-large">
 						<i class="star-img stars_4" title="4.0 star rating">
-							<img alt="4.0 star rating" class="offscreen" height="30" src="' . $business->rating_img_url_large . '" width="166">
+							<img alt="4.0 star rating" class="offscreen" height="30" src="<?=$business->rating_img_url_large;?>" width="166">
 						</i>
 					</div>
 					<span class="review-count rating-qualifier">
-						' . $business->review_count . ' reviews
+						<?=$business->review_count;?> reviews
 					</span>
 				</div>
 				<div class="price-category">
 					<span class="category-str-list">
-						' . implode(', ', $business->categories[0]) . '
+						<?=implode(', ', $business->categories[0]);?>
 					</span>
 				</div>
 				<ul class="tags">
@@ -960,34 +965,39 @@ class Dashboard extends CI_Controller {
 
 	<div class="secondary-attributes">
 		<span class="neighborhood-str-list">
-			' . implode(', ', $business->location->neighborhoods) . '
+			<?=implode(', ', $business->location->neighborhoods);?>
 		</span>
 		<address>
-			' . implode(', ', $business->location->display_address) . '
+			<?=implode(', ', $business->location->display_address);?>
 		</address>
 		<span class="offscreen">
 			Phone number
 		</span>
-		<span class="biz-phone">' . $business->display_phone . '</span>
+		<?php if ( isset($business->display_phone) ): ?>
+		<span class="biz-phone"><?=$business->display_phone;?></span>
+		<?php endif; ?>
 	</div>
 
 	<div class="snippet-block review-snippet">
 		<div class="media-block">
 			<div class="media-avatar">
 				<div class="photo-box pb-30s">
-						<img alt="' . $business_detail->reviews[0]->user->name . '" class="photo-box-img" height="30" src="' . $business_detail->reviews[0]->user->image_url . '" width="30">
+						<img alt="<?=$business_detail->reviews[0]->user->name;?>" class="photo-box-img" height="30" src="<?=$business_detail->reviews[0]->user->image_url;?>" width="30">
 					</a>
 				</div>
 			</div>
 			<div class="media-story">
-				<p class="snippet">' . $business_detail->reviews[0]->excerpt . '</p>
+				<p class="snippet"><?=$business_detail->reviews[0]->excerpt;?></p>
 			</div>
 		</div>
 	</div>
 	
 	<div class="select_yelp_business_container"><button type="button" class="btn btn-primary btn-sm select_yelp_business" data-dismiss="modal">Select</button></div>
-</div>';
+</div>
+<?php
 					endforeach;
+					$content .= ob_get_contents();
+					ob_end_clean();
 					$response = array('success' => TRUE, 'content' => $content);
 				endif;
 			endif;
