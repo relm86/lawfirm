@@ -11,7 +11,7 @@
                     </div>
                     <?php echo form_open('dashboard/edituser/'.$row->id, array('class' => 'edituser_form', 'id' => 'edituser_form') ); ?>
                         <div id="edituser_button_top">
-                            &nbsp;<button type="submit" class="btn btn-success">Edit User</button>
+                            <a href="<?php echo site_url(); ?>" class="btn btn-default">Cancel</a> &nbsp; <button type="submit" class="btn btn-success">Save</button>
                         </div>
                         <?php foreach ($row as $key => $value): ?>
                             <?php if ($key == 'picture'): ?>
@@ -39,7 +39,7 @@
                                 <?php break; ?>
                             <?php endif; ?>
                         <?php endforeach; ?>
-                        <button type="submit" class="btn btn-success">Edit User</button>
+                        <a href="<?php echo site_url(); ?>" class="btn btn-default">Cancel</a> &nbsp; <button type="submit" class="btn btn-success">Save</button>
                     <?php echo form_close(); ?>
                 </div>
             </div>

@@ -45,7 +45,7 @@ if ( ! function_exists('draw_widget_foursquare')){
 		<div class="widget foursquare">
 			<div class="panel panel-default widget-testimonials-full">
 				<div class="panel-heading">
-					<h3 class="panel-title"><?=$foursquares['hashtag'];?></h3>
+					<h3 class="panel-title">People in your neighborhood are checking in at <?=$foursquares['hashtag'];?></h3>
 				</div>
 				<div class="panel-body">
 <?php
