@@ -285,6 +285,14 @@ if ( ! function_exists('draw_widget')){
 				draw_widget_faq($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'text' ):
 				draw_widget_text($widget, $position, $preview);
+			elseif ( $widget->widget_type == 'download' ):
+				draw_widget_text($widget, $position, $preview);
+			elseif ( $widget->widget_type == 'coupon' ):
+				draw_widget_text($widget, $position, $preview);
+			elseif ( $widget->widget_type == 'products' ):
+				draw_widget_text($widget, $position, $preview);
+			elseif ( $widget->widget_type == 'services' ):
+				draw_widget_text($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'gmap' ):
 				draw_widget_gmap($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'yreview' ):
@@ -348,6 +356,14 @@ if ( ! function_exists('draw_modals')){
 					draw_modal_text($widget);
 				elseif ( $widget->widget_type == 'yreview' ):
 					draw_modal_yreview($widget);
+				elseif ( $widget->widget_type == 'download' ):
+					draw_modal_text($widget);
+				elseif ( $widget->widget_type == 'coupon' ):
+					draw_modal_text($widget);
+				elseif ( $widget->widget_type == 'products' ):
+					draw_modal_text($widget);
+				elseif ( $widget->widget_type == 'services' ):
+					draw_modal_text($widget);
 				endif;
 			endforeach;
 		else:
@@ -384,7 +400,15 @@ if ( ! function_exists('draw_modal')){
 			elseif ( $widget->widget_type == 'text' ):
 				draw_modal_text($widget);
 			elseif ( $widget->widget_type == 'yreview' ):
-					draw_modal_yreview($widget);
+				draw_modal_yreview($widget);
+			elseif ( $widget->widget_type == 'download' ):
+				draw_modal_text($widget);
+			elseif ( $widget->widget_type == 'coupon' ):
+				draw_modal_text($widget);
+			elseif ( $widget->widget_type == 'products' ):
+				draw_modal_text($widget);
+			elseif ( $widget->widget_type == 'services' ):
+				draw_modal_text($widget);
 			endif;
 		else:
 			return FALSE;
@@ -699,7 +723,7 @@ if ( ! function_exists('draw_widget_yreview')){
 						<span class="neighborhood-str-list"><?php echo implode(', ', $business_detail->location->neighborhoods); ?></span>
 						<address><?php echo implode(', ', $business_detail->location->display_address); ?></address>
 						<span class="offscreen">Phone number</span>
-						<span class="biz-phone"><?php echo $business_detail->display_phone;?></span>
+						<span class="biz-phone"><?php if ( isset($business_detail->display_phone) )echo $business_detail->display_phone;?></span>
 					</div>
 
 					<div class="snippet-block review-snippet">
@@ -1029,7 +1053,7 @@ if ( ! function_exists('draw_widget_text')){
 <?php
 		endif;
 ?>
-		<div class="widget text"<?=$box_style;?>>
+		<div class="widget text <?=$widget->widget_type;?>"<?=$box_style;?>>
 			<?php if ( $text['title'] != '' ): ?>
 			<h3 class="title" <?=$title_style;?>><?=$text['title'];?></h3>
 			<?php endif; ?>
@@ -1037,7 +1061,7 @@ if ( ! function_exists('draw_widget_text')){
 				if ( isset($text['content']) && $text['content'] != ''  ):
 					echo $text['content'];
 				elseif( $preview ):
-					echo '<div class="blank-widget text"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-'.$widget->widget_type . '-' . $widget->id.'-modal">Add Text</button></div>';
+					echo '<div class="blank-widget text ' . $widget->widget_type . '"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-'.$widget->widget_type . '-' . $widget->id.'-modal">Add '. ucwords($widget->widget_type) . '</button></div>';
 				endif;
 			?>
 		</div>
@@ -1046,7 +1070,7 @@ if ( ! function_exists('draw_widget_text')){
 ?>
 	</div>
 	
-	<div class="widget-description">Add Text</div>
+	<div class="widget-description">Add <?=ucwords($widget->widget_type);?></div>
 </div>
 <?php
 		endif;
@@ -1251,12 +1275,12 @@ if ( ! function_exists('draw_modal_text')){
 		if ( ! isset($text['title-color']) ) $text['title-color'] = '';
 		if ( ! isset($text['text-color']) ) $text['text-color'] = '';
 ?>
-<div class="modal fade text_modal" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" tabindex="-1" data-widget-type="text" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+<div class="modal fade text_modal <?=$widget->widget_type;?>" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" tabindex="-1" data-widget-type="<?=$widget->widget_type;?>" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title" id="myModalLabel">Text</h4>
+				<h4 class="modal-title" id="myModalLabel"><?=ucwords($widget->widget_type);?></h4>
 			</div>
 			<div class="modal-body">
 				

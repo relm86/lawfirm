@@ -722,6 +722,8 @@ $(document).ready(function() {
 			remove_script_host : false,
 			convert_urls : true,
 		});
+		
+		$(".color-picker").colorpicker();
 	});
 	
 	/* fix bootstrap for tinymce modal issue */
@@ -837,8 +839,6 @@ $(document).ready(function() {
         return confirm(msg);
     });
     
-	$(".color-picker").colorpicker();
-	
 	//widget action toolbar
 	$(document).on('mouseenter', '#the-page .widget-wrapper', function(e) {
 		$( this ).addClass( 'hover' ).find('.widget-action').show();

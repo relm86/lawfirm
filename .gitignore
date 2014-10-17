@@ -5,3 +5,7 @@ img/users/*
 img/slider/*
 img/video_thumb/*
 .htaccess
+img/default-profile-photo_thumb_100x100.jpg
+application/config/config.php
+application/config/database.php
+.htaccess
