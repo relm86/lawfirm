@@ -182,7 +182,7 @@ body {
 }
 
 .widget.twitter {
-	background-color: blue;
+	/*background-color: blue;*/
 	color: #000000;
 /*	padding: 0 15px 15px;
 	border-radius: 5px;
@@ -202,7 +202,7 @@ body {
 }
 
 .widget.foursquare {
-	background-color: blue;
+	/*background-color: blue;*/
 	color: #000000;
 /*	padding: 0 15px 15px;
 	border-radius: 5px;
@@ -439,6 +439,14 @@ body {
 /* LOGIN PAGE */
 
 /* YELP */
+.widget.text.yreview {
+	padding: 0;
+}
+
+.blank-widget.text.yreview {
+	margin: -15px;
+}
+
 .yelp_search .search-result {
 	margin-top: 20px;
 	position: relative;

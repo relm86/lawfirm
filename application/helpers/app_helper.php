@@ -700,14 +700,12 @@ if ( ! function_exists('draw_widget_yreview')){
 
 <div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget widget-wrapper" data-type="<?=$widget->widget_type;?>">
 	<div class="widget-top">
-	<div class="panel panel-default widget-testimonials-full">
-		<div class="panel-heading"><h3 class="panel-title">What people in your neighborhood are saying about <?php echo $business_detail->name; ?></h3></div>
+		<div class="widget-title"><h4>Yelp Reviews<span class="in-widget-title"></span></h4></div>
 		<div class="widget-action">
 			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
 			<span class="glyphicon glyphicon-edit edit-widget" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" title="Edit"></span>
 			<span class="glyphicon glyphicon-remove delete-widget" title="Delete"></span>
 		</div>
-	</div>
 	</div>
 
 	<div class="widget-inside">
@@ -715,64 +713,72 @@ if ( ! function_exists('draw_widget_yreview')){
 		endif;
 ?>
 		<div class="widget yreview">
-			<?php if ( isset($business_detail) ): ?>
-				<div class="search-result natural-search-result biz-listing-large clearfix" id="<?php echo $business_detail->id; ?>">
-					<div class="main-attributes">
-						<div class="media-block media-block-large">
-							<div class="media-avatar">
-								<div class="photo-box pb-90s">
-									<img alt="<?php echo $business_detail->name; ?>" class="photo-box-img" height="90" src="<?php echo $business_detail->image_url; ?>" width="90">
-								</div>
-							</div>
-							<div class="media-story">
-								<h3 class="search-result-title"><a href="<?php echo $business_detail->url; ?>" target="_blank"><?php echo $business_detail->name; ?></a></h3>
-								<div class="biz-rating biz-rating-large clearfix">
-									<div class="rating-large">
-										<i class="star-img stars_4" title="4.0 star rating">
-											<img alt="4.0 star rating" class="offscreen" height="30" src="<?php echo $business_detail->rating_img_url_large; ?>" width="166">
-										</i>
-									</div>
-									<span class="review-count rating-qualifier"><?php echo $business_detail->review_count;?> reviews</span>
-								</div>
-								<div class="price-category">
-									<span class="category-str-list"><?php echo implode(', ', $business_detail->categories[0]);?></span>
-								</div>
-								<ul class="tags"></ul>
-							</div>
-						</div>
-					</div>
-
-					<div class="secondary-attributes">
-						<span class="neighborhood-str-list"><?php echo implode(', ', $business_detail->location->neighborhoods); ?></span>
-						<address><?php echo implode(', ', $business_detail->location->display_address); ?></address>
-						<span class="offscreen">Phone number</span>
-						<span class="biz-phone"><?php if ( isset($business_detail->display_phone) )echo $business_detail->display_phone;?></span>
-					</div>
-
-					<div class="snippet-block review-snippet">
-						<div class="media-block">
-							<div class="media-avatar">
-								<div class="photo-box pb-30s">
-										<img alt="<?php echo $business_detail->reviews[0]->user->name;?>" class="photo-box-img" height="30" src="<?php echo $business_detail->reviews[0]->user->image_url;?>" width="30">
-									</a>
-								</div>
-							</div>
-							<div class="media-story">
-								<p class="snippet"><?php echo $business_detail->reviews[0]->excerpt; ?></p>
-							</div>
-						</div>
-					</div>
-					
-					<div class="yelp-copyright"><a href="<?php echo $business_detail->url; ?>" target="_blank"><img alt="<?php echo $business_detail->name; ?>" src="http://s3-media3.fl.yelpcdn.com/assets/2/www/img/3049d7633b6e/developers/reviewsFromYelpRED.gif" width="115" height="25"/></a></div>
-					
+			<div class="panel panel-default widget-testimonials-full">
+				<div class="panel-heading">
+					<?php if ( isset($business_detail) ): ?>
+					<h3 class="panel-title">What people in your neighborhood are saying about <?php echo $business_detail->name; ?></h3>
+				 	<?php else: ?>
+				 	<h3 class="panel-title">Yelp Review</h3>
+				 	<?php endif; ?>
 				</div>
-			<?php else: ?>
-				<h3 class="title">Yelp Reviews</h3>
-				<?php if ( $preview ): ?>
-				<div class="blank-widget text yreview"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal">Add Yelp Reviews</button></div>
+				<div class="panel-body">
+					<?php if ( isset($business_detail) ): ?>
+					<div class="search-result natural-search-result biz-listing-large clearfix" id="<?php echo $business_detail->id; ?>">
+						<div class="main-attributes">
+							<div class="media-block media-block-large">
+								<div class="media-avatar">
+									<div class="photo-box pb-90s">
+										<img alt="<?php echo $business_detail->name; ?>" class="photo-box-img" height="90" src="<?php echo $business_detail->image_url; ?>" width="90">
+									</div>
+								</div>
+								<div class="media-story">
+									<h3 class="search-result-title"><a href="<?php echo $business_detail->url; ?>" target="_blank"><?php echo $business_detail->name; ?></a></h3>
+									<div class="biz-rating biz-rating-large clearfix">
+										<div class="rating-large">
+											<i class="star-img stars_4" title="4.0 star rating">
+												<img alt="4.0 star rating" class="offscreen" height="30" src="<?php echo $business_detail->rating_img_url_large; ?>" width="166">
+											</i>
+										</div>
+										<span class="review-count rating-qualifier"><?php echo $business_detail->review_count;?> reviews</span>
+									</div>
+									<div class="price-category">
+										<span class="category-str-list"><?php echo implode(', ', $business_detail->categories[0]);?></span>
+									</div>
+									<ul class="tags"></ul>
+								</div>
+							</div>
+						</div>
+
+						<div class="secondary-attributes">
+							<span class="neighborhood-str-list"><?php echo implode(', ', $business_detail->location->neighborhoods); ?></span>
+							<address><?php echo implode(', ', $business_detail->location->display_address); ?></address>
+							<span class="offscreen">Phone number</span>
+							<span class="biz-phone"><?php if ( isset($business_detail->display_phone) )echo $business_detail->display_phone;?></span>
+						</div>
+
+						<div class="snippet-block review-snippet">
+							<div class="media-block">
+								<div class="media-avatar">
+									<div class="photo-box pb-30s">
+											<img alt="<?php echo $business_detail->reviews[0]->user->name;?>" class="photo-box-img" height="30" src="<?php echo $business_detail->reviews[0]->user->image_url;?>" width="30">
+										</a>
+									</div>
+								</div>
+								<div class="media-story">
+									<p class="snippet"><?php echo $business_detail->reviews[0]->excerpt; ?></p>
+								</div>
+							</div>
+						</div>
+						
+						<div class="yelp-copyright"><a href="<?php echo $business_detail->url; ?>" target="_blank"><img alt="<?php echo $business_detail->name; ?>" src="http://s3-media3.fl.yelpcdn.com/assets/2/www/img/3049d7633b6e/developers/reviewsFromYelpRED.gif" width="115" height="25"/></a></div>
+						
+					</div>
+				<?php elseif ( $preview ): ?>
+					<div class="blank-widget text yreview"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal">Add Yelp Reviews</button></div>
 				<?php endif; ?>
-			<?php endif; ?>
-			<div class="clearfix"></div>
+				</div>
+			</div>
+			
 		</div>
 <?php
 		if ( $preview ):
@@ -2109,8 +2115,14 @@ if ( ! function_exists('the_widgets')){
 
 	<div class="widget-inside">
 		<div class="widget text yreview">
-			<h3 class="title">Yelp Reviews</h3>
-			<div class="blank-widget text yreview"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-yreview-__i__-modal">Add Yelp Reviews</button></div>
+			<div class="panel panel-default widget-testimonials-full">
+				<div class="panel-heading">
+				  <h3 class="panel-title">Yelp Reviews</h3>
+				</div>
+				<div class="panel-body">
+				  	<div class="blank-widget text yreview"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-yreview-__i__-modal">Add Yelp Reviews</button></div>
+				</div>
+			</div>
 		</div>
 	</div>
 
