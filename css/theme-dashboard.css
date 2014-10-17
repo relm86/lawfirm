@@ -318,9 +318,10 @@ p.drop-here {
 
 #edituser_button_top {
     width: 100%;
+	height:50px;
 }
 
-#edituser_form .btn-success {
+#edituser_button_right {
     margin-top: 10px;
     float: right;
 }
