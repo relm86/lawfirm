@@ -575,7 +575,7 @@ if ( ! function_exists('draw_widget_contact')){
 			<div class="aloha-editable">
 				<h3 class="title">Learning in the great outdoors.</h3>
 				<p>Meet Rob Ryan and learn about the Sunflower Grown Companies system.</p>
-				<p><a class="btn btn-default btn-lg active" href="#">Sign Up</a></p>
+				<p><a class="btn btn-default btn-lg active" href="http://heropartners.com/retreats">Sign Up</a></p>
 			</div>
 		</div>
 <?php
@@ -1672,7 +1672,7 @@ if ( ! function_exists('the_widgets')){
 				<div class="aloha-editable">
 					<h3 class="title">Learning in the great outdoors.</h3>
 					<p>Meet Rob Ryan and learn about the Sunflower Grown Companies system.</p>
-					<p><a class="btn btn-default btn-lg active" href="#">Sign Up</a></p>
+					<p><a class="btn btn-default btn-lg active" href="http://heropartners.com/retreats">Sign Up</a></p>
 				</div>
 			</div>
 			<div class="clearfix"></div>
