@@ -842,7 +842,7 @@ if ( ! function_exists('draw_widget_greview')){
 			<div class="panel panel-default widget-testimonials-full">
 				<div class="panel-heading">
 					<?php if ( isset($business_detail) ): ?>
-					<h3 class="panel-title">What people in your neighborhood are saying about <?php echo $business_detail->name; ?></h3>
+					<h3 class="panel-title">What people on Google are saying about <?php echo $business_detail->name; ?></h3>
 				 	<?php else: ?>
 				 	<h3 class="panel-title">Google Review</h3>
 				 	<?php endif; ?>
