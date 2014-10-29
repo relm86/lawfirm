@@ -211,7 +211,7 @@ p.drop-here {
 	clear: none;
 }
 
-.text_modal .modal-dialog, .feed_modal .modal-dialog {
+.text_modal .modal-dialog, .feed_modal .modal-dialog, .template_options .modal-dialog {
 	width: 800px;
 }
 

@@ -55,6 +55,40 @@
 		                    </div>
 		                    
 		                    <div class="form-group">
+		                    	<label class="col-lg-3 control-label">Show this template for</label>
+		                    	<div class="col-lg-9">
+		                    		<div class="checkbox"><label><input type="checkbox" name="male" value="1"/> Male</label></div>
+		                    		<div class="checkbox"><label><input type="checkbox" name="female" value="1"/> Female</label></div>
+		                    		<div class="checkbox"><label><input type="checkbox" name="both" value="1"/> Both</label></div>
+		                    	</div>
+		                    </div>
+		                    <div class="form-group">
+		                    	<label class="col-lg-3 control-label"></label>
+		                    	<div class="col-lg-9">
+		                    		<?php if ( isset( $usStates ) && is_array( $usStates ) ): ?>
+		                    		<div class="row">
+		                    			<div class="col-xs-3">
+		                    				<select class="form-control" name="state">
+		                    		<?php foreach( $usStates as $state ): ?>
+		                    					<option value="<?=$state;?>"><?=$state;?></option>
+		                    		<?php endforeach; ?>
+		                    				</select>
+		                    			</div>
+		                    		</div>
+		                    		<?php endif; ?>
+		                    	</div>
+		                    </div>
+		                    <div class="form-group">
+		                    	<label class="col-lg-3 control-label"></label>
+		                    	<div class="col-lg-9">
+		                    		<div class="row">
+			                    		<div class="col-xs-3"><input  type="text" name="city" class="form-control" placeholder="City"/>
+			                    		</div>
+			                    	</div>
+		                    	</div>
+		                    </div>
+		                    
+		                    <div class="form-group">
 		                        <div class="col-lg-9 col-lg-offset-3">
 		                            <button type="submit" class="btn btn-default">Generate</button>
 		                        </div>

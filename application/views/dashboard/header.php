@@ -55,6 +55,7 @@
 	<span>
 	<a href="<?php echo base_url('dashboard/');?>" class="btn btn-primary btn-lg" role="button">Dashboard</a>
 	<a target="_blank" href="<?php echo base_url('dashboard/template_preview2/'.$template_id);?>" class="btn btn-primary btn-lg" role="button">Preview</a>
+	<a href="#" class="btn btn-primary btn-lg" role="button" data-toggle="modal" data-target="#template_options" >Options</a>
 	</span>
 </div>
 <?php endif;?>

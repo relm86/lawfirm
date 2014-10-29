@@ -179,6 +179,11 @@ class Dashboard extends CI_Controller {
 				$insert['name'] = $this->input->post('name');
 				$insert['color_scheme'] = $this->input->post('color_scheme');
 				$insert['layout'] = $this->input->post('layout');
+				$insert['is_male'] = $this->input->post('male');
+				$insert['is_female'] = $this->input->post('female');
+				$insert['is_both'] = $this->input->post('both');
+				$insert['state'] = $this->input->post('state');
+				$insert['city'] = $this->input->post('city');
 				$insert['view_count'] = 0;
 				$insert['owner'] = $this->session->userdata('id');
 				$this->db->insert('templates', $insert); 
@@ -192,7 +197,58 @@ class Dashboard extends CI_Controller {
 				}
 			endif;
 		endif;
-		
+		$data['usStates'] = array(
+				    "AL" => "Alabama",
+				    "AK" => "Alaska",
+				    "AZ" => "Arizona",
+				    "AR" => "Arkansas",
+				    "CA" => "California",
+				    "CO" => "Colorado",
+				    "CT" => "Connecticut",
+				    "DE" => "Delaware",
+				    "FL" => "Florida",
+				    "GA" => "Georgia",
+				    "HI" => "Hawaii",
+				    "ID" => "Idaho",
+				    "IL" => "Illinois",
+				    "IN" => "Indiana",
+				    "IA" => "Iowa",
+				    "KS" => "Kansas",
+				    "KY" => "Kentucky",
+				    "LA" => "Louisiana",
+				    "ME" => "Maine",
+				    "MD" => "Maryland",
+				    "MA" => "Massachusetts",
+				    "MI" => "Michigan",
+				    "MN" => "Minnesota",
+				    "MS" => "Mississippi",
+				    "MO" => "Missouri",
+				    "MT" => "Montana",
+				    "NE" => "Nebraska",
+				    "NV" => "Nevada",
+				    "NH" => "New Hampshire",
+				    "NJ" => "New Jersey",
+				    "NM" => "New Mexico",
+				    "NY" => "New York",
+				    "NC" => "North Carolina",
+				    "ND" => "North Dakota",
+				    "OH" => "Ohio",
+				    "OK" => "Oklahoma",
+				    "OR" => "Oregon",
+				    "PA" => "Pennsylvania",
+				    "RI" => "Rhode Island",
+				    "SC" => "South Carolina",
+				    "SD" => "South Dakota",
+				    "TN" => "Tennessee",
+				    "TX" => "Texas",
+				    "UT" => "Utah",
+				    "VT" => "Vermont",
+				    "VA" => "Virginia",
+				    "WA" => "Washington",
+				    "WV" => "West Virginia",
+				    "WI" => "Wisconsin",
+				    "WY" => "Wyoming"
+				    );
 		$this->load->view( 'dashboard/header' );
 		$this->load->view( 'dashboard/top-nav' );
 		$this->load->view( 'dashboard/template/new', $data );
@@ -1197,7 +1253,7 @@ class Dashboard extends CI_Controller {
     function template_delete($id)
     {
         $this->db->where('id', $id);
-        $this->db->where('name !=', 'default');//don't delete default template
+        $this->db->where('is_default !=', '1');//don't delete default template
         $query = $this->db->delete('templates');
         
         //delete widget
@@ -1207,6 +1263,41 @@ class Dashboard extends CI_Controller {
         endif;
         
         redirect(base_url('dashboard'));
+    }
+    
+    function set_default($id)
+    {
+	$update['is_default'] = 0;
+	$this->db->where('id !=', $id);
+	$query = $this->db->update('templates', $update);
+        
+        $update['is_default'] = 1;
+	$this->db->where('id', $id);
+	$query = $this->db->update('templates', $update);
+        
+	redirect(base_url('dashboard'));
+    }
+    
+    function save_template_option()
+    {
+    	if ($this->input->post()):
+		$this->form_validation->set_rules('template_id', 'ID', "trim|required");
+		$this->form_validation->set_rules('color_scheme', 'Color Scheme', "trim|required");
+		$this->form_validation->set_rules('layout', 'Template Layout', "trim|required");
+		if ($this->form_validation->run() == TRUE):
+			$update['color_scheme'] = $this->input->post('color_scheme');
+			$update['layout'] = $this->input->post('layout');
+			$update['is_male'] = $this->input->post('male');
+			$update['is_female'] = $this->input->post('female');
+			$update['is_both'] = $this->input->post('both');
+			$update['state'] = $this->input->post('state');
+			$update['city'] = $this->input->post('city');
+			$this->db->where('id', $this->input->post('template_id'));
+			$this->db->update('templates', $update); 
+		endif;
+	endif;
+        
+	redirect( base_url( 'dashboard/template_preview/' .  $this->input->post('template_id') ) );
     }
 
 

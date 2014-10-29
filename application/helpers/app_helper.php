@@ -186,6 +186,14 @@ if ( ! function_exists('get_client'))
 if ( ! function_exists('get_default_theme'))
 {
 	function get_default_theme() {
+		$CI = get_instance();
+		$CI->db->where('is_default', 1);
+		$CI->db->limit(1);
+		$query = $CI->db->get('templates');
+		if ( $query->num_rows() > 0 ):
+			$row = $query->row(); 
+			return $row->name;
+		endif;
 		return 'default';
 	}
 }
@@ -194,6 +202,17 @@ if ( ! function_exists('get_current_theme'))
 {
 	function get_current_theme() {
 		$CI = get_instance();
+		
+		if ( (!$CI->session->userdata('theme') || $CI->session->userdata('theme') == '') && ( $CI->session->userdata('state') || $CI->session->userdata('state') != '')):
+			$CI->db->where('state', $CI->session->userdata('state'));
+			$CI->db->limit(1);
+			$query = $CI->db->get('templates');
+			if ( $query->num_rows() > 0 ):
+				$row = $query->row(); 
+				return $row->name;
+			endif;
+		endif;
+		
 		return $CI->session->userdata('theme');
 	}
 }
@@ -335,6 +354,14 @@ if ( ! function_exists('draw_modals')){
 			$videos = FALSE;
 		endif;
 		draw_video_modal($videos);
+		
+		//template options
+		$CI->db->where('id', $template_id);
+		$query = $CI->db->get('templates',1);
+		if ( $query->num_rows() > 0 ):
+			$options = $query->row();
+			draw_modal_template_option($options);
+		endif;
 		
 		//widget modal
 		$CI->db->where('template_id', $id);
@@ -1890,6 +1917,153 @@ if ( ! function_exists('draw_modal_yreview')){
 			<div class="modal-footer">
 				<span class="spinner"></span>
 			</div>
+		</div>
+	</div>
+</div>
+<?php
+	}
+}
+
+if ( ! function_exists('draw_modal_template_option')){
+	function draw_modal_template_option( $options ){
+		if ( ! is_object($options) ) return FALSE;
+		
+		$usStates = array(
+				    "AL" => "Alabama",
+				    "AK" => "Alaska",
+				    "AZ" => "Arizona",
+				    "AR" => "Arkansas",
+				    "CA" => "California",
+				    "CO" => "Colorado",
+				    "CT" => "Connecticut",
+				    "DE" => "Delaware",
+				    "FL" => "Florida",
+				    "GA" => "Georgia",
+				    "HI" => "Hawaii",
+				    "ID" => "Idaho",
+				    "IL" => "Illinois",
+				    "IN" => "Indiana",
+				    "IA" => "Iowa",
+				    "KS" => "Kansas",
+				    "KY" => "Kentucky",
+				    "LA" => "Louisiana",
+				    "ME" => "Maine",
+				    "MD" => "Maryland",
+				    "MA" => "Massachusetts",
+				    "MI" => "Michigan",
+				    "MN" => "Minnesota",
+				    "MS" => "Mississippi",
+				    "MO" => "Missouri",
+				    "MT" => "Montana",
+				    "NE" => "Nebraska",
+				    "NV" => "Nevada",
+				    "NH" => "New Hampshire",
+				    "NJ" => "New Jersey",
+				    "NM" => "New Mexico",
+				    "NY" => "New York",
+				    "NC" => "North Carolina",
+				    "ND" => "North Dakota",
+				    "OH" => "Ohio",
+				    "OK" => "Oklahoma",
+				    "OR" => "Oregon",
+				    "PA" => "Pennsylvania",
+				    "RI" => "Rhode Island",
+				    "SC" => "South Carolina",
+				    "SD" => "South Dakota",
+				    "TN" => "Tennessee",
+				    "TX" => "Texas",
+				    "UT" => "Utah",
+				    "VT" => "Vermont",
+				    "VA" => "Virginia",
+				    "WA" => "Washington",
+				    "WV" => "West Virginia",
+				    "WI" => "Wisconsin",
+				    "WY" => "Wyoming"
+				    );
+				    
+				    $color = $options->color_scheme;
+				    $layout = $options->layout;
+				    $is_male = $options->is_male;
+				    $is_female = $options->is_female;
+				    $is_both = $options->is_both;
+				    $state = $options->state;
+				    $city = $options->city;
+?>
+<div class="modal fade template_options" id="template_options" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<?php echo form_open('dashboard/save_template_option', array('class' => 'form-horizontal', 'id' => 'template_form_option', 'role' => 'form') ); ?>
+			<div class="modal-header">
+				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+				<h4 class="modal-title" id="myModalLabel">Template Options</h4>
+			</div>
+			<div class="modal-body">
+		                    <div class="form-group">
+		                    	<label class="col-lg-2 control-label">Color Scheme</label>
+		                    	<?php echo form_error('color_scheme'); ?>
+		                    	<div class="col-lg-10" id="color_scheme_select">
+	                    			<div class="radio pull-left color-scheme<?php if ( $color == 'white' ) echo ' checked';?>"><label>White<input type="radio" name="color_scheme" value="white"<?php if ( $color == 'white' ) echo ' checked="checked"';?>/><img src="<?=base_url('img/color-scheme-white.png');?>" width="66" height="34"/></label></div>
+	                    			<div class="radio pull-left color-scheme<?php if ( $color == 'black' ) echo ' checked';?>"><label>Black<input type="radio" name="color_scheme" value="black"<?php if ( $color == 'black' ) echo ' checked="checked"';?>/><img src="<?=base_url('img/color-scheme-black.png');?>" width="66" height="34"/></label></div>
+	                    			<div class="radio pull-left color-scheme<?php if ( $color == 'gray-dark' ) echo ' checked';?>"><label>Gray, dark<input type="radio" name="color_scheme" value="gray-dark"<?php if ( $color == 'gray-dark' ) echo ' checked="checked"';?>/><img src="<?=base_url('img/color-scheme-gray-dark.png');?>" width="66" height="34"/></label></div>
+	                    			<div class="radio pull-left color-scheme<?php if ( $color == 'gray-light' ) echo ' checked';?>"><label>Gray, lght<input type="radio" name="color_scheme" value="gray-light"<?php if ( $color == 'gray-light' ) echo ' checked="checked"';?>/><img src="<?=base_url('img/color-scheme-gray-light.png');?>" width="66" height="34"/></label></div>
+	                    			<div class="radio pull-left color-scheme<?php if ( $color == 'tan' ) echo ' checked';?>"><label>Tan<input type="radio" name="color_scheme" value="tan"<?php if ( $color == 'tan' ) echo ' checked="checked"';?>/><img src="<?=base_url('img/color-scheme-tan.png');?>" width="66" height="34"/></label></div>
+	                    			<div class="radio pull-left color-scheme<?php if ( $color == 'brown' ) echo ' checked';?>"><label>Brown<input type="radio" name="color_scheme" value="brown"<?php if ( $color == 'brown' ) echo ' checked="checked"';?>/><img src="<?=base_url('img/color-scheme-brown.png');?>" width="66" height="34"/></label></div>
+	                    			<div class="clearfix"></div>
+		                    	</div>
+		                    </div>
+		                    
+		                     <div class="form-group">
+		                    	<label class="col-lg-2 control-label">Layout</label>
+		                    	<?php echo form_error('layout'); ?>
+		                    	<div class="col-lg-10" id="layout_select">
+	                    			<div class="radio pull-left layout<?php if ( $layout == 'layout_a' ) echo ' checked';?>"><label><input type="radio" name="layout" value="layout_a"<?php if ( $layout == 'layout_a' ) echo ' checked="checked"';?>/><img src="<?=base_url('img/theme-layout-a.png');?>" width="100" height="150"/></label></div>
+	                    			<div class="radio pull-left layout<?php if ( $layout == 'layout_b' ) echo ' checked';?>"><label><input type="radio" name="layout" value="layout_b"<?php if ( $layout == 'layout_b' ) echo ' checked="checked"';?>/><img src="<?=base_url('img/theme-layout-b.png');?>" width="100" height="150"/></label></div>
+	                    			<div class="radio pull-left layout<?php if ( $layout == 'layout_c' ) echo ' checked';?>"><label><input type="radio" name="layout" value="layout_c"<?php if ( $layout == 'layout_c' ) echo ' checked="checked"';?>/><img src="<?=base_url('img/theme-layout-c.png');?>" width="100" height="150"/></label></div>
+	                    			<div class="clearfix"></div>
+		                    	</div>
+		                    </div>
+		                    
+		                    <div class="form-group">
+		                    	<label class="col-lg-2 control-label">Show this template for</label>
+		                    	<div class="col-lg-10">
+		                    		<div class="checkbox"><label><input type="checkbox" name="male" value="1"<?php if ( $is_male == '1' ) echo ' checked="checked"';?>/> Male</label></div>
+		                    		<div class="checkbox"><label><input type="checkbox" name="female" value="1"<?php if ( $is_female == '1' ) echo ' checked="checked"';?>/> Female</label></div>
+		                    		<div class="checkbox"><label><input type="checkbox" name="both" value="1"<?php if ( $is_both == '1' ) echo ' checked="checked"';?>/> Both</label></div>
+		                    	</div>
+		                    </div>
+		                    <div class="form-group">
+		                    	<label class="col-lg-2 control-label"></label>
+		                    	<div class="col-lg-10">
+		                    		<?php if ( isset( $usStates ) && is_array( $usStates ) ): ?>
+		                    		<div class="row">
+		                    			<div class="col-xs-3">
+		                    				<select class="form-control" name="state">
+		                    		<?php foreach( $usStates as $astate ): ?>
+		                    					<option value="<?=$astate;?>"<?php if ( $state == $astate ) echo ' selected="selected"';?>><?=$astate;?></option>
+		                    		<?php endforeach; ?>
+		                    				</select>
+		                    			</div>
+		                    		</div>
+		                    		<?php endif; ?>
+		                    	</div>
+		                    </div>
+		                    <div class="form-group">
+		                    	<label class="col-lg-2 control-label"></label>
+		                    	<div class="col-lg-10">
+		                    		<div class="row">
+			                    		<div class="col-xs-3"><input  type="text" name="city" class="form-control" placeholder="City" value="<?=$city;?>"/>
+			                    		</div>
+			                    	</div>
+		                    	</div>
+		                    </div>
+		                    				
+			</div>
+			<div class="modal-footer">
+				<input type="hidden" name="template_id" value="<?=$options->id;?>"/>
+				<button type="submit" class="btn btn-primary btn-sm">Save</button>
+				<span class="spinner"></span>
+			</div>
+			<?php echo form_close(); ?>
 		</div>
 	</div>
 </div>
