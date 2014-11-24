@@ -15,11 +15,11 @@ class Dashboard extends CI_Controller {
 			$this->session->set_userdata('url', uri_string());
 			redirect(base_url('profile'));
 	        endif;
-	        
+
 	        $this->form_validation->set_error_delimiters('<div class="alert alert-danger" role="alert">','</div>');
-	        
+
 	}
-	
+
 	public function index() {
 		if ( ! $this->session->userdata('password_verified') ):
 			$this->session->set_userdata('url', uri_string());
@@ -29,7 +29,7 @@ class Dashboard extends CI_Controller {
 
 		$this->load->view( 'dashboard/header' );
 		$this->load->view( 'dashboard/top-nav' );
-		
+
 		//super admin
 		if ( $this->session->userdata('level') == 3 ):
 			$this->db->where('id !=', 1);
@@ -39,28 +39,28 @@ class Dashboard extends CI_Controller {
 			$data['users'] = $this->db->get('users');
 			$this->load->view( 'dashboard/user/list', $data );
 		endif;
-		
+
 		$this->db->select('*');
 		$this->db->from('templates');
 		$data['templates'] = $this->db->get();
 		$this->load->view( 'dashboard/template/list', $data );
-		
+
 		$this->load->view( 'dashboard/footer' );
 		//var_dump($this->session->all_userdata());
 	}
-	
+
 	public function login(){
 		$data = array();
 		if ($this->input->post()) :
 			$this->form_validation->set_rules('email', 'Email', "trim|required|valid_email");
 			$this->form_validation->set_rules('password', 'Password', "trim|required");
-			
+
 			if ($this->form_validation->run() == TRUE):
 				$data['login_from'] = 'form';
 				$data['login_ip'] = $this->session->userdata('ip_address');
 				$data['user_agent'] = $this->session->userdata('user_agent');
 				$data['last_login'] = $this->session->userdata('last_login');
-				
+
 				$this->db->where('email_address', $this->input->post('email'));
 				$this->db->where('password', md5($this->input->post('password')) );
                			$this->db->where('suspend', 0 );
@@ -69,9 +69,9 @@ class Dashboard extends CI_Controller {
 					$data['error_msg'] = 'Wrong email address or password, please try again!';
 				else:
 					//update login info
-					$row = $query->row(); 
+					$row = $query->row();
 					unset($row->password);
-					
+
 					//geo ip
 					$loc = get_location_info();
 					if ( is_object($loc) && isset($loc->ip) ):
@@ -84,27 +84,27 @@ class Dashboard extends CI_Controller {
 					endif;
 
 					$this->db->where('id', $row->id);
-					$this->db->update('users', $data); 
+					$this->db->update('users', $data);
 					$data = array_merge($data, (array) $row);
 					$data['logged_in'] = TRUE;
 					$data['password_verified'] = TRUE;
 					$this->session->set_userdata($data);
 					redirect(base_url('/dashboard/'));
 				endif;
-				
+
 			endif;
 		endif;
-		
+
 		$this->load->view( 'dashboard/header', array('title' => 'Login', 'page_preview' => TRUE) );
 		$this->load->view( get_client().'/login-dashboard', $data );
 		$this->load->view( 'dashboard/footer' );
 		//var_dump($this->session->all_userdata()); login issue need to fix, clue is somehow ci regenerate the session
-		//check this https://github.com/EllisLab/CodeIgniter/wiki/Native-session 
+		//check this https://github.com/EllisLab/CodeIgniter/wiki/Native-session
 	}
-	
+
 	public function verify_password(){
 		$data = array();
-		
+
 		if ( $this->input->post() ):
 			$this->form_validation->set_rules('verify_password', 'Password', "trim|required");
 			if ($this->form_validation->run() == TRUE):
@@ -120,15 +120,15 @@ class Dashboard extends CI_Controller {
 				endif;
 			endif;
 		endif;
-		
+
 		$this->load->view( 'dashboard/header' );
 		$this->load->view( 'dashboard/top-nav' );
 		$this->load->view( 'dashboard/verify-password', $data );
 		$this->load->view( 'dashboard/footer' );
 	}
-	
+
 	public function new_user( $data = array() ){
-				
+
 		if ($this->input->post()):
 			$this->form_validation->set_rules('first_name', 'First Name', "trim|required");
 			$this->form_validation->set_rules('last_name', 'Last Name', "trim|required");
@@ -142,9 +142,9 @@ class Dashboard extends CI_Controller {
 				$insert['zip_code'] = $this->input->post('zip_code');
 				$insert['gender'] = $this->input->post('gender');
 
-				$this->db->insert('users', $insert); 
+				$this->db->insert('users', $insert);
 				$template_id = $this->db->insert_id();
-				
+
 				if ( $template_id ){
 					$this->index($template_id);
 					return;
@@ -162,15 +162,15 @@ class Dashboard extends CI_Controller {
 				$data = array_merge($data, $add);
 			endif;
 		endif;
-		
+
 		$this->load->view( 'dashboard/header' );
 		$this->load->view( 'dashboard/top-nav' );
 		$this->load->view( 'dashboard/user/new', $data);
 		$this->load->view( 'dashboard/footer' );
-	} 
+	}
 
 	public function new_template( $data = array() ){
-				
+
 		if ($this->input->post()):
 			$this->form_validation->set_rules('name', 'Template URL', "trim|required|callback__unique_template_name");
 			$this->form_validation->set_rules('color_scheme', 'Color Scheme', "trim|required");
@@ -186,9 +186,9 @@ class Dashboard extends CI_Controller {
 				$insert['city'] = $this->input->post('city');
 				$insert['view_count'] = 0;
 				$insert['owner'] = $this->session->userdata('id');
-				$this->db->insert('templates', $insert); 
+				$this->db->insert('templates', $insert);
 				$template_id = $this->db->insert_id();
-				
+
 				if ( $template_id ){
 					$this->template_preview($template_id);
 					return;
@@ -253,8 +253,8 @@ class Dashboard extends CI_Controller {
 		$this->load->view( 'dashboard/top-nav' );
 		$this->load->view( 'dashboard/template/new', $data );
 		$this->load->view( 'dashboard/footer' );
-	} 
-	
+	}
+
 	public function template_preview( $template_id = NULL){
 		$template_id = (int) $template_id;
 		$this->db->where('id', $template_id );
@@ -269,7 +269,7 @@ class Dashboard extends CI_Controller {
 			else:
 				$data['main_images'] = FALSE;
 			endif;
-			
+
 			$this->db->where('template_id', $template_id);
 			$this->db->order_by('order', 'ASC');
 			$query = $this->db->get('template_videos');
@@ -282,12 +282,12 @@ class Dashboard extends CI_Controller {
 			$this->new_template(array('error_msg' => 'Template not found. You may try to create new template or hit back to go to previous page!'));
 			return;
 		endif;
-		
+
 		$this->load->view( 'dashboard/header', array('jqueryui' => TRUE, 'template_id'=> $template_id, 'sticky' => TRUE, 'page_preview' => TRUE, 'layout'=> $data['template']->layout, 'color_scheme' => $data['template']->color_scheme) );
 		$this->load->view(  get_client() . '/preview_' . $data['template']->layout, $data );
 		$this->load->view( 'dashboard/footer', array('jqueryui' => TRUE, 'sticky' => TRUE) );
 	}
-	
+
 	public function template_preview2( $template_id = NULL){
 		$template_id = (int) $template_id;
 		$this->db->where('id', $template_id );
@@ -302,7 +302,7 @@ class Dashboard extends CI_Controller {
 			else:
 				$data['main_images'] = FALSE;
 			endif;
-			
+
 			$this->db->where('template_id', $template_id);
 			$this->db->order_by('order', 'ASC');
 			$query = $this->db->get('template_videos');
@@ -315,14 +315,14 @@ class Dashboard extends CI_Controller {
 			$this->new_template(array('error_msg' => 'Template not found. You may try to create new template or hit back to go to previous page!'));
 			return;
 		endif;
-		
+
 		$this->load->view( get_client().'/header', array('jqueryui' => TRUE, 'layout'=> $data['template']->layout, 'color_scheme' => $data['template']->color_scheme) );
 		$this->load->view(  get_client().'/'.$data['template']->layout, $data );
 		$this->load->view( get_client().'/footer', array('jqueryui' => TRUE) );
-	}	
-	
+	}
+
 	function _unique_template_name(){
-		
+
 		$name = $this->input->post('name');
 		$this->db->where('name', $name);
 		$result = $this->db->get('templates');
@@ -333,7 +333,7 @@ class Dashboard extends CI_Controller {
 			return TRUE;
 		endif;
 	}
-	
+
 	function ajax( $action ){
 		if ( $action == 'save_widget' )
 			$this->_save_widget();
@@ -362,25 +362,25 @@ class Dashboard extends CI_Controller {
 	}
 
 	function _save_widget(){
-		
+
 		$response = array(
 	            'success' 	=> FALSE,
 	            'error'		=> ''
 	        );
-			
+
 		if ($this->input->post()) :
 			$this->form_validation->set_rules('widget_type', 'Widget Type', "trim|required");
 			$this->form_validation->set_rules('user_id', 'User ID', 'trim|required');
 			$this->form_validation->set_rules('template_id', 'Template ID', 'trim|required');
 			if ($this->form_validation->run() == TRUE):
 				if ( ! $this->input->post('widget_id') || ! valid_widget_id($this->input->post('widget_id')) ):
-					//save widget 
+					//save widget
 					$insert['template_id'] = (int) $this->input->post('template_id');
 					$insert['widget_type'] = $this->input->post('widget_type');
-					
+
 					$this->db->insert('widgets', $insert);
 					$widget_id = $this->db->insert_id();
-					
+
 				    ob_start();
 					draw_modal($widget_id);
 					$response = array(
@@ -417,25 +417,25 @@ class Dashboard extends CI_Controller {
 				endif;
 			endif;
 		endif;
-		
+
 		echo json_encode($response);
 		exit;
 	}
-	
+
 	function _delete_widget(){
-		
+
 		$response = array(
 	            'success' 	=> FALSE,
 	            'error'		=> ''
 	        );
-			
+
 		if ($this->input->post()) :
 			$this->form_validation->set_rules('widget_id', 'Widget ID', "trim|required");
 			$this->form_validation->set_rules('user_id', 'User ID', 'trim|required');
 			$this->form_validation->set_rules('template_id', 'Template ID', 'trim|required');
 			if ($this->form_validation->run() == TRUE):
 				if ( ! valid_widget_id($this->input->post('widget_id')) ):
-					
+
 					$response = array(
 				            'success' => TRUE,
 				            'error' => 'Widget not found!'
@@ -443,7 +443,7 @@ class Dashboard extends CI_Controller {
 
 				elseif( valid_widget_id($this->input->post('widget_id')) ):
 					$widget_id = preg_replace("/[^0-9]/","", $this->input->post('widget_id'));
-					
+
 					$this->db->where('id', $widget_id);
 					$this->db->where('template_id', $this->input->post('template_id'));
 					$this->db->delete('widgets');
@@ -460,11 +460,11 @@ class Dashboard extends CI_Controller {
 				endif;
 			endif;
 		endif;
-		
+
 		echo json_encode($response);
 		exit;
 	}
-	
+
 	function _get_widget_data(){
 		if ( 'faq' == $this->input->post('widget_type') && $this->input->post('text-title') ):
 			$title = $this->input->post('text-title');
@@ -476,14 +476,14 @@ class Dashboard extends CI_Controller {
 			$return['title'] = $title;
 			$return['content'] = $content;
 			return serialize($return);
-		
+
 		elseif ( 'links' == $this->input->post('widget_type') && $this->input->post('link-title')):
 			$link_title = $this->input->post('link-title');
 			$link_url = $this->input->post('link-url');
 			$i = 1;
-			
+
 			$links['title'] =$this->input->post('links-title');
-			
+
 			if ( is_array($link_title) && count($link_title) > 0):
 				foreach($link_title as $title):
 					if (filter_var($link_url[$i], FILTER_VALIDATE_URL) !== false)
@@ -495,7 +495,7 @@ class Dashboard extends CI_Controller {
 					$i++;
 				endforeach;
 			endif;
-			
+
 			if ( isset($links) && count($links) > 0 ):
 				return serialize($links);
 			endif;
@@ -508,7 +508,7 @@ class Dashboard extends CI_Controller {
 			$backgroundcolor = $this->input->post('background-color');
 			$titlecolor = $this->input->post('title-color');
 			$textcolor = $this->input->post('text-color');
-			
+
 			if ( ! $title && ! $content ) return FALSE; //don't save empty title & content
 			/*
 			if ( $content ):
@@ -517,15 +517,15 @@ class Dashboard extends CI_Controller {
 			endif;
 			*/
 			$return['title'] = $title;
-			$return['content'] = $content; 
-			
+			$return['content'] = $content;
+
 			if ( $bordercolor && strpos($bordercolor, '#') !== FALSE ) $return['border-color'] = $bordercolor;
 			if ( $backgroundcolor && strpos( $backgroundcolor, '#') !== FALSE ) $return['background-color'] = $backgroundcolor;
 			if ( $titlecolor && strpos( $titlecolor, '#') !== FALSE ) $return['title-color'] = $titlecolor;
 			if ( $textcolor && strpos( $textcolor, '#') !== FALSE ) $return['text-color'] = $textcolor;
 
 			return serialize($return);
-			
+
 		elseif ( 'forumfeed' == $this->input->post('widget_type') ):
 			$title = $this->input->post('feed-title');
 			$url = $this->input->post('feed-url');
@@ -534,38 +534,38 @@ class Dashboard extends CI_Controller {
 			$backgroundcolor = $this->input->post('background-color');
 			$titlecolor = $this->input->post('title-color');
 			$textcolor = $this->input->post('text-color');
-			
+
 			if ( ! $title && ! $url ) return FALSE; //don't save empty title & content
-			
+
 			$return['title'] = $title;
-			$return['feed_url'] = $url; 
-			$return['feed_number'] = $number; 
-			
+			$return['feed_url'] = $url;
+			$return['feed_number'] = $number;
+
 			if ( $bordercolor && strpos($bordercolor, '#') !== FALSE ) $return['border-color'] = $bordercolor;
 			if ( $backgroundcolor && strpos( $backgroundcolor, '#') !== FALSE ) $return['background-color'] = $backgroundcolor;
 			if ( $titlecolor && strpos( $titlecolor, '#') !== FALSE ) $return['title-color'] = $titlecolor;
 			if ( $textcolor && strpos( $textcolor, '#') !== FALSE ) $return['text-color'] = $textcolor;
 
 			return serialize($return);
-			
+
 		elseif ( 'gmap' == $this->input->post('widget_type') ):
 			$location = $this->input->post('gmap-location');
 			$content = $this->input->post('gmap-content');
 			$bordercolor = $this->input->post('border-color');
 			$backgroundcolor = $this->input->post('background-color');
 			$textcolor = $this->input->post('text-color');
-			
+
 			if ( ! $location && ! $content ) return FALSE; //don't save empty title & content
-			
+
 			$return['location'] = $location;
-			$return['content'] = $content; 
-			
+			$return['content'] = $content;
+
 			if ( $bordercolor && strpos($bordercolor, '#') !== FALSE ) $return['border-color'] = $bordercolor;
 			if ( $backgroundcolor && strpos( $backgroundcolor, '#') !== FALSE ) $return['background-color'] = $backgroundcolor;
 			if ( $textcolor && strpos( $textcolor, '#') !== FALSE ) $return['text-color'] = $textcolor;
 
 			return serialize($return);
-		
+
 		elseif ( 'greeting' == $this->input->post('widget_type') && $this->input->post('text-title')):
 			$title = $this->input->post('text-title');
 			$content = $this->input->post('text-content');
@@ -576,7 +576,7 @@ class Dashboard extends CI_Controller {
 			$return['title'] = $title;
 			$return['content'] = $content;
 			return serialize($return);
-		
+
 		elseif ( 'testimonials' == $this->input->post('widget_type') && $this->input->post('text-title')):
 			$title = $this->input->post('text-title');
 			$content = $this->input->post('text-content');
@@ -588,7 +588,7 @@ class Dashboard extends CI_Controller {
 			$return['title'] = $title;
 			$return['content'] = $content;
 			return serialize($return);
-		
+
 		elseif ( 'stories' == $this->input->post('widget_type') && $this->input->post('text-title')):
 			$title = $this->input->post('text-title');
 			$content = $this->input->post('text-content');
@@ -599,12 +599,12 @@ class Dashboard extends CI_Controller {
 			$return['title'] = $title;
 			$return['content'] = $content;
 			return serialize($return);
-		
+
 		elseif ( 'yreview' == $this->input->post('widget_type') && $this->input->post('business_id')):
 			$business_id = $this->input->post('business_id');
 			$return['business_id'] = $business_id;
 			return serialize($return);
-		
+
 		elseif ( 'twitter' == $this->input->post('widget_type')):
 			$twitter_title = $this->input->post('twitter-title');
 			$twitter_hashtag = $this->input->post('twitter-hashtag');
@@ -619,11 +619,11 @@ class Dashboard extends CI_Controller {
 					$i++;
 				endforeach;
 			}
-			
+
 			if ( isset($twitter) && count($twitter) > 0 ):
 				return serialize($twitter);
 			endif;
-		
+
 		//require_once(APPPATH.'widgets/foursquare/dashboard_get_widget_data.php');
 		elseif ( 'foursquare' == $this->input->post('widget_type')):
 			$foursquare_title = $this->input->post('foursquare-title');
@@ -642,23 +642,44 @@ class Dashboard extends CI_Controller {
 			//print_r($foursquare);
 			if ( isset($foursquare) && count($foursquare) > 0 ):
 				return serialize($foursquare);
-			endif;			
+			endif;
+
+		//require_once(APPPATH.'widgets/reviews/dashboard_get_widget_data.php');
+		elseif ( 'reviews' == $this->input->post('widget_type')):
+			$reviews_gender = $this->input->post('reviews-gender');
+			$reviews_state  = $this->input->post('reviews-state');
+			$reviews_city   = $this->input->post('reviews-city');
+			$i = 1;
+			if(strlen($reviews_gender[1])==0) {
+					$reviews_gender[1] = 'M';
+			} else {
+				foreach($reviews_gender as $title):
+					$reviews[$i]['gender'] = $title;
+					$reviews[$i]['state'] = $reviews_state[$i];
+					$reviews[$i]['city'] = $reviews_city[$i];
+					$i++;
+				endforeach;
+			}
+			//print_r($reviews);
+			if ( isset($reviews) && count($reviews) > 0 ):
+				return serialize($reviews);
+			endif;
 
 		endif;
 		return FALSE;
 	}
-	
+
 	function _save_layout(){
-		
+
 		$response = array(
 	            'success' => TRUE
 	        );
-			
+
 		if ($this->input->post()) :
 			$this->form_validation->set_rules('user_id', 'User ID', 'trim|required');
 			$this->form_validation->set_rules('template_id', 'Template ID', 'trim|required');
 			if ($this->form_validation->run() == TRUE):
-				//save layout 
+				//save layout
 				$template_id = (int) $this->input->post('template_id');
 				$sidebar = $this->input->post('sidebar');
 				$left = $this->input->post('left');
@@ -687,17 +708,17 @@ class Dashboard extends CI_Controller {
 				$this->db->update('templates', $update);
 			endif;
 		endif;
-		
+
 		echo json_encode($response);
 		exit;
 	}
-	
+
 	function _upload_main_image(){
-		
+
 		$response = array(
 	            'success' => FALSE
 	        );
-			
+
 		if ($this->input->post()) :
 			$this->form_validation->set_rules('user_id', 'User ID', 'trim|required');
 			$this->form_validation->set_rules('template_id', 'Template ID', 'trim|required');
@@ -720,20 +741,20 @@ class Dashboard extends CI_Controller {
 					$image_id = '';
 				else:
 					$data = $this->upload->data();
-					
+
 					//insert data
 					$insert['template_id'] = $this->input->post('template_id');
 					$insert['path'] = './img/slider/' . $data['raw_name'] . $data['file_ext'];
-					$this->db->insert('template_images', $insert); 
+					$this->db->insert('template_images', $insert);
 					$image_id = $this->db->insert_id();
-					
+
 					$result = TRUE;
 					$img_url = base_url() . str_replace('./', '',  create_thumb($insert['path'],  770, 366) );
 					$img_thumb_url = base_url() . str_replace('./', '',  create_thumb($insert['path'], 100, 100) );
 					$error = '';
-					
+
 				endif;
-				
+
 				$response = array(
 			            'success' => $result,
 			            'image_id' => $image_id,
@@ -743,17 +764,17 @@ class Dashboard extends CI_Controller {
 			        );
 			endif;
 		endif;
-		
+
 		echo json_encode($response);
 		exit;
 	}
-	
+
 	function _save_image_order(){
-		
+
 		$response = array(
 	            'success' => FALSE
 	        );
-			
+
 		if ($this->input->post()) :
 			$this->form_validation->set_rules('user_id', 'User ID', 'trim|required');
 			$this->form_validation->set_rules('template_id', 'Template ID', 'trim|required');
@@ -779,17 +800,17 @@ class Dashboard extends CI_Controller {
 				}
 			endif;
 		endif;
-		
+
 		echo json_encode($response);
 		exit;
 	}
-	
+
 	function _save_image_title(){
-		
+
 		$response = array(
 	            'success' => FALSE
 	        );
-			
+
 		if ($this->input->post()) :
 			$this->form_validation->set_rules('user_id', 'User ID', 'trim|required');
 			$this->form_validation->set_rules('template_id', 'Template ID', 'trim|required');
@@ -808,17 +829,17 @@ class Dashboard extends CI_Controller {
 				}
 			endif;
 		endif;
-		
+
 		echo json_encode($response);
 		exit;
 	}
-	
+
 	function _delete_image(){
-		
+
 		$response = array(
 	            'success' => FALSE
 	        );
-			
+
 		if ($this->input->post()) :
 			$this->form_validation->set_rules('user_id', 'User ID', 'trim|required');
 			$this->form_validation->set_rules('template_id', 'Template ID', 'trim|required');
@@ -842,17 +863,17 @@ class Dashboard extends CI_Controller {
 				endif;
 			endif;
 		endif;
-		
+
 		echo json_encode($response);
 		exit;
 	}
-	
+
 	function _upload_video_thumb(){
-		
+
 		$response = array(
 	            'success' => FALSE
 	        );
-			
+
 		if ($this->input->post()) :
 			$this->form_validation->set_rules('user_id', 'User ID', 'trim|required');
 			$this->form_validation->set_rules('template_id', 'Template ID', 'trim|required');
@@ -875,20 +896,20 @@ class Dashboard extends CI_Controller {
 					$image_id = '';
 				else:
 					$data = $this->upload->data();
-					
+
 					//insert data
 					$insert['template_id'] = $this->input->post('template_id');
 					$insert['thumb'] = './img/video_thumb/' . $data['raw_name'] . $data['file_ext'];
-					$this->db->insert('template_videos', $insert); 
+					$this->db->insert('template_videos', $insert);
 					$image_id = $this->db->insert_id();
-					
+
 					$result = TRUE;
 					$img_url = base_url() . str_replace('./', '',  create_thumb($insert['thumb'],  746, 439) );
 					$img_thumb_url = base_url() . str_replace('./', '',  create_thumb($insert['thumb'], 211, 126) );
 					$error = '';
-					
+
 				endif;
-				
+
 				$response = array(
 			            'success' => $result,
 			            'video_id' => $image_id,
@@ -898,17 +919,17 @@ class Dashboard extends CI_Controller {
 			        );
 			endif;
 		endif;
-		
+
 		echo json_encode($response);
 		exit;
 	}
-	
+
 	function _save_video_order(){
-		
+
 		$response = array(
 	            'success' => FALSE
 	        );
-			
+
 		if ($this->input->post()) :
 			$this->form_validation->set_rules('user_id', 'User ID', 'trim|required');
 			$this->form_validation->set_rules('template_id', 'Template ID', 'trim|required');
@@ -934,17 +955,17 @@ class Dashboard extends CI_Controller {
 				}
 			endif;
 		endif;
-		
+
 		echo json_encode($response);
 		exit;
 	}
-	
+
 	function _save_video_url(){
-		
+
 		$response = array(
 	            'success' => FALSE
 	        );
-			
+
 		if ($this->input->post()) :
 			$this->form_validation->set_rules('user_id', 'User ID', 'trim|required');
 			$this->form_validation->set_rules('template_id', 'Template ID', 'trim|required');
@@ -963,17 +984,17 @@ class Dashboard extends CI_Controller {
 				}
 			endif;
 		endif;
-		
+
 		echo json_encode($response);
 		exit;
 	}
-	
+
 	function _delete_video(){
-		
+
 		$response = array(
 	            'success' => FALSE
 	        );
-			
+
 		if ($this->input->post()) :
 			$this->form_validation->set_rules('user_id', 'User ID', 'trim|required');
 			$this->form_validation->set_rules('template_id', 'Template ID', 'trim|required');
@@ -997,30 +1018,30 @@ class Dashboard extends CI_Controller {
 				endif;
 			endif;
 		endif;
-		
+
 		echo json_encode($response);
 		exit;
 	}
-	
+
 	function _yelp_search(){
-		
+
 		$response = array(
 	            'success' => FALSE
 	        );
-			
+
 		if ($this->input->post()) :
 			$this->form_validation->set_rules('find', 'Find', 'trim|required');
 			$this->form_validation->set_rules('near', 'Location', 'trim|required');
 			if ($this->form_validation->run() == TRUE):
 				$this->load->library('yelpoauth');
 				$this->config->load('yelp');
-				
+
 				$result = $this->yelpoauth->query_api($this->input->post('find'), $this->input->post('near'));
-				
+
 				if ( $result ):
 					$content = '<p>Move cursor to one of business below then press select button.</p>';
 					$i = 0;
-					
+
 					ob_start();
 					foreach( $result->businesses as $business):
 						$i++;
@@ -1087,7 +1108,7 @@ class Dashboard extends CI_Controller {
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="select_yelp_business_container"><button type="button" class="btn btn-primary btn-sm select_yelp_business" data-dismiss="modal">Select</button></div>
 </div>
 <?php
@@ -1098,7 +1119,7 @@ class Dashboard extends CI_Controller {
 				endif;
 			endif;
 		endif;
-		
+
 		echo json_encode($response);
 		exit;
 	}
@@ -1249,35 +1270,35 @@ class Dashboard extends CI_Controller {
         $query = $this->db->delete('users');
         redirect(base_url('dashboard'));
     }
-	
+
     function template_delete($id)
     {
         $this->db->where('id', $id);
         $this->db->where('is_default !=', '1');//don't delete default template
         $query = $this->db->delete('templates');
-        
+
         //delete widget
         if ( $this->db->affected_rows() > 0):
         	$this->db->where('template_id', $id);
         	$this->db->delete('widgets');
         endif;
-        
+
         redirect(base_url('dashboard'));
     }
-    
+
     function set_default($id)
     {
 	$update['is_default'] = 0;
 	$this->db->where('id !=', $id);
 	$query = $this->db->update('templates', $update);
-        
+
         $update['is_default'] = 1;
 	$this->db->where('id', $id);
 	$query = $this->db->update('templates', $update);
-        
+
 	redirect(base_url('dashboard'));
     }
-    
+
     function save_template_option()
     {
     	if ($this->input->post()):
@@ -1293,10 +1314,10 @@ class Dashboard extends CI_Controller {
 			$update['state'] = $this->input->post('state');
 			$update['city'] = $this->input->post('city');
 			$this->db->where('id', $this->input->post('template_id'));
-			$this->db->update('templates', $update); 
+			$this->db->update('templates', $update);
 		endif;
 	endif;
-        
+
 	redirect( base_url( 'dashboard/template_preview/' .  $this->input->post('template_id') ) );
     }
 

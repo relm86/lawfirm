@@ -24,19 +24,19 @@ if ( ! function_exists('create_thumb'))
 		$config['maintain_ratio'] = TRUE;
 		$config['width']	= $width;
 		$config['height']	= $height;
-		
+
 		if ( file_exists( $config['new_image'] ) ) return $config['new_image'];
 
-		$CI->load->library('image_lib'); 
-		$CI->image_lib->clear(); 
+		$CI->load->library('image_lib');
+		$CI->image_lib->clear();
 		$CI->image_lib->initialize($config);
-		
+
 		if ( ! $CI->image_lib->resize()):
 			echo $CI->image_lib->display_errors();
-			$CI->image_lib->clear(); 
+			$CI->image_lib->clear();
 			return FALSE;
 		else:
-			$CI->image_lib->clear(); 
+			$CI->image_lib->clear();
 			return $config['new_image'];
 		endif;
 	}
@@ -50,7 +50,7 @@ if ( ! function_exists('is_profile_complete'))
 		if ( ! $row || ! $row->level || ($row->first_name . $row->last_name == '') ):
 			return FALSE;
 		endif;
-		
+
 		return TRUE;
 	}
 }
@@ -60,7 +60,7 @@ if ( ! function_exists('get_user_detail'))
 	function get_user_detail( $userid = FALSE ) {
 		$CI = get_instance();
 		if ( ! $userid )$userid = $CI->session->userdata('id');
-		
+
 		$CI->db->where('id', $userid);
 		$query = $CI->db->get('users', 1);
 		if ( $query->num_rows() > 0 ):
@@ -68,7 +68,7 @@ if ( ! function_exists('get_user_detail'))
 		else:
 			return FALSE;
 		endif;
-		
+
 		return FALSE;
 	}
 }
@@ -78,7 +78,7 @@ if ( ! function_exists('get_user_fullname'))
 	function get_user_fullname( $userid = FALSE ) {
 		$CI = get_instance();
 		if ( ! $userid )$userid = $CI->session->userdata('id');
-		
+
 		$CI->db->where('id', $userid);
 		$query = $CI->db->get('users', 1);
 		if ( $query->num_rows() > 0 ):
@@ -87,7 +87,7 @@ if ( ! function_exists('get_user_fullname'))
 		else:
 			return FALSE;
 		endif;
-		
+
 		return FALSE;
 	}
 }
@@ -97,18 +97,18 @@ if ( ! function_exists('get_user_picture'))
 	function get_user_picture( $userid = FALSE ) {
 		$CI = get_instance();
 		if ( ! $userid )$userid = $CI->session->userdata('id');
-		
+
 		$CI->db->where('id', $userid);
 		$query = $CI->db->get('users', 1);
 		if ( $query->num_rows() > 0 ):
 			$row =  $query->row();
-			if ( ! $row->picture ) 
+			if ( ! $row->picture )
 				return base_url() . 'img/img100.png';
 			return base_url() . str_replace('./', '', $row->picture );
 		else:
 			return FALSE;
 		endif;
-		
+
 		return FALSE;
 	}
 }
@@ -118,18 +118,18 @@ if ( ! function_exists('get_user_picture_thumb'))
 	function get_user_picture_thumb( $userid = FALSE, $width = 100, $height = 100 ) {
 		$CI = get_instance();
 		if ( ! $userid )$userid = $CI->session->userdata('id');
-		
+
 		$CI->db->where('id', $userid);
 		$query = $CI->db->get('users', 1);
 		if ( $query->num_rows() > 0 ):
 			$row =  $query->row();
-			if ( ! $row->picture ) 
+			if ( ! $row->picture )
 				$row->picture = './img/default-profile-photo.jpg';
 			return base_url() . str_replace('./', '',  create_thumb($row->picture, $width, $height) );
 		else:
 			return FALSE;
 		endif;
-		
+
 		return FALSE;
 	}
 }
@@ -191,7 +191,7 @@ if ( ! function_exists('get_default_theme'))
 		$CI->db->limit(1);
 		$query = $CI->db->get('templates');
 		if ( $query->num_rows() > 0 ):
-			$row = $query->row(); 
+			$row = $query->row();
 			return $row->name;
 		endif;
 		return 'default';
@@ -202,17 +202,17 @@ if ( ! function_exists('get_current_theme'))
 {
 	function get_current_theme() {
 		$CI = get_instance();
-		
+
 		if ( (!$CI->session->userdata('theme') || $CI->session->userdata('theme') == '') && ( $CI->session->userdata('state') || $CI->session->userdata('state') != '')):
 			$CI->db->where('state', $CI->session->userdata('state'));
 			$CI->db->limit(1);
 			$query = $CI->db->get('templates');
 			if ( $query->num_rows() > 0 ):
-				$row = $query->row(); 
+				$row = $query->row();
 				return $row->name;
 			endif;
 		endif;
-		
+
 		return $CI->session->userdata('theme');
 	}
 }
@@ -223,23 +223,23 @@ if ( ! function_exists('set_theme'))
 		$CI = get_instance();
 		$themes = get_themes();
 		$default_theme = get_default_theme();
-		
+
 		if ( ! is_array($themes) ) return FALSE;
-		
+
 		if ( in_array($theme, $themes) ):
 			$result = TRUE;
 		else:
 			$theme = $default_theme;
 			$result = FALSE;
 		endif;
-		
+
 		//set theme
 		$userid = $CI->session->userdata('id');
 		$data = array('theme' => $theme );
 		$CI->db->where('id', $userid);
-		$CI->db->update('users', $data); 
+		$CI->db->update('users', $data);
 		$CI->session->set_userdata($data);
-		
+
 		return $theme;
 	}
 }
@@ -248,8 +248,8 @@ if ( ! function_exists('valid_widget_id')){
 	function valid_widget_id( $widget_id ) {
 		$widget_id = preg_replace("/[^0-9]/","",$widget_id);
 		$CI = get_instance();
-		$CI->db->where('id', $widget_id); 
-		$query = $CI->db->get('widgets',1); 
+		$CI->db->where('id', $widget_id);
+		$query = $CI->db->get('widgets',1);
 		if ( $query->num_rows() > 0 )
 			return TRUE;
 		else
@@ -265,7 +265,7 @@ if ( ! function_exists('draw_widgets')){
 		if ( $query->num_rows() > 0 ):
 			$row = $query->row();
 			$widgets =unserialize($row->widgets);
-			
+
 			if ( ! isset($widgets[$position]) )
 				return FALSE;
 			$widgets[$position] = explode(',', $widgets[$position]);
@@ -301,6 +301,8 @@ if ( ! function_exists('draw_widget')){
 				draw_widget_twitter($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'foursquare' ):
 				draw_widget_foursquare($widget, $position, $preview);
+			elseif ( $widget->widget_type == 'reviews' ):
+				draw_widget_reviews($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'faq' ):
 				draw_widget_faq($widget, $position, $preview);
 			elseif ( $widget->widget_type == 'text' ):
@@ -332,7 +334,7 @@ if ( ! function_exists('draw_modals')){
 	function draw_modals( $template_id ){
 		$CI = get_instance();
 		$id = preg_replace("/[^0-9]/","",$template_id);
-		
+
 		//image modal
 		$CI->db->where('template_id', $id);
 		$CI->db->order_by('order', 'ASC');
@@ -343,7 +345,7 @@ if ( ! function_exists('draw_modals')){
 			$main_images = FALSE;
 		endif;
 		draw_main_image_modal($main_images);
-			
+
 		//video modal
 		$CI->db->where('template_id', $id);
 		$CI->db->order_by('order', 'ASC');
@@ -354,7 +356,7 @@ if ( ! function_exists('draw_modals')){
 			$videos = FALSE;
 		endif;
 		draw_video_modal($videos);
-		
+
 		//template options
 		$CI->db->where('id', $template_id);
 		$query = $CI->db->get('templates',1);
@@ -362,7 +364,7 @@ if ( ! function_exists('draw_modals')){
 			$options = $query->row();
 			draw_modal_template_option($options);
 		endif;
-		
+
 		//widget modal
 		$CI->db->where('template_id', $id);
 		$query = $CI->db->get('widgets');
@@ -383,6 +385,8 @@ if ( ! function_exists('draw_modals')){
 					draw_modal_twitter($widget);
 				elseif ( $widget->widget_type == 'foursquare' ):
 					draw_modal_foursquare($widget);
+				elseif ( $widget->widget_type == 'reviews' ):
+					draw_modal_reviews($widget);
 				elseif ( $widget->widget_type == 'faq' ):
 					draw_modal_faq($widget);
 				elseif ( $widget->widget_type == 'text' ):
@@ -413,7 +417,7 @@ if ( ! function_exists('draw_modal')){
 	function draw_modal( $widget_id ){
 		$CI = get_instance();
 		$id = preg_replace("/[^0-9]/","",$widget_id);
-		
+
 		$CI->db->where('id', $id);
 		$query = $CI->db->get('widgets', 1);
 		if ( $query->num_rows() > 0 ):
@@ -433,6 +437,8 @@ if ( ! function_exists('draw_modal')){
 				draw_modal_twitter($widget);
 			elseif ( $widget->widget_type == 'foursquare' ):
 				draw_modal_foursquare($widget);
+			elseif ( $widget->widget_type == 'reviews' ):
+				draw_modal_reviews($widget);
 			elseif ( $widget->widget_type == 'faq' ):
 				draw_modal_faq($widget);
 			elseif ( $widget->widget_type == 'text' ):
@@ -461,11 +467,11 @@ if ( ! function_exists('draw_modal')){
 if ( ! function_exists('draw_widget_greeting')){
 	function draw_widget_greeting($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
-		
+
 		$CI = get_instance();
-		
+
 		$text = unserialize($widget->widget_data);
-		
+
 		if ( ! isset($text['title']) ) $text['title'] = 'Hi [first-name],';
 		if ( (! isset($text['content']) || $text['content'] == '') && NULL != $CI->config->item('greeting_widget_text') && $CI->config->item('greeting_widget_text') != '' ) $text['content'] = $CI->config->item('greeting_widget_text');
 		if ( ! isset($text['content']) ) $text['content'] = "<p>We've put together this page to provide customized information just for you.</p>";
@@ -479,7 +485,7 @@ if ( ! function_exists('draw_widget_greeting')){
 		$replace = array($first_name, $last_name, $city);
 		$text['title'] = str_replace($search, $replace, $text['title']);
 		$text['content'] = str_replace($search, $replace, $text['content']);
-		
+
 		if ( $preview ):
 ?>
 
@@ -522,15 +528,15 @@ if ( ! function_exists('draw_widget_greeting')){
 if ( ! function_exists('draw_widget_testimonials')){
 	function draw_widget_testimonials($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
-		
+
 		$testimonials = unserialize($widget->widget_data);
-		
+
 		if ( ! isset($testimonials['title']) ) $testimonials['title'] = 'Testimonials';
-		if ( ! isset($testimonials['content']) && $preview) 
+		if ( ! isset($testimonials['content']) && $preview)
 			$testimonials['content'] = '<button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-testimonials-'.$widget->id.'-modal">Add Testimonials (Reviews)</button>';
 		elseif ( ! isset($testimonials['content']) )
 			$testimonials['content'] = '';
-		
+
 		if ( $preview ):
 ?>
 
@@ -573,15 +579,15 @@ if ( ! function_exists('draw_widget_testimonials')){
 if ( ! function_exists('draw_widget_stories')){
 	function draw_widget_stories($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
-		
+
 		$stories = unserialize($widget->widget_data);
-		
+
 		if ( ! isset($stories['title']) ) $stories['title'] = 'Client Stories';
-		if ( ! isset($stories['content']) && $preview ) 
+		if ( ! isset($stories['content']) && $preview )
 			$stories['content'] = '<div class="blank-widget text"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-stories-'.$widget->id.'-modal">Add Client Stories</button></div>';
 		elseif ( ! isset($stories['content']) )
 			$stories['content'] = '';
-		
+
 		if ( $preview ):
 ?>
 
@@ -618,14 +624,14 @@ if ( ! function_exists('draw_widget_stories')){
 if ( ! function_exists('draw_widget_contact')){
 	function draw_widget_contact($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
-		
+
 		if ( $preview ):
 ?>
 
 <div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget widget-wrapper" data-type="<?=$widget->widget_type;?>">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Contact<span class="in-widget-title"></span></h4></div>
-		
+
 		<div class="widget-action">
 			<span class="glyphicon glyphicon-move move-widget" title="Move"></span>
 			<span class="glyphicon glyphicon-edit edit-widget"></span>
@@ -659,9 +665,9 @@ if ( ! function_exists('draw_widget_contact')){
 if ( ! function_exists('draw_widget_gmap')){
 	function draw_widget_gmap($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
-		
+
 		$gmap = unserialize($widget->widget_data);
-		
+
 		if ( ! isset($gmap['location']) ) $gmap['location'] = '';
 		if ( ! isset($gmap['content']) ) $gmap['content'] = '';
 		if ( ! isset($gmap['border-color']) ) $gmap['border-color'] = '';
@@ -670,7 +676,7 @@ if ( ! function_exists('draw_widget_gmap')){
 		$query = str_replace(' ', '+', $gmap['location']);
 		$query = urlencode($query);
 		$CI = get_instance();
-		
+
 		if ( $preview ):
 ?>
 
@@ -712,18 +718,18 @@ if ( ! function_exists('draw_widget_gmap')){
 if ( ! function_exists('draw_widget_yreview')){
 	function draw_widget_yreview($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
-		
+
 		$yelp = unserialize($widget->widget_data);
-		
+
 		if ( ! isset($yelp['business_id']) ) $yelp['business_id'] = '';
-		
+
 		if ( $yelp['business_id'] != '' ):
 			$CI = get_instance();
 			$CI->load->library('yelpoauth');
 			$CI->config->load('yelp');
 			$business_detail = json_decode($CI->yelpoauth->get_business( $yelp['business_id'] ));
 		endif;
-		
+
 		if ( $preview ):
 ?>
 
@@ -798,16 +804,16 @@ if ( ! function_exists('draw_widget_yreview')){
 								</div>
 							</div>
 						</div>
-						
+
 						<div class="yelp-copyright"><a href="<?php echo $business_detail->url; ?>" target="_blank"><img alt="<?php echo $business_detail->name; ?>" src="http://s3-media3.fl.yelpcdn.com/assets/2/www/img/3049d7633b6e/developers/reviewsFromYelpRED.gif" width="115" height="25"/></a></div>
-						
+
 					</div>
 				<?php elseif ( $preview ): ?>
 					<div class="blank-widget text yreview"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal">Add Yelp Reviews</button></div>
 				<?php endif; ?>
 				</div>
 			</div>
-			
+
 		</div>
 <?php
 		if ( $preview ):
@@ -824,11 +830,11 @@ if ( ! function_exists('draw_widget_yreview')){
 if ( ! function_exists('draw_widget_greview')){
 	function draw_widget_greview($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
-		
+
 		$greview = unserialize($widget->widget_data);
-		
+
 		if ( ! isset($greview['business_id']) ) $greview['business_id'] = 'ChIJMyAHO2n1UocRC-jO4YzR6bE';
-		
+
 		if ( $greview['business_id'] != '' ):
 			$CI = get_instance();
 			$CI->load->library('googleplace');
@@ -847,7 +853,7 @@ if ( ! function_exists('draw_widget_greview')){
 				}
 			}
 		endif;
-		
+
 		if ( $preview ):
 ?>
 
@@ -878,7 +884,7 @@ if ( ! function_exists('draw_widget_greview')){
 					<?php if ( isset($error) ): ?>
 					<p><?=$error;?></p>
 					<?php endif; ?>
-					
+
 					<?php if ( isset($business_detail) ): ?>
 					<div class="place-container" id="placeid-<?=$business_detail->place_id;?>">
 						<h3><a href="<?=$business_detail->url;?>" target="_blank"><?=$business_detail->name;?></a></h3>
@@ -890,7 +896,7 @@ if ( ! function_exists('draw_widget_greview')){
 						</div>
 						<div class="reviews">
 						<?php if ( isset($business_detail->reviews) && is_array($business_detail->reviews) && count($business_detail->reviews) > 0 ):?>
-							<?php 
+							<?php
 							foreach( $business_detail->reviews as $review ):
 								$plus_id = preg_replace("/[^0-9]/","", $review->author_url);
 								$user_image  = $CI->googleplace->user_image_url($plus_id);
@@ -915,7 +921,7 @@ if ( ! function_exists('draw_widget_greview')){
 					<?php endif; ?>
 				</div>
 			</div>
-			
+
 		</div>
 <?php
 		if ( $preview ):
@@ -932,7 +938,7 @@ if ( ! function_exists('draw_widget_greview')){
 if ( ! function_exists('draw_widget_twitter')){
 	function draw_widget_twitter($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
-		
+
 		$CI = get_instance();
 		$CI->load->library('twitteroauth');
 		$CI->config->load('twitter');
@@ -946,7 +952,7 @@ if ( ! function_exists('draw_widget_twitter')){
 		if($widget->widget_data=='') {
 			$widget->widget_data = 'a:1:{i:1;a:2:{s:5:"title";s:12:"Twitter Feed";s:7:"hashtag";s:12:"autoaccident";}}';
 		}
-		
+
 		if ( $preview ):
 ?>
 <div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>" class="widget widget-wrapper" data-type="<?=$widget->widget_type;?>">
@@ -962,14 +968,14 @@ if ( ! function_exists('draw_widget_twitter')){
 	<div class="widget-inside">
 <?php
 		endif;
-		
+
 		$twitters = unserialize($widget->widget_data);
 		//i don't what is the plan, do you plan to support multiple hashtag?
 		//for now I assume it store in wrong way
 		if ( is_array($twitters) && count($twitters) > 0 ):
-		
+
 			$twitters = $twitters[1]; //-> remove this after fix store data function
-		
+
 ?>
 		<div class="widget twitter">
 			<div class="panel panel-default widget-testimonials-full">
@@ -978,19 +984,19 @@ if ( ! function_exists('draw_widget_twitter')){
 				</div>
 				<div class="panel-body">
 <?php
-		
+
 			$twitter_connection = $CI->twitteroauth->create($consumer_token, $consumer_secret);
-			
+
 			if($twitters['hashtag']=='') {
 				$twitters['hashtag'] = 'autoaccident';
 			}
-			
+
 			$query = array(
 			  "q" => "#".$twitters['hashtag']
 			);
-				
+
 			$results = $twitter_connection->get('search/tweets', $query);
-			
+
 			$i = 0;
 			foreach ($results->statuses as $result):
 				$i++;
@@ -1001,7 +1007,7 @@ if ( ! function_exists('draw_widget_twitter')){
 						  <h4 class="media-heading"><?=$result->user->screen_name;?></h4>
 						  <a href="#"><?=$result->text;?></a> </div>
 					  </div>
-<?php	
+<?php
 				endif;
 			endforeach;
 		endif; //if ( is_array($twitters) && count($twitters) > 0 ):
@@ -1009,13 +1015,13 @@ if ( ! function_exists('draw_widget_twitter')){
 				</div>
 			</div>
 		</div>
-<?php 
-		if ( $preview ): 
-?>		
+<?php
+		if ( $preview ):
+?>
 	</div>
 	<div class="widget-description">Add Twitter Feeds</div>
 </div>
-<?php 
+<?php
 		endif;
 	}
 }
@@ -1089,15 +1095,17 @@ if ( ! function_exists('draw_modal_twitter')){
 
 require_once(APPPATH.'widgets/foursquare/app_helper_draw_widget.php');
 
+require_once(APPPATH.'widgets/reviews/app_helper_draw_widget.php');
+
 if ( ! function_exists('draw_widget_faq')){
 	function draw_widget_faq($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
-		
+
 		$faq = unserialize($widget->widget_data);
-		
+
 		if ( ! isset($faq['title']) ) $faq['title'] = 'FAQ';
 		if ( ! isset($faq['content']) ) $faq['content'] = '';
-		
+
 		if ( $preview ):
 ?>
 
@@ -1129,7 +1137,7 @@ if ( ! function_exists('draw_widget_faq')){
 		if ( $preview ):
 ?>
 	</div>
-	
+
 	<div class="widget-description">Add FAQ</div>
 </div>
 <?php
@@ -1141,9 +1149,9 @@ if ( ! function_exists('draw_widget_links')){
 	function draw_widget_links($widget, $position = FALSE, $preview = FALSE ){
 		if ( ! is_object($widget) ) return FALSE;
 		$links = unserialize($widget->widget_data);
-		
+
 		if ( ! isset($links['title']) ) $links['title'] = 'Links';
-		
+
 		if ( $preview ):
 ?>
 
@@ -1179,7 +1187,7 @@ if ( ! function_exists('draw_widget_links')){
 		if ( $preview ):
 ?>
 	</div>
-	
+
 	<div class="widget-description">Add Link</div>
 </div>
 <?php
@@ -1199,9 +1207,9 @@ if ( ! function_exists('draw_widget_text')){
 		if ( isset($text['text-color']) && $text['text-color']  != '') $box_style .= ' color: ' . $text['text-color'] . ';';
 		$box_style .= '"';
 		$title_style .= '"';
-		
+
 		if ( ! isset($text['title']) ) $text['title'] = '';
-		
+
 		if ( $preview ):
 ?>
 
@@ -1235,7 +1243,7 @@ if ( ! function_exists('draw_widget_text')){
 		if ( $preview ):
 ?>
 	</div>
-	
+
 	<div class="widget-description">Add <?=ucwords($widget->widget_type);?></div>
 </div>
 <?php
@@ -1255,11 +1263,11 @@ if ( ! function_exists('draw_widget_feed')){
 		if ( isset($feed['text-color']) && $feed['text-color']  != '') $box_style .= ' color: ' . $feed['text-color'] . ';';
 		$box_style .= '"';
 		$title_style .= '"';
-		
+
 		if ( ! isset($feed['title']) ) $feed['title'] = '';
 		if ( ! isset($feed['feed_number']) || $feed['feed_number'] < 1 ) $feed['feed_number'] = 5;
 		if ( ! isset($feed['feed_url']) ) $feed['feed_url'] = '';
-		
+
 		if ( $preview ):
 ?>
 
@@ -1288,7 +1296,7 @@ if ( ! function_exists('draw_widget_feed')){
 					$CI->load->library('RSSParser', array('url' =>$feed['feed_url'], 'life' => 2));
 					//Get six items from the feed
 					$data = $CI->rssparser->getFeed($feed['feed_number']);
-					
+
 					if ( is_array($data) && count($data) > 0 ):
 						echo '<ul>';
 						foreach ($data as $item) :
@@ -1297,7 +1305,7 @@ if ( ! function_exists('draw_widget_feed')){
 						endforeach;
 						echo '</ul>';
 					endif;
-					
+
 				elseif( $preview ):
 					echo '<div class="blank-widget feed ' . $widget->widget_type . '"><button type="button" class="btn btn-warning edit-widget center-block" data-toggle="modal" data-target="#widget-'.$widget->widget_type . '-' . $widget->id.'-modal">Add Feed</button></div>';
 				endif;
@@ -1307,17 +1315,17 @@ if ( ! function_exists('draw_widget_feed')){
 		if ( $preview ):
 ?>
 	</div>
-	
+
 	<div class="widget-description">Add Feed</div>
 </div>
 <?php
 		endif;
 	}
 }
-	
+
 if ( ! function_exists('draw_main_image_modal')){
 	function draw_main_image_modal( $main_images ){
-		
+
 ?>
 <div class="modal fade" id="main-image-slider" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-dialog">
@@ -1329,7 +1337,7 @@ if ( ! function_exists('draw_main_image_modal')){
       <div class="modal-body" id="main_images_upload">
 		<div id="main_image_sort">
 			<?php
-			if ( isset($main_images)  && $main_images): 
+			if ( isset($main_images)  && $main_images):
 				foreach($main_images->result() as $image):
 			?>
 			<div id="slider-image-<?=$image->id;?>" class="slider-image-form form-inline" data-img-url="<?=base_url() . str_replace('./', '',  create_thumb($image->path, 770, 366) );?>"  role="form">
@@ -1343,11 +1351,11 @@ if ( ! function_exists('draw_main_image_modal')){
 					</span>
 				</div>
 				<div class="image-desc form-group"><textarea name="image-desc[<?=$image->id;?>]" class="form-control" placeholder="Short Description"><?=$image->description;?></textarea></div>
-				
+
 			</div>
 			<?php
 				endforeach;
-			endif;	
+			endif;
 			?>
 		</div>
       </div>
@@ -1361,7 +1369,7 @@ if ( ! function_exists('draw_main_image_modal')){
   </div>
 </div>
 <?php
-		
+
 	}
 }
 
@@ -1394,7 +1402,7 @@ if ( ! function_exists('draw_video_modal')){
 			</div>
 			<?php
 				endforeach;
-			endif;	
+			endif;
 			?>
 		</div>
       </div>
@@ -1415,7 +1423,7 @@ if ( ! function_exists('draw_modal_faq')){
 	function draw_modal_faq( $widget ){
 		if ( ! is_object($widget) ) return FALSE;
 		$faq = unserialize($widget->widget_data);
-		
+
 		if ( ! isset($faq['title']) ) $faq['title'] = '';
 		if ( ! isset($faq['content']) ) $faq['content'] = '';
 ?>
@@ -1429,7 +1437,7 @@ if ( ! function_exists('draw_modal_faq')){
 			<div class="modal-body">
 				<input type="text" name="text-title" value="<?=$faq['title'];?>" class="form-control" placeholder="Title"/>
 				<textarea id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-content" name="text-content" class="form-control tinymce" style="width:100%; height:300px"><?=$faq['content'];?></textarea>
-				
+
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
@@ -1446,7 +1454,7 @@ if ( ! function_exists('draw_modal_links')){
 	function draw_modal_links( $widget ){
 		if ( ! is_object($widget) ) return FALSE;
 		$links = unserialize($widget->widget_data);
-		
+
 		if ( ! isset($links['title']) ) $links['title'] = 'Links';
 ?>
 <div class="modal fade links_modal" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" tabindex="-1" data-widget-type="links" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -1458,13 +1466,13 @@ if ( ! function_exists('draw_modal_links')){
 			</div>
 			<div class="modal-body">
 				<a href="#" class="btn btn-primary btn-sm active add-link" role="button">Add Link</a>
-				
+
 				<p>Link url must lead with http:// or https://.</p>
-				
+
 				<input type="text" name="links-title" value="<?=$links['title'];?>" class="form-control" placeholder="Links Title"/>
-				
+
 				<div id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-sort" class="link_sort">
-				
+
 				<?php
 				if ( isset($links['links']) && is_array($links['links']) && count($links['links']) > 0 ):
 					$i = 1;
@@ -1505,7 +1513,7 @@ if ( ! function_exists('draw_modal_text')){
 	function draw_modal_text( $widget ){
 		if ( ! is_object($widget) ) return FALSE;
 		$text = unserialize($widget->widget_data);
-		
+
 		if ( ! isset($text['title']) ) $text['title'] = '';
 		if ( ! isset($text['content']) ) $text['content'] = '';
 		if ( ! isset($text['border-color']) ) $text['border-color'] = '';
@@ -1521,7 +1529,7 @@ if ( ! function_exists('draw_modal_text')){
 				<h4 class="modal-title" id="myModalLabel"><?=ucwords($widget->widget_type);?></h4>
 			</div>
 			<div class="modal-body">
-				
+
 				<input type="text" name="text-title" value="<?=$text['title'];?>" class="form-control" placeholder="Title"/>
 				<textarea id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-content" name="text-content" class="form-control tinymce" style="width:100%; height:300px"><?=$text['content'];?></textarea>
 
@@ -1563,7 +1571,7 @@ if ( ! function_exists('draw_modal_text')){
 						</div>
 					</div>
 				</div>
-				
+
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
@@ -1580,7 +1588,7 @@ if ( ! function_exists('draw_modal_feed')){
 	function draw_modal_feed( $widget ){
 		if ( ! is_object($widget) ) return FALSE;
 		$feed = unserialize($widget->widget_data);
-		
+
 		if ( ! isset($feed['title']) ) $feed['title'] = '';
 		if ( ! isset($feed['feed_url']) ) $feed['feed_url'] = '';
 		if ( ! isset($feed['feed_number']) ) $feed['feed_number'] = '';
@@ -1597,7 +1605,7 @@ if ( ! function_exists('draw_modal_feed')){
 				<h4 class="modal-title" id="myModalLabel">Feed</h4>
 			</div>
 			<div class="modal-body">
-				
+
 				<div class="row">
 					<form class="form-horizontal col-sm-12" role="form">
 						<div class="form-group">
@@ -1659,7 +1667,7 @@ if ( ! function_exists('draw_modal_feed')){
 						</div>
 					</div>
 				</div>
-				
+
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
@@ -1676,7 +1684,7 @@ if ( ! function_exists('draw_modal_gmap')){
 	function draw_modal_gmap( $widget ){
 		if ( ! is_object($widget) ) return FALSE;
 		$gmap = unserialize($widget->widget_data);
-		
+
 		if ( ! isset($gmap['location']) ) $gmap['location'] = '';
 		if ( ! isset($gmap['content']) ) $gmap['content'] = '';
 		if ( ! isset($gmap['border-color']) ) $gmap['border-color'] = '';
@@ -1694,7 +1702,7 @@ if ( ! function_exists('draw_modal_gmap')){
 				<h4 class="modal-title" id="myModalLabel">Google Map</h4>
 			</div>
 			<div class="modal-body">
-				
+
 				<div class="widget gmap" style="border: 1px solid <?=$gmap['border-color'];?>; background-color: <?=$gmap['background-color'];?>; color: <?=$gmap['text-color'];?>;">
 					<div class="col-md-6 gmap-container">
 						<div class="gmap-search-container">
@@ -1709,7 +1717,7 @@ if ( ! function_exists('draw_modal_gmap')){
 					</div>
 					<div class="clearfix"></div>
 				</div>
-				
+
 				<div class="row" style="margin-top: 20px;">
 					<div class="col-md-3">
 						<div class="form-group">
@@ -1739,7 +1747,7 @@ if ( ! function_exists('draw_modal_gmap')){
 						</div>
 					</div>
 				</div>
-				
+
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
@@ -1756,7 +1764,7 @@ if ( ! function_exists('draw_modal_testimonials')){
 	function draw_modal_testimonials( $widget ){
 		if ( ! is_object($widget) ) return FALSE;
 		$text = unserialize($widget->widget_data);
-		
+
 		if ( ! isset($text['title']) ) $text['title'] = '';
 		if ( ! isset($text['content']) ) $text['content'] = '';
 ?>
@@ -1768,10 +1776,10 @@ if ( ! function_exists('draw_modal_testimonials')){
 				<h4 class="modal-title" id="myModalLabel">Testimonial</h4>
 			</div>
 			<div class="modal-body">
-				
+
 				<input type="text" name="text-title" value="<?=$text['title'];?>" class="form-control" placeholder="Title"/>
 				<textarea id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-content" name="text-content" class="form-control tinymce" style="width:100%; height:300px"><?=$text['content'];?></textarea>
-				
+
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
@@ -1788,7 +1796,7 @@ if ( ! function_exists('draw_modal_stories')){
 	function draw_modal_stories( $widget ){
 		if ( ! is_object($widget) ) return FALSE;
 		$text = unserialize($widget->widget_data);
-		
+
 		if ( ! isset($text['title']) ) $text['title'] = '';
 		if ( ! isset($text['content']) ) $text['content'] = '';
 ?>
@@ -1800,10 +1808,10 @@ if ( ! function_exists('draw_modal_stories')){
 				<h4 class="modal-title" id="myModalLabel">Client Stories</h4>
 			</div>
 			<div class="modal-body">
-				
+
 				<input type="text" name="text-title" value="<?=$text['title'];?>" class="form-control" placeholder="Title"/>
 				<textarea id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-content" name="text-content" class="form-control tinymce" style="width:100%; height:300px"><?=$text['content'];?></textarea>
-				
+
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
@@ -1820,7 +1828,7 @@ if ( ! function_exists('draw_modal_contact')){
 	function draw_modal_contact( $widget ){
 		if ( ! is_object($widget) ) return FALSE;
 		$text = unserialize($widget->widget_data);
-		
+
 		if ( ! isset($text['title']) ) $text['title'] = '';
 		if ( ! isset($text['content']) ) $text['content'] = '';
 ?>
@@ -1832,10 +1840,10 @@ if ( ! function_exists('draw_modal_contact')){
 				<h4 class="modal-title" id="myModalLabel">Contact</h4>
 			</div>
 			<div class="modal-body">
-				
+
 				<input type="text" name="text-title" value="<?=$text['title'];?>" class="form-control" placeholder="Title"/>
 				<textarea id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-content" name="text-content" class="form-control tinymce" style="width:100%; height:300px"><?=$text['content'];?></textarea>
-				
+
 			</div>
 			<div class="modal-footer">
 				<button type="button" class="btn btn-primary btn-sm" data-dismiss="modal">Save</button>
@@ -1852,7 +1860,7 @@ if ( ! function_exists('draw_modal_greeting')){
 	function draw_modal_greeting( $widget ){
 		if ( ! is_object($widget) ) return FALSE;
 		$text = unserialize($widget->widget_data);
-		
+
 		if ( ! isset($text['title']) ) $text['title'] = '';
 		if ( ! isset($text['content']) ) $text['content'] = '';
 ?>
@@ -1864,7 +1872,7 @@ if ( ! function_exists('draw_modal_greeting')){
 				<h4 class="modal-title" id="myModalLabel">Welcome widget</h4>
 			</div>
 			<div class="modal-body">
-				
+
 				<input type="text" name="text-title" value="<?=$text['title'];?>" class="form-control" placeholder="Title"/>
 				<textarea id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-content" name="text-content" class="form-control tinymce" style="width:100%; height:100px"><?=$text['content'];?></textarea>
 				<p>You can use [first-name] or [last-name] or [city] to view user First Name or Last Name or City.</p>
@@ -1884,7 +1892,7 @@ if ( ! function_exists('draw_modal_yreview')){
 	function draw_modal_yreview( $widget ){
 		if ( ! is_object($widget) ) return FALSE;
 		$yelp = unserialize($widget->widget_data);
-		
+
 		if ( ! isset($yelp['business_id']) ) $yelp['business_id'] = '';
 ?>
 <div class="modal fade yelp_modal" id="widget-<?=$widget->widget_type . '-' . $widget->id;?>-modal" data-widget-type="yreview" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
@@ -1895,7 +1903,7 @@ if ( ! function_exists('draw_modal_yreview')){
 				<h4 class="modal-title" id="myModalLabel">Yelp! Business & Review</h4>
 			</div>
 			<div class="modal-body">
-				
+
 				<div class="yelp_search  form-inline">
 					<div class="form-group" style="max-width: 235px;">
 						<div class="input-group">
@@ -1910,7 +1918,7 @@ if ( ! function_exists('draw_modal_yreview')){
 						</div>
 					</div>
 					<div class="form-group"><button type="button" class="btn btn-primary btn-sm yelp-search">Search</button></div>
-					
+
 					<div class="search-result clearfix"></div>
 				</div>
 			</div>
@@ -1927,7 +1935,7 @@ if ( ! function_exists('draw_modal_yreview')){
 if ( ! function_exists('draw_modal_template_option')){
 	function draw_modal_template_option( $options ){
 		if ( ! is_object($options) ) return FALSE;
-		
+
 		$usStates = array(
 				    "AL" => "Alabama",
 				    "AK" => "Alaska",
@@ -1980,7 +1988,7 @@ if ( ! function_exists('draw_modal_template_option')){
 				    "WI" => "Wisconsin",
 				    "WY" => "Wyoming"
 				    );
-				    
+
 				    $color = $options->color_scheme;
 				    $layout = $options->layout;
 				    $is_male = $options->is_male;
@@ -2011,7 +2019,7 @@ if ( ! function_exists('draw_modal_template_option')){
 	                    			<div class="clearfix"></div>
 		                    	</div>
 		                    </div>
-		                    
+
 		                     <div class="form-group">
 		                    	<label class="col-lg-2 control-label">Layout</label>
 		                    	<?php echo form_error('layout'); ?>
@@ -2022,7 +2030,7 @@ if ( ! function_exists('draw_modal_template_option')){
 	                    			<div class="clearfix"></div>
 		                    	</div>
 		                    </div>
-		                    
+
 		                    <div class="form-group">
 		                    	<label class="col-lg-2 control-label">Show this template for</label>
 		                    	<div class="col-lg-10">
@@ -2056,7 +2064,7 @@ if ( ! function_exists('draw_modal_template_option')){
 			                    	</div>
 		                    	</div>
 		                    </div>
-		                    				
+
 			</div>
 			<div class="modal-footer">
 				<input type="hidden" name="template_id" value="<?=$options->id;?>"/>
@@ -2146,7 +2154,7 @@ if ( ! function_exists('the_widgets')){
 
 	<div class="widget-description">Add Client Stories<p>Grab and move into place.</p></div>
 </div>
-				
+
 <div id="widget-twitter-feed-__i__" class="widget widget-wrapper gradient gradient-blue" data-type="twitter">
 	<div class="widget-top">
 		<div class="widget-title"><h4>Twitter Feed<span class="glyphicon glyphicon-move move-widget" title="Move"></span></h4></div>
@@ -2164,7 +2172,7 @@ if ( ! function_exists('the_widgets')){
 				  <h3 class="panel-title">Twitter Feed</h3>
 				</div>
 				<div class="panel-body">
-				  
+
 				</div>
 			</div>
 		</div>
@@ -2440,6 +2448,8 @@ if ( ! function_exists('the_widgets')){
 </div>
 <?php
 		require_once(APPPATH.'widgets/foursquare/app_helper.php');
+
+		require_once(APPPATH.'widgets/reviews/app_helper.php');
 	}
 }
 
@@ -2461,7 +2471,7 @@ if ( ! function_exists('get_client_ip')){
 	        $ipaddress = $_SERVER['REMOTE_ADDR'];
 	    else
 	        $ipaddress = 'UNKNOWN';
-	 
+
 	    return $ipaddress;
 	}
 }
