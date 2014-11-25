@@ -70,7 +70,7 @@ $query = $CI->db->get();
 //echo $CI->db->last_query();
 foreach ($query->result_array() as $row) {
 ?>
-					<div class="panel-review pull-left">
+					<div class="panel-review">
 						<div class="media-body">
 							<h4 class="media-heading"><?=$row['name'];?></h4>
 							<?=$row['city'];?>, <?=$row['state'];?><br />
