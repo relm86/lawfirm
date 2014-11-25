@@ -41,11 +41,11 @@ $CI = get_instance();
 $user = $CI->session->all_userdata();
 
 // init variables
-if($user['f_gender'] != '') {
+if( isset($user['f_gender']) && $user['f_gender'] != '') {
 	$gender = strtoupper($user['f_gender']);
-} elseif ($user['g_gender'] != '') {
+} elseif ( isset($user['g_gender']) && $user['g_gender'] != '') {
 	$gender = strtoupper($user['g_gender']);
-} elseif ($user['gender'] != '') {
+} elseif ( isset($user['gender']) && $user['gender'] != '') {
 	$gender = strtoupper($user['gender']);
 } else {
 	$gender = $reviews['gender'];
