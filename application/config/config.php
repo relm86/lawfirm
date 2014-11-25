@@ -19,15 +19,15 @@ $config['base_url'] .= "://".$_SERVER['HTTP_HOST'];
 $config['base_url'] .= str_replace(basename($_SERVER['SCRIPT_NAME']),"",$_SERVER['SCRIPT_NAME']);
 $config['foursquare_key'] = '2CRPXAN4L1IQIGV51ZL4LW12HV0SJVKW5T03JF0YFHDQNU3Z';
 $config['foursquare_secret'] = '23JTVVP1G1ICORWNQ5WNWBCMJMGU1HZWH3X1RCN1VHW3EMRL';
-$config['fb_app_id']	= "785406624850692";
-$config['google_client_id']	= "607475603602-9ub5r1dl6cer6oh30oq0bbkal2mt3rvr.apps.googleusercontent.com";
+$config['fb_app_id']	= "367838596697555";
+$config['google_client_id']	= "607475603602-kund226ns28q1k7c1edoth80fr7f1jjv.apps.googleusercontent.com";
 $config['gmap_key']	= "AIzaSyDJl-y_I_6stRCFmDvJbZMmojGjQdXbX2s";
-$config['linkedin_api_key']	= "7761p7v3ohtlci";
-$config['linkedin_login']	= FALSE;
+$config['linkedin_api_key']	= "77ca2ee1u9h2g3";
+$config['linkedin_login']	= TRUE;
 $config['facebook_login']	= TRUE;
-$config['twitter_login']		= FALSE;
-$config['google_login']		= FALSE;
-$config['client']	= 'heropartners';
+$config['twitter_login']		= TRUE;
+$config['google_login']		= TRUE;
+$config['client']	= 'siegfriedJensen';
 $config['show_theme_switcher']	= FALSE;
 $config['greeting_widget_text']	= "We've put together this customized page for you to help introduce you to the Hero Global program."; //default widget text
 $config['us_states'] = array(
@@ -374,7 +374,7 @@ if (isset($_SERVER["HTTP_REFERER"])) {
     }
 }
 
-$config['csrf_protection'] = TRUE;
+//$config['csrf_protection'] = TRUE;
 $config['csrf_token_name'] = 'csrf_b2b';
 $config['csrf_cookie_name'] = 'csrf_b2b';
 $config['csrf_expire'] = 7200;
