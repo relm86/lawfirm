@@ -72,7 +72,7 @@ foreach ($query->result_array() as $row) {
 ?>
 					<div class="panel-review pull-left">
 						<div class="media-body">
-							<h4 class="media-heading"><?=$row['name'];?> [<?=$row['gender'];?>] </h4>
+							<h4 class="media-heading"><?=$row['name'];?></h4>
 							<?=$row['city'];?>, <?=$row['state'];?><br />
 							<?=$row['review'];?>
 						</div>
