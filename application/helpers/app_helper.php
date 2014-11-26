@@ -2498,3 +2498,48 @@ if ( ! function_exists('get_location_info')){
 		}
 	}
 }
+
+if ( ! function_exists('is_valid_state')){
+	//function to get valid state
+	// output boolean
+	function is_valid_state($input){
+		$CI = get_instance();
+		$state = array_search ($input, $CI->config->item('us_states'));
+		if(isset($state) && $state!='') {
+			// find state in database;
+			$CI->db->select('name, gender, city, state, review');
+			$CI->db->from('reviews');
+			$CI->db->where("state", $state);
+			$query = $CI->db->get();
+			$rowcount = $query->num_rows();
+			if($rowcount > 0) {
+				return true;
+			} else {
+				return false;
+			}
+		} else {
+			return FALSE;
+		}
+	}
+}
+
+if ( ! function_exists('is_valid_city')){
+	//function to get valid state
+	// output boolean
+	function is_valid_city($input){
+		$CI = get_instance();
+		// find city in database
+		$CI->db->select('name, gender, city, state, review');
+		$CI->db->from('reviews');
+		$CI->db->where("city", $input);
+		$query = $CI->db->get();
+		$rowcount = $query->num_rows();
+		if($rowcount > 0) {
+			return true;
+		} else {
+			return false;
+		}
+	}
+}
+
+

@@ -29,12 +29,9 @@ if ( ! function_exists('draw_widget_reviews')){
 					<h3 class="panel-title">Reviews</h3>
 				</div>
 				<div class="panel-body">
-<!--
-					<?=$reviews['gender'];?>
-					<?=$reviews['state'];?>
-					<?=$reviews['city'];?>
--->
 <?php
+
+
 
 $CI = get_instance();
 
@@ -42,7 +39,11 @@ $user = $CI->session->all_userdata();
 
 // init variables
 if( isset($user['f_gender']) && $user['f_gender'] != '') {
-	$gender = strtoupper($user['f_gender']);
+	if($user['f_gender']=='male' || $user['f_gender']=='m') {
+		$gender='M';
+	} else {
+		$gender='F';
+	}
 //} elseif ( isset($user['g_gender']) && $user['g_gender'] != '') {
 //	$gender = strtoupper($user['g_gender']);
 //} elseif ( isset($user['gender']) && $user['gender'] != '') {
@@ -51,8 +52,26 @@ if( isset($user['f_gender']) && $user['f_gender'] != '') {
 	$gender = $reviews['gender'];
 }
 
-$state = $reviews['state'];
-$city = $reviews['city'];
+//print_r($user);
+
+$found_state_city = false;
+if ($user['country'] == 'United States') {
+	if(is_valid_state($user['state'])) {
+		if(is_valid_city($user['city'])) {
+			$found_state_city = true;
+			$state = array_search ($user['state'], $CI->config->item('us_states'));
+			//$state = $user['state'];
+			$city  = $user['city'];
+		}
+	}
+}
+
+if($found_state_city==false) {
+	$state = $reviews['state'];
+	$city = $reviews['city'];
+}
+
+//echo " CITY: ".$user['city'].", STATE: ".$user['state']." ---- CITY: $city, STATE: $state";
 
 $CI->db->select('name, gender, city, state, review');
 $CI->db->from('reviews');
