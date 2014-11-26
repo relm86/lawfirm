@@ -43,10 +43,10 @@ $user = $CI->session->all_userdata();
 // init variables
 if( isset($user['f_gender']) && $user['f_gender'] != '') {
 	$gender = strtoupper($user['f_gender']);
-} elseif ( isset($user['g_gender']) && $user['g_gender'] != '') {
-	$gender = strtoupper($user['g_gender']);
-} elseif ( isset($user['gender']) && $user['gender'] != '') {
-	$gender = strtoupper($user['gender']);
+//} elseif ( isset($user['g_gender']) && $user['g_gender'] != '') {
+//	$gender = strtoupper($user['g_gender']);
+//} elseif ( isset($user['gender']) && $user['gender'] != '') {
+//	$gender = strtoupper($user['gender']);
 } else {
 	$gender = $reviews['gender'];
 }
