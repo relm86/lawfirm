@@ -104,7 +104,7 @@ if ( ! function_exists('draw_modal_reviews')){
 		<div class="modal-content">
 			<div class="modal-header">
 				<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
-				<h4 class="modal-title" id="myModalLabel">Foursquare</h4>
+				<h4 class="modal-title" id="myModalLabel">Reviews</h4>
 			</div>
 			<div class="modal-body">
 				<div id="widget-<?=$widget->id;?>-sort" class="reviews_sort">
@@ -142,7 +142,7 @@ if ( ! function_exists('draw_modal_reviews')){
 						</div>
 						<div class="form-group">
 							<div class="input-group">
-								<input type="text" name="reviews-city[<?=$i;?>]" value="" class="form-control" placeholder="City"/>
+								<input type="text" name="reviews-city[<?=$i;?>]" value="<?php echo $reviews['city'];?>" class="form-control" placeholder="City"/>
 							</div>
 						</div>
 					</div>
