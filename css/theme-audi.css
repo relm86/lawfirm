@@ -1,0 +1,658 @@
+body {
+	font-family: Arial, Helvetica, sans-serif;
+	background-color:#ffffff;
+	color:#383431;
+	border-color:#2c2a2b;
+}
+
+/* added by Asep Mulyawan */
+.foursquareicon{background: #000; width: 64px; height: 64px; float: left; margin: 0px 10px 0px 0px; }
+.widget {
+	clear: both;
+	margin-top: 25px;
+}
+.media-body {
+	padding: 0 8px;
+}
+
+.widget.header .logo img {
+	width: 100%;
+	height: auto;
+}
+
+/*
+.widget.contact {
+	background: #55514e;
+	width: 100%;
+	padding: 14px;
+	color: #ffffff;
+	text-align: center;
+}
+*/
+
+.widget.contact{
+	background: url(../img/learning-outdoors.jpg) no-repeat center center;
+	-webkit-background-size: cover;
+	-moz-background-size: cover;
+	-o-background-size: cover;
+	background-size: cover;
+	width: 100%;
+	padding: 14px;
+	color: #ffffff;
+	text-align: center;
+}
+
+.widget.contact  .media-body{
+	margin-top: 24px;
+}
+
+.widget.text.contact h3.title {
+	border-bottom: 0;
+	border-color: 55514e;
+	padding: 0;
+	margin-top: 20px;
+	margin-bottom: 10px;
+	font-size: 24px;
+}
+
+.panel-review {
+	margin: 16px 0 0 0;
+}
+.widget.stories h3.title, .widget.links h3.title, .widget.text h3.title {
+	border-bottom: 3px solid;
+	border-color: 55514e;
+	padding: 10px;
+	margin-top: 0;
+}
+.widget.stories ul, .widget.faq ul, .widget.links ul, .widget.text ul {
+	list-style-type: none;
+	margin: 0;
+	padding: 0 10px 0;
+}
+.widget.stories ul li:before, .widget.faq ul li:before, .widget.links ul li:before, .widget.text ul li:before {
+	content: "-";
+	position: relative;
+	left: -5px;
+}
+.widget.stories li, .widget.faq li, .widget.links li, .widget.text li {
+	text-indent: -5px;
+	padding-bottom: 5px;
+}
+.widget.stories a, .widget.faq a, .widget.links a, .widget.text a {
+	color: #333333;
+	text-decoration: underline;
+	font-size: 18px;
+}
+
+/* Widget - Social - Share this page */
+.icon-share{background:url('../img/icon-share.png') no-repeat; width:144px; height:32px; float:left; margin-right:4px;}
+.icon-facebook{background:url('../img/icon-facebook.png') no-repeat; width:32px; height:32px; float:left; margin-right:4px;}
+.icon-twitter{background:url('../img/icon-twitter.png') no-repeat; width:32px; height:32px; float:left; margin-right:4px;}
+.icon-email{background:url('../img/icon-email.png') no-repeat; width:32px; height:32px; float:left; margin-right:4px;}
+.icon-linkedin{background:url('../img/icon-linkedin.png') no-repeat; width:32px; height:32px; float:left; margin-right:4px;}
+.icon-plus{background:url('../img/icon-plus.png') no-repeat; width:32px; height:32px; float:left; margin-right:4px;}
+.icon-block a{width:32px; height:32px; display:block;}
+
+.widget.videos{
+	/*padding-bottom: 14px;*/
+}
+
+.widget.videos .embed-responsive, .widget.videos .video-nav{
+	background: #fff;
+}
+
+.widget.videos img, .video-nav img{
+	cursor: pointer;
+}
+
+.video-nav {
+	margin-top: 14px;
+}
+
+.widget-video-thumb {
+	width: 211px;
+	height: 126px;
+	margin: 0 1px;
+	margin-top: 8px;
+	display: inline-block;
+}
+
+.widget-video-thumb-left {
+	background: url('../img/icon-left-chevron.png') no-repeat;
+	width: 24px;
+	height: 36px;
+	float: left;
+	margin: 24px 8px 0 0;
+}
+
+.widget-video-thumb-right {
+	background: url('../img/icon-right-chevron.png') no-repeat;
+	width: 24px;
+	height: 36px;
+	float: right;
+	margin: 24px 0 0 8px;
+}
+
+/* carousel */
+.carousel-inner img {
+	width: 100%;
+	height: auto;
+}
+.carousel-caption {
+	background-color: rgba(0, 0, 0, 0.5);
+	right: 5%;
+	left: 5%;
+	padding: 20;
+	font-size: 14px;
+	font-family:  "Franklin Gothic Book", "Franklin Gothic", "ITC Franklin Gothic", Arial, sans-serif;
+	text-align: left;
+}
+.carousel-caption h3{
+	font-size: 36px;
+	text-align: left;
+}
+
+.carousel-indicators{
+	display: none;
+}
+.carousel-control{
+	width: 5%;
+}
+.carousel-inner.video>.active{
+	text-align: center;
+}
+
+/* carousel */
+
+.widget.faq{
+	background-color: #54514e;
+	color: #ffffff;
+	padding: 0 15px 15px;
+}
+
+.widget.faq h3.title {
+	border-bottom: 1px solid;
+	border-color: 777472;
+	padding: 10px;
+	margin-top: 0;
+}
+
+.widget.faq a{
+	color: #ffffff;
+}
+
+.widget.twitter {
+	/*background-color: blue;*/
+	color: #000000;
+/*	padding: 0 15px 15px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+*/	
+}
+
+.widget.twitter a {
+	color: #000000;
+}
+
+.widget.twitter h3.title {
+	border-bottom: 1px solid;
+	border-color: abcad8;
+	padding: 10px;
+}
+
+.widget.foursquare {
+	/*background-color: blue;*/
+	color: #000000;
+/*	padding: 0 15px 15px;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+*/	
+}
+
+.widget.foursquare a {
+	color: #000000;
+}
+
+.widget.foursquare h3.title {
+	border-bottom: 1px solid;
+	border-color: abcad8;
+	padding: 10px;
+}
+
+.widget.external-site{
+	border-top: 2px solid;
+	border-bottom: 2px solid;
+	border-color: #2b2b2b;
+	font-size: 22px;
+	color: #2b2b2b;
+	padding: 10px 0;
+	margin-bottom: 10px;
+}
+.widget.external-site a{
+	color: #4a858f;
+	text-decoration: underline;
+}
+#footer .widget.links, #footer .widget.text{
+	font-size: 15px;
+	color: #2b2b2b;
+	clear: none;
+}
+
+#footer .widget.links h5, #footer .widget.links h3, #footer .widget.text h5, #footer .widget.text h3{
+	font-size: 15px;
+	border-bottom: none;
+	padding: 0
+}
+
+#footer .widget.links ul li, #footer .widget.text ul li{
+	text-indent: 0;
+}
+
+#footer .widget.links ul li:before, #footer .widget.text ul li:before{
+	content: '';
+}
+
+#footer .widget.links ul, #footer .widget.text ul{
+	list-style-type: none;
+	padding-left: 15px;
+}
+
+#footer .widget.links a, #footer .widget.text a{
+	color: #2b2b2b;
+	text-decoration: none;
+	font-size: 14px;
+}
+
+.copyright, .copyright  p{
+	color: #333333;
+	font-size: 17px;
+}
+
+.copyright a{
+	color: #4a858f;
+	text-decoration: underline;
+}
+
+.copyright hr {
+	border-color: #2b2b2b;
+	border-width: 2px;
+}
+
+.logo-footer {
+	max-width: 320px;
+	margin-top: 40px;
+	margin-bottom: 30px;
+}
+.logo-footer img {
+	padding-right: 10px;
+	height: 72px;
+	width: auto;
+}
+.logo-footer p {
+	margin: 0;
+	padding: 0;
+}
+
+/* LOGIN PAGE */
+.login-page .container{
+	height: 100%;
+}
+.login-page{
+	background: url('../img/black-audi.jpg') no-repeat top left #000;
+}
+
+.white.login-page{
+	background: url('../img/white-audi.jpg') no-repeat top left #fff;
+}
+
+.login-form-container {
+	max-width: 561px;
+	margin-top: 50px;
+	/*
+	background: url('../img/login-form-bg.png') no-repeat;
+	padding: 25px;
+	*/
+	background: rgb(206,206,206); /* Old browsers */
+	background-image: url('../img/login-form-bg-2.png');
+	background-repeat: no-repeat;
+	padding: 20px 0;
+	background-image: url('../img/login-form-bg-2.png'), -moz-linear-gradient(top,  rgba(206,206,206,1) 0%, rgba(0,0,0,1) 100%); /* FF3.6+ */
+	background-image: url('../img/login-form-bg-2.png'), -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(206,206,206,1)), color-stop(100%,rgba(0,0,0,1))); /* Chrome,Safari4+ */
+	background-image: url('../img/login-form-bg-2.png'), -webkit-linear-gradient(top,  rgba(206,206,206,1) 0%,rgba(0,0,0,1) 100%); /* Chrome10+,Safari5.1+ */
+	background-image: url('../img/login-form-bg-2.png'), -o-linear-gradient(top,  rgba(206,206,206,1) 0%,rgba(0,0,0,1) 100%); /* Opera 11.10+ */
+	background-image: url('../img/login-form-bg-2.png'), -ms-linear-gradient(top,  rgba(206,206,206,1) 0%,rgba(0,0,0,1) 100%); /* IE10+ */
+	background-image: url('../img/login-form-bg-2.png'), linear-gradient(to bottom,  rgba(206,206,206,1) 0%,rgba(0,0,0,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#cecece', endColorstr='#000000',GradientType=0 ); /* IE6-9 */
+	border: 1px solid #fff;
+	border-radius: 5px;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 5px;
+	-webkit-box-shadow: 0px 0px 15px 5px rgba(255,255,255,0.2);
+	-moz-box-shadow: 0px 0px 15px 5px rgba(255,255,255,0.2);
+	box-shadow: 0px 0px 15px 5px rgba(255,255,255,0.2);
+	/*
+	top: 50%;
+	-webkit-transform: translateY(-50%);
+	-ms-transform: translateY(-50%);
+	transform: translateY(-50%);
+	position: relative;
+	*/
+}
+.white .login-form-container{
+	-webkit-box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.2);
+	-moz-box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.2);
+	box-shadow: 0px 0px 15px 5px rgba(0,0,0,0.2);
+}
+
+.login-form-container h1 {
+	font-size: 21px;
+	margin-top: 82px;
+	color: #000;
+}
+
+.dashboard .login-form-container h4{
+	color: #fff;
+	margin-top: 10px;
+}
+
+.login-form-container p{
+	color: #fff;
+	font-size: 14px;
+	margin-bottom: 3px;
+}
+.login-form-footer {
+	background: url('../img/login-form-footer-bg.png') no-repeat;
+	min-height: 150px;
+	clear: both;
+	max-width: 561px;
+	margin-top: 20px;
+	background-size: cover;
+}
+.socbtns {
+	display: inline-block;
+	padding: 0;
+	overflow: hidden;
+	width: 100%;
+	margin: 0;
+}
+
+.socbtns li + li {
+	/*border-left: 1px solid #fff;*/
+	margin-top: 3px;
+}
+
+.socbtns li {
+	/*float: left;*/
+}
+
+.socbtns li:first-child {
+	margin-top: 0;
+}
+
+.socbtns a{
+	height: auto !important;
+	padding-left: 0;
+	text-align: left;
+}
+
+.socbtns .btn {
+	min-width: 134px;
+	width: 100%;
+	text-align: center;
+}
+
+.login-form-container .form-group{
+	margin-bottom: 3px;
+}
+
+.login-form-container .btn{
+	width: 100%;
+}
+
+.or {
+	margin: 10px 0;
+	display: block;
+	color: #fff;
+}
+
+.login-logo {
+	color: #ffffff;
+	margin-bottom: 20px;
+}
+
+.btn-login{
+	color: #fff;
+	background: #8cc349; /* Old browsers */
+	background: -moz-linear-gradient(top,  #8cc349 0%, #6ca81f 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#8cc349), color-stop(100%,#6ca81f)); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  #8cc349 0%,#6ca81f 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  #8cc349 0%,#6ca81f 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  #8cc349 0%,#6ca81f 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  #8cc349 0%,#6ca81f 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#8cc349', endColorstr='#6ca81f',GradientType=0 ); /* IE6-9 */
+	border-radius: 3px;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border: 1px solid #8cc349;
+}
+
+.login-logo h4.media-heading {
+	font-size: 24px;
+	margin-top: 12px;
+	margin-bottom: 0;
+}
+
+.login-logo a {
+	text-decoration: none;
+	color: #ffffff;
+}
+
+.widget.text h3.title{
+	text-align: center;
+}
+
+.widget.text {
+	padding: 15px;
+}
+
+.widget.text.greeting {
+	padding: 0;
+}
+
+.page_preview .widget.text .blank-widget{
+	margin: -15px;
+}
+
+.widget.gmap {
+	border: 1px solid #000000;
+	background-color: #000000;
+	color: #ffffff;
+}
+.widget.gmap .contact-info {
+	padding-top: 40px;
+}
+.gmap-container {
+	padding-left: 0;
+	/*margin-right: 40px;*/
+}
+.gmap-container iframe {
+	max-width: 100%;
+}
+
+@media (min-width: 1600px) {
+	.login-page{
+		background: url('../img/black-audi-large.jpg') no-repeat top left #000;
+	}
+	.white.login-page{
+		background: url('../img/white-audi-large.jpg') no-repeat top left #fff;
+	}
+}
+@media (max-width: 678px) {
+	.login-page{
+		background: #000;
+	}
+	.white.login-page{
+		background: #fff;
+	}
+	.login-form-container h1 {
+		margin-top: 10px;
+	}
+}
+@media (max-width: 561px) {
+	.login-form-footer{
+		background-size: contain;
+	}
+}
+/* LOGIN PAGE */
+
+/* YELP */
+.widget.text.yreview {
+	padding: 0;
+}
+
+.blank-widget.text.yreview {
+	margin: -15px;
+}
+
+.yelp_search .search-result {
+	margin-top: 20px;
+	position: relative;
+}
+
+.yelp_search .main-attributes {
+	float: left;
+	/*padding: 0 15px;*/
+	min-height: 1px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 52.5%;
+}
+
+.yelp_search .secondary-attributes {
+	float: left;
+	/*padding: 0 15px;*/
+	min-height: 1px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 47.5%;
+	margin-top: 3px;
+}
+
+.yelp_search .search-result .search-result .snippet-block {
+	clear: both;
+	float: left;
+	/*padding: 0 15px;*/
+	min-height: 1px;
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 100%;
+	margin-top: 10px;
+}
+
+.yelp_search .media-block {
+	position: relative;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+
+.yelp_search .media-avatar {
+	margin-right: 10px;
+}
+
+.yelp_search .review-snippet .media-avatar {
+	min-width: 30px;
+}
+
+.yelp_search .review-snippet .media-story {
+	font-size: 85%;
+}
+
+.yelp_search h3.search-result-title {
+	margin-top: 0;
+	font-size: 18px;
+}
+
+.yelp_search .select_yelp_business_container {
+	position: absolute;
+	width: 100%;
+	height: 100%;
+	background-color: rgba(0, 0, 0, 0.5);
+	clear: both;
+	margin: 0;
+	padding: 0;
+	display: none;
+}
+
+.yelp_search button.select_yelp_business {
+	position: absolute;
+	top: 50%;
+	left: 50%;
+	margin-left: -28px;
+	margin-top: -15px;
+}
+
+.yreview .media-block {
+	position: relative;
+	display: -webkit-box;
+	display: -moz-box;
+	display: -ms-flexbox;
+	display: -webkit-flex;
+	display: flex;
+}
+
+.yreview .media-avatar {
+	margin-right: 10px;
+}
+
+.yreview h3.search-result-title {
+	margin-top: 0;
+	font-size: 18px;
+}
+
+.yreview .snippet-block {
+	-webkit-box-sizing: border-box;
+	-moz-box-sizing: border-box;
+	box-sizing: border-box;
+	width: 100%;
+	margin-top: 10px;
+}
+
+.yreview .review-snippet .media-avatar {
+	min-width: 30px;
+}
+
+.yelp-copyright {
+	text-align: right;
+}
+/* YELP */
+
+/* GOOGLE REVIEW */
+.widget.text.greview {
+	padding: 0;
+}
+
+.blank-widget.text.greview {
+	margin: -15px;
+}
+
+.greview .location-info p {
+	margin: 0;
+}
+
+.greview .location-info label {
+	width: 70px;
+}
+
+.greview .place-container h3 {
+	margin-top: 0;
+}
+
+/* GOOGLE REVIEW */

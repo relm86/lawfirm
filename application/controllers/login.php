@@ -10,6 +10,19 @@ class Login extends CI_Controller {
 	
 	public function index() {
 		$data = array();
+		$data['states'] = $this->config->item('us_states');
+		$data['show_state'] = TRUE;
+		//geo ip
+		$loc = get_location_info();
+		if ( is_object($loc) && isset($loc->ip) ):
+			$data['login_ip'] = $loc->ip;
+			$data['city'] = $loc->city;
+			$data['state'] = $loc->region_name;
+			$data['country'] = $loc->country_name;
+			$data['latitude'] = $loc->latitude;
+			$data['longitude'] = $loc->longitude;
+		endif;
+		$data['show_gender'] = TRUE;
 		if ($this->input->post()) :
 			$this->form_validation->set_rules('name', 'Name', "trim|required");
 			if ( $this->input->post('business') ) $this->form_validation->set_rules('business', 'Business Name', "trim|required");
@@ -38,20 +51,15 @@ class Login extends CI_Controller {
 					if ( $this->input->post('business') ) $data['business'] =  $this->input->post('business');
 					if ( $this->input->post('phone_number') ) $data['phone_number'] =  $this->input->post('phone');
 					if ( $this->input->post('zip_code') ) $data['zip_code'] =  $this->input->post('zipcode');
+					if ( $this->input->post('state') ) $data['state'] =  $this->input->post('state');
+					if ( $this->input->post('gender') ) $data['gender'] =  $this->input->post('gender');
 					$data['email_address'] =  $this->input->post('email');
 					if ( $this->input->post('password') ) $data['password'] =  md5($this->input->post('password'));
 					
-					//geo ip
-					$loc = get_location_info();
-					if ( is_object($loc) && isset($loc->ip) ):
-						$data['login_ip'] = $loc->ip;
-						$data['city'] = $loc->city;
-						$data['state'] = $loc->region_name;
-						$data['country'] = $loc->country_name;
-						$data['latitude'] = $loc->latitude;
-						$data['longitude'] = $loc->longitude;
-					endif;
-
+					unset($data['states']);
+					unset($data['show_state']);
+					unset($data['show_gender']);
+					
 					$this->db->insert('users', $data);
 					$data['id'] = $this->db->insert_id();
 				elseif ( $suspend === false ):
@@ -65,18 +73,9 @@ class Login extends CI_Controller {
 					if ( $this->input->post('business') ) $data['business'] =  $this->input->post('business');
 					if ( $this->input->post('phone_number') ) $data['phone_number'] =  $this->input->post('phone');
 					if ( $this->input->post('zip_code') ) $data['zip_code'] =  $this->input->post('zipcode');
-					
-					//geo ip
-					$loc = get_location_info();
-					if ( is_object($loc) && isset($loc->ip) ):
-						$data['login_ip'] = $loc->ip;
-						if ( $row->city == '' ) $data['city'] = $loc->city;
-						if ( $row->state == '' ) $data['state'] = $loc->region_name;
-						if ( $row->country == '' ) $data['country'] = $loc->country_name;
-						if ( $row->latitude == '' ) $data['latitude'] = $loc->latitude;
-						if ( $row->longitude == '' ) $data['longitude'] = $loc->longitude;
-					endif;
-					
+					if ( $this->input->post('state') ) $data['state'] =  $this->input->post('state');
+					if ( $this->input->post('gender') ) $data['gender'] =  $this->input->post('gender');
+										
 					$this->db->where('id', $row->id);
 					$this->db->update('users', $data);
 					$data = array_merge($data, (array) $row);
@@ -93,8 +92,9 @@ class Login extends CI_Controller {
 
 			endif; //if ($this->form_validation->run() == TRUE):
 		endif; //if ($this->input->post()) :
-		
-		$this->load->view(get_client() . '/header', array('title' => 'Login', 'login_page' => TRUE, 'page_name' => 'login'));
+		$page_name = 'login-page';
+		if ( $this->input->get('alt-theme') ) $page_name .= ' ' . $this->input->get('alt-theme');
+		$this->load->view(get_client() . '/header', array('title' => 'Login', 'login_page' => TRUE, 'page_name' => $page_name));
 		$this->load->view(get_client() . '/login-form', $data);
 		$this->load->view(get_client() . '/footer', array('login_page' => TRUE));
 	}
