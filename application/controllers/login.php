@@ -17,8 +17,10 @@ class Login extends CI_Controller {
 		if ( is_object($loc) && isset($loc->ip) ):
 			$data['login_ip'] = $loc->ip;
 			$data['city'] = $loc->city;
-			$data['state'] = $loc->region_name;
-			$data['country'] = $loc->country_name;
+			if ( isset($loc->region_name) ) $data['state'] = $loc->region_name;
+			if ( isset($loc->region) ) $data['state'] = $loc->region;
+			if ( isset($loc->country_name) ) $data['country'] = $loc->country_name;
+			if ( isset($loc->country) ) $data['country'] = $loc->country;
 			$data['latitude'] = $loc->latitude;
 			$data['longitude'] = $loc->longitude;
 		endif;
@@ -75,7 +77,11 @@ class Login extends CI_Controller {
 					if ( $this->input->post('zip_code') ) $data['zip_code'] =  $this->input->post('zipcode');
 					if ( $this->input->post('state') ) $data['state'] =  $this->input->post('state');
 					if ( $this->input->post('gender') ) $data['gender'] =  $this->input->post('gender');
-										
+					
+					unset($data['states']);
+					unset($data['show_state']);
+					unset($data['show_gender']);
+					
 					$this->db->where('id', $row->id);
 					$this->db->update('users', $data);
 					$data = array_merge($data, (array) $row);
